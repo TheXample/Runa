@@ -1,4 +1,4 @@
-package edu.kit.informatik.card;
+package edu.kit.informatik.abilities;
 
 public enum AbilityType {
 

@@ -1,5 +1,6 @@
-package edu.kit.informatik.card;
+package edu.kit.informatik.characters;
 
+import edu.kit.informatik.abilities.Ability;
 import edu.kit.informatik.dice.Dice;
 import edu.kit.informatik.dice.DiceType;
 

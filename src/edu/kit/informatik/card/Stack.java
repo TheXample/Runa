@@ -4,7 +4,6 @@ import java.util.List;
 
 public class Stack {
 
-    private static final int FIRST = 0;
     private List<Card> cards ;
 
     public Stack(List<Card> cards) {
@@ -12,8 +11,8 @@ public class Stack {
     }
 
     public Card removeTop() {
-        Card top = cards.get(FIRST);
-        cards.remove(FIRST);
+        Card top = cards.get(cards.size() - 1);
+        cards.remove(cards.size() - 1);
         return top;
     }
 
@@ -21,5 +20,9 @@ public class Stack {
         cards.add(input);
     }
 
-    public 
+    public Card cycle() {
+        Card curr = removeTop();
+        pushBottom(curr);
+        return curr;
+    }
 }

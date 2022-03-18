@@ -1,8 +1,11 @@
-package edu.kit.informatik.card;
+package edu.kit.informatik.characters;
+
+import edu.kit.informatik.abilities.Ability;
+import edu.kit.informatik.card.Card;
 
 import java.util.List;
 
-public class Character extends Card{
+public class Character extends Card {
 
     private int healthPoints;
 

@@ -1,21 +1,27 @@
-package edu.kit.informatik.card;
+package edu.kit.informatik.abilities;
 
-public class Ability extends Card{
+import edu.kit.informatik.card.Card;
+
+public class Ability extends Card {
 
     private AbilityType type;
 
     private final String description;
 
-    private final int damage;
-
     private final boolean breaksFocus;
 
-    public Ability(String name, AbilityType type, String description, int damage, boolean breaksFocus) {
+    private final int abilityLevel;
+
+    public Ability(String name, AbilityType type, String description, boolean breaksFocus, int abilityLevel) {
         super(name);
         this.type = type;
         this.description = description;
-        this.damage = damage;
         this.breaksFocus = breaksFocus;
+        this.abilityLevel = abilityLevel;
+    }
+
+    public int getAbilityLevel() {
+        return abilityLevel;
     }
 
     public AbilityType getType() {
@@ -28,10 +34,6 @@ public class Ability extends Card{
 
     public String getDescription() {
         return description;
-    }
-
-    public int getDamage() {
-        return damage;
     }
 
     public boolean isBreaksFocus() {
