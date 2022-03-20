@@ -14,9 +14,9 @@ public class Parry extends physicalAbility{
         super(name, AbilityType.DEFENSIVE, description, false, abilityLevel);
     }
 
-    public int calculate(int abilitiesValue, int damage) {
-        if (damage >= 7 * abilitiesValue) {
-            return damage - 7 * abilitiesValue;
+    public int calculate(int damage) {
+        if (damage >= 7 * getAbilityLevel()) {
+            return damage - 7 * getAbilityLevel();
         }
         return 0;
     }
