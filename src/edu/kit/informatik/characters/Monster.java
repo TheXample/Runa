@@ -29,4 +29,11 @@ public class Monster extends Character{
     public boolean isBoss() {
         return isBoss;
     }
+
+    public Monster(Monster toCopy, int healthPoints) {
+        super(toCopy.getName(), healthPoints, toCopy.getFocusPoints());
+        this.abilities = toCopy.getAbilities();
+        this.primaryType = toCopy.getPrimaryType();
+        this.isBoss = toCopy.isBoss();
+    }
 }

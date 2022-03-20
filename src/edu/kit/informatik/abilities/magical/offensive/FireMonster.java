@@ -2,9 +2,9 @@ package edu.kit.informatik.abilities.magical.offensive;
 
 import edu.kit.informatik.abilities.AbilityType;
 import edu.kit.informatik.abilities.MagicType;
-import edu.kit.informatik.abilities.magicAbility;
+import edu.kit.informatik.abilities.MagicAbility;
 
-public class FireMonster extends magicAbility{
+public class FireMonster extends MagicAbility {
 
     private static final String DESCRIPTION = "12𝑛 + 2 magischer Schaden";
 

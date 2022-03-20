@@ -26,4 +26,8 @@ public class Ghost extends Monster {
     public Ghost() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }
+
+    public Ghost(int newHealth, int focusPoints) {
+        super(NAME, newHealth, focusPoints, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
+    }
 }

@@ -1,9 +1,9 @@
 package edu.kit.informatik.abilities.physical.offensive;
 
 import edu.kit.informatik.abilities.AbilityType;
-import edu.kit.informatik.abilities.physicalAbility;
+import edu.kit.informatik.abilities.PhysicalAbility;
 
-public class Thrust extends physicalAbility{
+public class Thrust extends PhysicalAbility {
 
     private static final String description = "6n + physischer Schaden" +
             "+ 4n physischer Schaden, falls w ≥ 6 (n ist Fähigkeitslevel und w ist Würfelwurf)";

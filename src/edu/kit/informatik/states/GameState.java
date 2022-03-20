@@ -1,0 +1,5 @@
+package edu.kit.informatik.states;
+
+public enum GameState {
+    INIT, SHUFFLE, RUNATURN, FOCUSPOINTSRUNA, MONSTERTURN, FOCUSPOINTSMONSTER, FIGHTWON, HEALING
+}

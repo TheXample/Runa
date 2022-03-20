@@ -1,9 +1,9 @@
 package edu.kit.informatik.abilities.physical.offensive;
 
 import edu.kit.informatik.abilities.AbilityType;
-import edu.kit.informatik.abilities.physicalAbility;
+import edu.kit.informatik.abilities.PhysicalAbility;
 
-public class Slash extends physicalAbility{
+public class Slash extends PhysicalAbility {
 
     private static final String description = "4n + w" +
             " bricht den Fokus des Ziels (n ist Fähigkeitslevel und w ist Würfelwurf)";

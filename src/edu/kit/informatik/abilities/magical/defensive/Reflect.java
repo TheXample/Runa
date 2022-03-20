@@ -2,9 +2,9 @@ package edu.kit.informatik.abilities.magical.defensive;
 
 import edu.kit.informatik.abilities.AbilityType;
 import edu.kit.informatik.abilities.MagicType;
-import edu.kit.informatik.abilities.magicAbility;
+import edu.kit.informatik.abilities.MagicAbility;
 
-public class Reflect extends magicAbility{
+public class Reflect extends MagicAbility {
 
     private static final String DESCRIPTION = "Reflektiere bis zu 10n magischen Schaden. Der restliche " +
             "Schaden trifft Runa.";

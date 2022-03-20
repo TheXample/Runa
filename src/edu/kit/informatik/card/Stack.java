@@ -1,15 +1,22 @@
 package edu.kit.informatik.card;
 
+import edu.kit.informatik.characters.Monster;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Stack {
 
-    private List<Card> cards ;
+    private final List<Card> cards ;
 
     private static final int TOP = 0;
 
     public Stack(List<Card> cards) {
         this.cards = cards;
+    }
+
+    public Stack() {
+        this.cards = new ArrayList<>();
     }
 
     public Card removeTop() {

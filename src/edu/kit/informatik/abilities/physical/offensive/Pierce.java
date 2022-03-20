@@ -1,9 +1,9 @@
 package edu.kit.informatik.abilities.physical.offensive;
 
 import edu.kit.informatik.abilities.AbilityType;
-import edu.kit.informatik.abilities.physicalAbility;
+import edu.kit.informatik.abilities.PhysicalAbility;
 
-public class Pierce extends physicalAbility{
+public class Pierce extends PhysicalAbility {
 
     private static final String description = "7n +  w physischer Schaden" +
             "+ 5n physischer Schaden, falls w ≥ 6 (n ist Fähigkeitslevel und w ist Würfelwurf)";

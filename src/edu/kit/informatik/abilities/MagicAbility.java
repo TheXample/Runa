@@ -1,12 +1,12 @@
 package edu.kit.informatik.abilities;
 
-public abstract class magicAbility extends Ability{
+public abstract class MagicAbility extends Ability{
 
     private final int cost;
 
     private final MagicType magicType;
 
-    public magicAbility(String name, AbilityType type, String description, boolean breaksFocus, int cost, MagicType magicType, int abilityLevel) {
+    public MagicAbility(String name, AbilityType type, String description, boolean breaksFocus, int cost, MagicType magicType, int abilityLevel) {
         super(name, type, description, breaksFocus, abilityLevel);
         this.cost = cost;
         this.magicType = magicType;

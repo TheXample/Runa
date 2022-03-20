@@ -2,9 +2,9 @@ package edu.kit.informatik.abilities.magical.offensive;
 
 import edu.kit.informatik.abilities.AbilityType;
 import edu.kit.informatik.abilities.MagicType;
-import edu.kit.informatik.abilities.magicAbility;
+import edu.kit.informatik.abilities.MagicAbility;
 
-public class IceMonster extends magicAbility{
+public class IceMonster extends MagicAbility {
 
     private static final String DESCRIPTION = "10n + 2 magischer Schaden";
 

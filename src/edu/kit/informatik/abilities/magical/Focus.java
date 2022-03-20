@@ -2,9 +2,9 @@ package edu.kit.informatik.abilities.magical;
 
 import edu.kit.informatik.abilities.AbilityType;
 import edu.kit.informatik.abilities.MagicType;
-import edu.kit.informatik.abilities.magicAbility;
+import edu.kit.informatik.abilities.MagicAbility;
 
-public class Focus extends magicAbility{
+public class Focus extends MagicAbility {
 
     private static final String DESCRIPTION = "Erhöhe Runas Fokus-Punkte vor ihrem nächsten Zug um" +
             ", außer durch nächsten Zug der Monster gebrochen";

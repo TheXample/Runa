@@ -27,4 +27,8 @@ public class Spider extends Monster {
     public Spider() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }
+
+    public Spider(int newHealth, int focusPoints) {
+        super(NAME, newHealth, focusPoints, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
+    }
 }

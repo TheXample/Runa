@@ -1,9 +1,9 @@
 package edu.kit.informatik.abilities.physical.offensive;
 
 import edu.kit.informatik.abilities.AbilityType;
-import edu.kit.informatik.abilities.physicalAbility;
+import edu.kit.informatik.abilities.PhysicalAbility;
 
-public class Smash extends physicalAbility{
+public class Smash extends PhysicalAbility {
 
     private static final String description = "8n physischer Schaden";
 

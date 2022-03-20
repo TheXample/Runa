@@ -8,12 +8,13 @@ import edu.kit.informatik.abilities.physical.offensive.Scratch;
 import edu.kit.informatik.card.Stack;
 import edu.kit.informatik.characters.Monster;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Mushroomlin extends Monster {
 
-    private static final Stack ABILITYSTACK = new Stack(List.of(new Deflect(1),
-            new Scratch(1)));
+    private static final Stack ABILITYSTACK = new Stack(new ArrayList<>(List.of(new Frog(), new Ghost(), new Goblin(), new Gorgon(), new Mushroomlin(),
+            new Skeleton(), new Rat(), new Spider())));
 
     private static final boolean ISBOSS = false;
 
@@ -26,5 +27,9 @@ public class Mushroomlin extends Monster {
 
     public Mushroomlin() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
+    }
+
+    public Mushroomlin(int newHealth, int focusPoints) {
+        super(NAME, newHealth, focusPoints, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }
 }

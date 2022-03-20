@@ -1,9 +1,9 @@
 package edu.kit.informatik.abilities.physical.offensive;
 
 import edu.kit.informatik.abilities.AbilityType;
-import edu.kit.informatik.abilities.physicalAbility;
+import edu.kit.informatik.abilities.PhysicalAbility;
 
-public class Swing extends physicalAbility{
+public class Swing extends PhysicalAbility {
 
     private static final String description = "5n + w physischer Schaden" +
             " Bricht den Focus des Ziels (n ist Fähigkeitslevel und w ist Würfelwurf)";

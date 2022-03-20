@@ -2,9 +2,9 @@ package edu.kit.informatik.abilities.magical.defensive;
 
 import edu.kit.informatik.abilities.AbilityType;
 import edu.kit.informatik.abilities.MagicType;
-import edu.kit.informatik.abilities.magicAbility;
+import edu.kit.informatik.abilities.MagicAbility;
 
-public class Deflect extends magicAbility{
+public class Deflect extends MagicAbility {
 
     private static final String DESCRIPTION = "Reduziere nächsten Angriff um 11n+2 magischen Schaden";
 

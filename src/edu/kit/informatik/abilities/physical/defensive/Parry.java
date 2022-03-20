@@ -1,9 +1,9 @@
 package edu.kit.informatik.abilities.physical.defensive;
 
 import edu.kit.informatik.abilities.AbilityType;
-import edu.kit.informatik.abilities.physicalAbility;
+import edu.kit.informatik.abilities.PhysicalAbility;
 
-public class Parry extends physicalAbility{
+public class Parry extends PhysicalAbility {
 
     private static final String description = "Reduziere den physischen Schaden des nächsten Angriffs" +
             " um 7";

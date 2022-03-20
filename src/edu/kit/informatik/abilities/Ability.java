@@ -10,7 +10,7 @@ public class Ability extends Card {
 
     private final boolean breaksFocus;
 
-    private final int abilityLevel;
+    private int abilityLevel;
 
     public Ability(String name, AbilityType type, String description, boolean breaksFocus, int abilityLevel) {
         super(name);
@@ -38,5 +38,16 @@ public class Ability extends Card {
 
     public boolean isBreaksFocus() {
         return breaksFocus;
+    }
+
+    public void upgrade() {
+        this.abilityLevel = abilityLevel + 1;
+    }
+
+    public boolean equals(Ability input) {
+        if (input == null) {
+            return false;
+        }
+        return this.getName().equals(input.getName());
     }
 }

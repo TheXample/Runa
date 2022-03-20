@@ -26,4 +26,8 @@ public class Skeleton extends Monster {
     public Skeleton() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }
+
+    public Skeleton(int newHealth, int focusPoints) {
+        super(NAME, newHealth, focusPoints, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
+    }
 }

@@ -27,4 +27,8 @@ public class Rat extends Monster {
     public Rat() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }
+
+    public Rat(int newHealth, int focusPoints) {
+        super(NAME, newHealth, focusPoints, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
+    }
 }

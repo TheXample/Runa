@@ -2,10 +2,7 @@ package edu.kit.informatik.characters.monsters.one;
 
 import edu.kit.informatik.abilities.MagicType;
 import edu.kit.informatik.abilities.magical.Focus;
-import edu.kit.informatik.abilities.magical.offensive.LightningMonster;
 import edu.kit.informatik.abilities.magical.offensive.WaterMonster;
-import edu.kit.informatik.abilities.physical.defensive.Parry;
-import edu.kit.informatik.abilities.physical.offensive.Bite;
 import edu.kit.informatik.card.Stack;
 import edu.kit.informatik.characters.Monster;
 
@@ -27,5 +24,9 @@ public class Frog extends Monster {
 
     public Frog() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
+    }
+
+    public Frog(int newHealth, int focusPoints) {
+        super(NAME, newHealth, focusPoints, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }
 }
