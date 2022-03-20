@@ -3,20 +3,30 @@ package edu.kit.informatik.characters;
 import edu.kit.informatik.abilities.MagicType;
 import edu.kit.informatik.card.Stack;
 
-public class Monster {
+public class Monster extends Character{
 
     private final Stack abilities;
 
-    private final String name;
-
     private final MagicType primaryType;
 
-    private final MagicType secondaryType;
+    private final boolean isBoss;
 
-    public Monster(Stack abilities, String name, MagicType primaryType, MagicType secondaryType) {
+    public Monster(String name, int healthPoints, int focusPoints, Stack abilities, MagicType primaryType, boolean isBoss) {
+        super(name, healthPoints, focusPoints);
         this.abilities = abilities;
-        this.name = name;
         this.primaryType = primaryType;
-        this.secondaryType = secondaryType;
+        this.isBoss = isBoss;
+    }
+
+    public Stack getAbilities() {
+        return abilities;
+    }
+
+    public MagicType getPrimaryType() {
+        return primaryType;
+    }
+
+    public boolean isBoss() {
+        return isBoss;
     }
 }

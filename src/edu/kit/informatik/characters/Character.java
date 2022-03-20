@@ -11,13 +11,10 @@ public class Character extends Card {
 
     private int focusPoints;
 
-    private final List<Ability> abilities;
-
-    public Character(String name, int healthPoints, int focusPoints, List<Ability> abilities) {
+    public Character(String name, int healthPoints, int focusPoints) {
         super(name);
         this.healthPoints = healthPoints;
         this.focusPoints = focusPoints;
-        this.abilities = abilities;
     }
 
     public int getHealthPoints() {
@@ -26,10 +23,6 @@ public class Character extends Card {
 
     public int getFocusPoints() {
         return focusPoints;
-    }
-
-    public List<Ability> getAbilities() {
-        return abilities;
     }
 
     public void setHealthPoints(int healthPoints) {

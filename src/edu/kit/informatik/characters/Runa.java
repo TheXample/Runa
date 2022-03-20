@@ -14,9 +14,12 @@ public class Runa extends Character{
 
     private Dice dice;
 
+    private List<Ability> abilities;
+
     public Runa(String name, List<Ability> abilities) {
-        super(name, maxHealth , minFocus, abilities);
+        super(name, maxHealth , minFocus);
         this.dice = new Dice(DiceType.D_SIX);
+        this.abilities = abilities;
     }
 
     public int rollDice(int seed) {
