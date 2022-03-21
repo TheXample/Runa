@@ -31,6 +31,8 @@ public class RunasAdventure {
 
     private Monster currentFight;
 
+    private Ability lastMove;
+
     public RunasAdventure(RunaType runaClass) {
         currentFloor = 1;
         runa = new Runa(runaClass);
@@ -79,7 +81,12 @@ public class RunasAdventure {
         int newHealth = currentFight.getHealthPoints();
         switch (attack.getType()) {
             case OFFENSIVE -> {
-                currentFight = new Monster(currentFight, newHealth - attack.calculate(runa.rollDice(1)));
+                currentFight.setHealthPoints(newHealth - attack.calculate(runa.rollDice(1)));
+                break;
+            }
+            case DEFENSIVE, FOCUS -> {
+                lastMove = attack;
+                break;
             }
         }
         return currentFight;
