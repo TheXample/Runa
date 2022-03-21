@@ -25,8 +25,4 @@ public class Frog extends Monster {
     public Frog() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }
-
-    public Frog(int newHealth, int focusPoints) {
-        super(NAME, newHealth, focusPoints, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
-    }
 }

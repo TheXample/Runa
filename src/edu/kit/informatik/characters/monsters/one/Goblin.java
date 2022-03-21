@@ -27,8 +27,4 @@ public class Goblin extends Monster {
     public Goblin() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }
-
-    public Goblin(int newHealth, int focusPoints) {
-        super(NAME, newHealth, focusPoints, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
-    }
 }

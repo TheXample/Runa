@@ -28,8 +28,4 @@ public class Mushroomlin extends Monster {
     public Mushroomlin() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }
-
-    public Mushroomlin(int newHealth, int focusPoints) {
-        super(NAME, newHealth, focusPoints, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
-    }
 }

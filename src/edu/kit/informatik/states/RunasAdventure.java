@@ -1,7 +1,6 @@
 package edu.kit.informatik.states;
 
-import edu.kit.informatik.abilities.Ability;
-import edu.kit.informatik.abilities.PhysicalAbility;
+import edu.kit.informatik.abilities.*;
 import edu.kit.informatik.abilities.magical.defensive.Reflect;
 import edu.kit.informatik.abilities.magical.offensive.Fire;
 import edu.kit.informatik.abilities.magical.offensive.Ice;
@@ -12,6 +11,7 @@ import edu.kit.informatik.abilities.physical.offensive.Pierce;
 import edu.kit.informatik.abilities.physical.offensive.Slash;
 import edu.kit.informatik.abilities.physical.offensive.Swing;
 import edu.kit.informatik.abilities.physical.offensive.Thrust;
+import edu.kit.informatik.characters.Character;
 import edu.kit.informatik.characters.Monster;
 import edu.kit.informatik.characters.Runa;
 import edu.kit.informatik.characters.RunaType;
@@ -77,18 +77,75 @@ public class RunasAdventure {
         return currentFight;
     }
 
-    public Monster runaPhysicalAttack(PhysicalAbility attack) {
-        int newHealth = currentFight.getHealthPoints();
+    public Character usePhysicalAbility(PhysicalAbility attack) {
         switch (attack.getType()) {
             case OFFENSIVE -> {
-                currentFight.setHealthPoints(newHealth - attack.calculate(runa.rollDice(1)));
-                break;
+                if (Statemachine.getCurrentState().equals(GameState.RUNATURN)) {
+                    setPhysicalDamage(currentFight, attack);
+                    return currentFight;
+                }
+                else {
+                    setPhysicalDamage(runa, attack);
+
+                    return runa;
+                }
             }
-            case DEFENSIVE, FOCUS -> {
+            case DEFENSIVE -> {
                 lastMove = attack;
-                break;
             }
         }
-        return currentFight;
+        return null;
     }
+
+    private void setPhysicalDamage(Character target, PhysicalAbility attack) {
+        if (lastMove != null && !lastMove.getType().equals(AbilityType.FOCUS)) {
+            target.setHealthPoints(lastMove.calculate(target.getHealthPoints() - attack.calculate(0)));
+            lastMove = null;
+        }
+        else {
+            target.setHealthPoints(target.getHealthPoints() - attack.calculate(0));
+        }
+    }
+
+    public Character useMagicalAbility(MagicAbility attack) {
+        switch (attack.getType()) {
+            case OFFENSIVE -> {
+                if (Statemachine.getCurrentState().equals(GameState.RUNATURN)) {
+                    if (lastMove != null && !lastMove.getType().equals(AbilityType.FOCUS)) {
+                        currentFight.setHealthPoints(lastMove.calculate(currentFight.getHealthPoints()
+                                - attack.calculate(runa.getFocusPoints(), currentFight.getPrimaryType())));
+                        lastMove = null;
+                    }
+                    else {
+                        currentFight.setHealthPoints(currentFight.getHealthPoints()
+                                - attack.calculate(runa.getFocusPoints(), currentFight.getPrimaryType()));
+                    }
+                    return currentFight;
+                }
+                else {
+                    if (lastMove != null && !lastMove.getType().equals(AbilityType.FOCUS)) {
+                        runa.setHealthPoints(lastMove.calculate(runa.getHealthPoints()
+                                - attack.calculate(currentFight.getFocusPoints(), MagicType.NONE)));
+                        lastMove = null;
+                    }
+                    else {
+                        runa.setHealthPoints(runa.getHealthPoints()
+                                - attack.calculate(currentFight.getFocusPoints(), MagicType.NONE));
+                    }
+                    return runa;
+                }
+            }
+            case DEFENSIVE -> {
+                lastMove = attack;
+            }
+        }
+        return null;
+    }
+
+    private void checkFocus(Character caster, Ability attack) {
+        if (!attack.isBreaksFocus() && lastMove.getType().equals(AbilityType.FOCUS)) {
+            caster.setFocusPoints(lastMove.calculate(caster.getFocusPoints()));
+        }
+    }
+
 }

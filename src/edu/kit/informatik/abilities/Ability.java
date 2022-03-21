@@ -12,12 +12,15 @@ public class Ability extends Card {
 
     private int abilityLevel;
 
-    public Ability(String name, AbilityType type, String description, boolean breaksFocus, int abilityLevel) {
+    private final AbilityType usageType;
+
+    public Ability(String name, AbilityType type, String description, boolean breaksFocus, int abilityLevel, AbilityType usageType) {
         super(name);
         this.type = type;
         this.description = description;
         this.breaksFocus = breaksFocus;
         this.abilityLevel = abilityLevel;
+        this.usageType = usageType;
     }
 
     public int getAbilityLevel() {
@@ -49,5 +52,13 @@ public class Ability extends Card {
             return false;
         }
         return this.getName().equals(input.getName());
+    }
+
+    public AbilityType getUsageType() {
+        return usageType;
+    }
+
+    public int calculate(int value) {
+        return 0;
     }
 }

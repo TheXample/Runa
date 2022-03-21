@@ -26,8 +26,4 @@ public class Gorgon extends Monster {
     public Gorgon() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }
-
-    public Gorgon(int newHealth, int focusPoints) {
-        super(NAME, newHealth, focusPoints, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
-    }
 }
