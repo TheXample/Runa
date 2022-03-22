@@ -1,5 +1,6 @@
 package edu.kit.informatik.characters.monsters.one;
 
+import edu.kit.informatik.abilities.Ability;
 import edu.kit.informatik.abilities.MagicType;
 import edu.kit.informatik.abilities.magical.Focus;
 import edu.kit.informatik.abilities.magical.defensive.Deflect;
@@ -9,12 +10,13 @@ import edu.kit.informatik.card.Stack;
 import edu.kit.informatik.characters.Monster;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class Mushroomlin extends Monster {
 
-    private static final Stack ABILITYSTACK = new Stack(new ArrayList<>(List.of(new Frog(), new Ghost(), new Goblin(), new Gorgon(), new Mushroomlin(),
-            new Skeleton(), new Rat(), new Spider())));
+    private static final Queue<Ability> ABILITYSTACK = new LinkedList<>(List.of(new Deflect(1), new Scratch(1)));
 
     private static final boolean ISBOSS = false;
 

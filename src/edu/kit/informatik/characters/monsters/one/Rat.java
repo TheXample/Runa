@@ -1,5 +1,6 @@
 package edu.kit.informatik.characters.monsters.one;
 
+import edu.kit.informatik.abilities.Ability;
 import edu.kit.informatik.abilities.MagicType;
 import edu.kit.informatik.abilities.magical.Focus;
 import edu.kit.informatik.abilities.magical.offensive.WaterMonster;
@@ -8,11 +9,13 @@ import edu.kit.informatik.abilities.physical.offensive.Claw;
 import edu.kit.informatik.card.Stack;
 import edu.kit.informatik.characters.Monster;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class Rat extends Monster {
 
-    private static final Stack ABILITYSTACK = new Stack(List.of(new Parry(1),
+    private static final Queue<Ability> ABILITYSTACK = new LinkedList<>(List.of(new Parry(1),
             new Claw( 1)));
 
     private static final boolean ISBOSS = false;

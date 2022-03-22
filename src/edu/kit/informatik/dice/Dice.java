@@ -16,7 +16,7 @@ public class Dice {
 
     public int roll(int seed) {
         Random rand = new Random(seed);
-        return rand.nextInt(1, type.getValue());
+        return rand.nextInt(type.getValue());
     }
 
     public DiceType getType() {

@@ -34,4 +34,8 @@ public class Stack {
         pushBottom(curr);
         return curr;
     }
+
+    public Card peek() {
+        return cards.get(TOP);
+    }
 }

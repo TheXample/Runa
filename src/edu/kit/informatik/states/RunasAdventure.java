@@ -36,29 +36,29 @@ public class RunasAdventure {
     public RunasAdventure(RunaType runaClass) {
         currentFloor = 1;
         runa = new Runa(runaClass);
+        this.monsterStack = new LinkedList<>();
+        this.abilities = new LinkedList<>();
         Statemachine.next();
-        initMonster(currentFloor);
-        initAbilities(currentFloor);
         Statemachine.next();
     }
 
-    private void initMonster(int floor) {
-        ArrayList<Monster> monsterList = new ArrayList<>();
-        if (floor == 1) {
-             monsterList = new ArrayList<>(List.of(new Frog(), new Ghost(), new Goblin(), new Gorgon(), new Mushroomlin(),
-                    new Skeleton(), new Rat(), new Spider()));
-        }
-        else {
+    public void shuffleCards(long seedMonster, long seedAbilties) {
+        initMonster(seedMonster);
+        initAbilities(seedAbilties);
+    }
 
-        }
-        Collections.shuffle(monsterList);
+    private void initMonster(long seed) {
+        ArrayList<Monster> monsterList = new ArrayList<>();
+        monsterList = new ArrayList<>(List.of(new Frog(), new Ghost(), new Goblin(), new Gorgon(), new Mushroomlin(),
+                new Skeleton(), new Rat(), new Spider()));
+        Collections.shuffle(monsterList, new Random(seed));
         monsterStack.addAll(monsterList);
     }
 
-    private void initAbilities(int floor) {
-        ArrayList<Ability> abilitiesList = new ArrayList<>(List.of(new Slash(floor), new Swing(floor),
-                new Thrust(floor), new Pierce(floor), new Parry(floor), new Reflect(floor), new Water(floor),
-                new Ice(floor), new Fire(floor), new Lightning(floor)));
+    private void initAbilities(long seed) {
+        ArrayList<Ability> abilitiesList = new ArrayList<>(List.of(new Slash(1), new Swing(1),
+                new Thrust(1), new Pierce(1), new Parry(1), new Reflect(1), new Water(1),
+                new Ice(1), new Fire(1), new Lightning(1)));
         for (Ability curr: runa.getAbilities()) {
             for (Ability listAbility: abilitiesList) {
                 if (listAbility.equals(curr)) {
@@ -67,7 +67,7 @@ public class RunasAdventure {
                 }
             }
         }
-        Collections.shuffle(abilitiesList);
+        Collections.shuffle(abilitiesList, new Random(seed));
         abilities.addAll(abilitiesList);
     }
 
@@ -148,4 +148,23 @@ public class RunasAdventure {
         }
     }
 
+    public Runa getRuna() {
+        return runa;
+    }
+
+    public int getCurrentFloor() {
+        return currentFloor;
+    }
+
+    public Monster getTop() {
+        return monsterStack.peek();
+    }
+
+    public Monster getCurrentFight() {
+        return currentFight;
+    }
+
+    public GameState getState() {
+        return Statemachine.getCurrentState();
+    }
 }
