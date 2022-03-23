@@ -32,13 +32,17 @@ public class Main {
                     case SHUFFLE -> {
                         main.shuffle();
                         main.printStage(1, game.getCurrentFloor());
-                        main.printLevel();
+                        game.enterRoom();
                     }
                     case RUNATURN -> {
+                        main.printLevel();
                         main.runaAttack();
                     }
-                    case MONSTERTURN -> {
-
+                    case MONSTERTURNONE -> {
+                        main.monsterAttack();
+                    }
+                    case FIGHTWON -> {
+                        System.out.println("WOOOOHOOOOO");
                     }
                 }
             }
@@ -51,29 +55,51 @@ public class Main {
     private void runaAttack() throws IOException {
         System.out.println("Select card to play \n" + getRunasAbilities());
         int pos = selectTarget(game.getRuna().getAbilities().size());
-        System.out.println("Select Runa’s target.\n" + getTargets());
-        int target = selectTarget(game.getCurrentFight().size());
-        if (pos != -1) {
-            System.out.println("Runa uses " + printAbility(game.getRuna().getAbilities().get(pos)));
-            int dice = enterDice();
-            switch (game.getRuna().getAbilities().get(pos).getUsageType()) {
-                case PHYSICAL -> {
-                    int dmg = game.usePhysicalAbility(game.getRuna(), game.getCurrentFight().get(target),
-                            (PhysicalAbility) game.getRuna().getAbilities().get(pos), dice);
-                    printDamage(game.getRuna(), dmg, game.getRuna().getAbilities().get(pos).getUsageType());
-                }
-                case MAGIC -> game.useMagicalAbility(game.getRuna(), game.getCurrentFight().get(target),
-                        (MagicAbility) game.getRuna().getAbilities().get(pos));
+        Ability use = game.getRuna().getAbilities().get(pos);
+        printUse(game.getRuna(), use);
+        int target = 0;
+        if (game.getCurrentFight().size() > 1 && use.getType().equals(AbilityType.OFFENSIVE)) {
+            System.out.println("Select Runa’s target.\n" + getTargets());
+            target = selectTarget(game.getCurrentFight().size());
+        }
+        int dice = enterDice();
+        switch (use.getUsageType()) {
+            case PHYSICAL -> {
+                Monster current = game.getCurrentFight().get(target);
+                int dmg = game.usePhysicalAbility(game.getRuna(), game.getCurrentFight().get(target),
+                        (PhysicalAbility) use, dice);
+                printDamage(current, dmg, use);
             }
+            case MAGIC -> game.useMagicalAbility(game.getRuna(), game.getCurrentFight().get(target),
+                    (MagicAbility) use);
         }
     }
 
-    private void monsterAttack() throws IOException {
-
+    private void printUse(Character user, Ability ability) {
+        System.out.println( user.getName() + " uses " + printAbility(ability));
     }
 
-    private void printDamage(Character target, int damage, AbilityType dmgType) {
-        System.out.println(target.getName() + " takes " + damage + dmgType.getValue() + ". damage");
+    private void monsterAttack() throws IOException {
+        for (Monster monster: game.getCurrentFight()) {
+            printUse(monster, monster.getNextMove());
+            switch (monster.getNextMove().getUsageType()) {
+                case PHYSICAL -> {
+                    int dmg = game.usePhysicalAbility(monster, game.getRuna(), (PhysicalAbility) monster.getNextMove(), 0);
+                    printDamage(game.getRuna(), dmg, monster.getNextMove());
+                }
+                case MAGIC -> {
+                    int dmg = game.useMagicalAbility(monster, game.getRuna(), (MagicAbility) monster.getNextMove());
+                    printDamage(game.getRuna(), dmg, monster.getNextMove());
+                }
+            }
+            monster.rmTop();
+        }
+    }
+
+    private void printDamage(Character target, int damage, Ability ability) {
+        if (ability.getType().equals(AbilityType.OFFENSIVE)) {
+            System.out.println(target.getName() + " takes " + damage + ability.getUsageType().getValue() + ". damage");
+        }
     }
 
     private int enterDice() throws IOException {
@@ -87,13 +113,12 @@ public class Main {
     }
 
     private int selectTarget(int max) throws IOException {
-        printSelect("number", game.getCurrentFight().size());
+        printSelect("number", max);
         int parsed = Parser.getSelected(reader.readLine(), max);
         if (parsed != -1) {
-            return parsed;
+            return parsed - 1;
         }
-        selectTarget(max);
-        return -1;
+        return selectTarget(max);
     }
 
     private void printSelect(String type, int max) {
@@ -180,11 +205,11 @@ public class Main {
 
     private void printLevel() {
         printLine();
-        game.enterRoom();
         printRuna(game.getRuna());
         System.out.println("vs.");
-        printMonster(game.getCurrentFight().get(0));
-        printMonster(game.getCurrentFight().get(1));
+        for (Monster monster: game.getCurrentFight()) {
+            printMonster(monster);
+        }
         printLine();
     }
 }

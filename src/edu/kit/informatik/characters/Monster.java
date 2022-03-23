@@ -42,4 +42,8 @@ public class Monster extends Character{
     public Ability getNextMove() {
         return abilities.peek();
     }
+
+    public void rmTop() {
+        abilities.add(abilities.poll());
+    }
 }

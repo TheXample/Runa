@@ -24,6 +24,9 @@ public class Character extends Card {
 
     public void setHealthPoints(int healthPoints) {
         this.healthPoints = healthPoints;
+        if (this.healthPoints < 0) {
+            this.healthPoints = 0;
+        }
     }
 
     public void setFocusPoints(int focusPoints) {

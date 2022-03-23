@@ -7,8 +7,9 @@ public class Statemachine {
     public static void next() {
         switch (currentState) {
             case HEALING -> currentState = GameState.SHUFFLE;
-            case RUNATURN -> currentState = GameState.MONSTERTURN;
-            case SHUFFLE, MONSTERTURN -> currentState = GameState.RUNATURN;
+            case RUNATURN -> currentState = GameState.MONSTERTURNONE;
+            case SHUFFLE, MONSTERTURNTWO -> currentState = GameState.RUNATURN;
+            case MONSTERTURNONE -> currentState = GameState.MONSTERTURNTWO;
             case FIGHTWON -> currentState = GameState.HEALING;
         }
     }
@@ -22,5 +23,9 @@ public class Statemachine {
 
     public static void reset() {
         currentState = GameState.INIT;
+    }
+
+    public static void setState(GameState newState) {
+        currentState = newState;
     }
 }
