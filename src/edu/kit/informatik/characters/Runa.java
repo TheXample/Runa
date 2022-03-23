@@ -7,7 +7,6 @@ import edu.kit.informatik.abilities.magical.offensive.Water;
 import edu.kit.informatik.abilities.physical.defensive.Parry;
 import edu.kit.informatik.abilities.physical.offensive.Slash;
 import edu.kit.informatik.abilities.physical.offensive.Thrust;
-import edu.kit.informatik.dice.Dice;
 import edu.kit.informatik.dice.DiceType;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public class Runa extends Character{
 
     private static final String NAME = "Runa";
 
-    private Dice dice;
+    private DiceType dice;
 
     private List<Ability> abilities;
 
@@ -30,7 +29,7 @@ public class Runa extends Character{
 
     public Runa(RunaType runaClass) {
         super(NAME, maxHealth , minFocus);
-        this.dice = new Dice(DiceType.D_SIX);
+        this.dice = DiceType.D_SIX;
         this.runaClass = runaClass;
         this.level = 1;
         setClass(runaClass, level);
@@ -58,22 +57,18 @@ public class Runa extends Character{
         return runaClass;
     }
 
-    public int rollDice(int seed) {
-        return dice.roll(seed);
-    }
-
     public boolean upgradeDice() {
-        switch (dice.getType()) {
+        switch (dice) {
             case D_SIX -> {
-                dice = new Dice(DiceType.D_EIGHT);
+                dice = DiceType.D_EIGHT;
                 return true;
             }
             case D_EIGHT -> {
-                dice = new Dice(DiceType.D_TEN);
+                dice = DiceType.D_TEN;
                 return true;
             }
             case D_TEN -> {
-                dice = new Dice(DiceType.D_Twelve);
+                dice = DiceType.D_Twelve;
                 return true;
             }
         }
@@ -88,5 +83,13 @@ public class Runa extends Character{
 
     public void levelUP() {
         this.level = this.level + 1;
+    }
+
+    public void addAbility(Ability ability) {
+        this.abilities.add(ability);
+    }
+
+    public DiceType getDice() {
+        return dice;
     }
 }

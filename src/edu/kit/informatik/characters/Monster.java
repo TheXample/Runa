@@ -2,7 +2,6 @@ package edu.kit.informatik.characters;
 
 import edu.kit.informatik.abilities.Ability;
 import edu.kit.informatik.abilities.MagicType;
-import edu.kit.informatik.card.Stack;
 
 import java.util.Queue;
 

@@ -2,18 +2,15 @@ package edu.kit.informatik.states;
 
 public class Statemachine {
 
-    private static GameState currentState = GameState.INIT;;
+    private static GameState currentState = GameState.SHUFFLE;;
 
-    public static GameState next() {
+    public static void next() {
         switch (currentState) {
-            case INIT, HEALING -> currentState = GameState.SHUFFLE;
-            case RUNATURN -> currentState = GameState.FOCUSPOINTSMONSTER;
-            case FOCUSPOINTSMONSTER -> currentState = GameState.MONSTERTURN;
-            case MONSTERTURN -> currentState = GameState.FOCUSPOINTSRUNA;
-            case FOCUSPOINTSRUNA -> currentState = GameState.RUNATURN;
+            case HEALING -> currentState = GameState.SHUFFLE;
+            case RUNATURN -> currentState = GameState.MONSTERTURN;
+            case SHUFFLE, MONSTERTURN -> currentState = GameState.RUNATURN;
             case FIGHTWON -> currentState = GameState.HEALING;
         }
-        return currentState;
     }
     public static void fightWon() {
         currentState = GameState.FIGHTWON;

@@ -29,4 +29,12 @@ public class Character extends Card {
     public void setFocusPoints(int focusPoints) {
         this.focusPoints = focusPoints;
     }
+
+    public boolean equals(Character input) {
+        return this.getName().equals(input.getName());
+    }
+
+    public boolean isDead() {
+        return getHealthPoints() == 0;
+    }
 }

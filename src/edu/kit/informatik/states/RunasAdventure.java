@@ -29,17 +29,16 @@ public class RunasAdventure {
 
     private int currentFloor;
 
-    private Monster currentFight;
+    private List<Monster> currentFight;
 
     private Ability lastMove;
 
     public RunasAdventure(RunaType runaClass) {
         currentFloor = 1;
         runa = new Runa(runaClass);
+        currentFight = new ArrayList<>();
         this.monsterStack = new LinkedList<>();
         this.abilities = new LinkedList<>();
-        Statemachine.next();
-        Statemachine.next();
     }
 
     public void shuffleCards(long seedMonster, long seedAbilties) {
@@ -71,75 +70,97 @@ public class RunasAdventure {
         abilities.addAll(abilitiesList);
     }
 
-    public Monster enterRoom() {
-        currentFight = monsterStack.poll();
+    public void enterRoom() {
+        currentFight.add(monsterStack.poll());
+        currentFight.add(monsterStack.poll());
         Statemachine.next();
-        return currentFight;
     }
 
-    public Character usePhysicalAbility(PhysicalAbility attack) {
+    public int usePhysicalAbility(Character attacker, Character target, PhysicalAbility attack, int dice) {
+        int damage = 0;
         switch (attack.getType()) {
             case OFFENSIVE -> {
+                checkFocus(attacker, attack);
                 if (Statemachine.getCurrentState().equals(GameState.RUNATURN)) {
-                    setPhysicalDamage(currentFight, attack);
-                    return currentFight;
+                    damage = setPhysicalDamage(currentFight.get(getOpponent(target)), attack, dice);
+                    getOpponent(target);
                 }
                 else {
-                    setPhysicalDamage(runa, attack);
-
-                    return runa;
+                    damage = setPhysicalDamage(runa, attack, dice);
                 }
             }
             case DEFENSIVE -> {
                 lastMove = attack;
             }
         }
-        return null;
+        Statemachine.next();
+        checkDead();
+        return damage;
     }
 
-    private void setPhysicalDamage(Character target, PhysicalAbility attack) {
+    private int getOpponent(Character target) {
+        for (int i = 0; i < currentFight.size(); i++) {
+            if (target.equals(currentFight.get(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int setPhysicalDamage(Character target, PhysicalAbility attack, int dice) {
+        int damage = 0;
         if (lastMove != null && !lastMove.getType().equals(AbilityType.FOCUS)) {
-            target.setHealthPoints(lastMove.calculate(target.getHealthPoints() - attack.calculate(0)));
+            damage = lastMove.calculate(target.getHealthPoints() - attack.calculate(dice));
+            target.setHealthPoints(damage);
             lastMove = null;
         }
         else {
-            target.setHealthPoints(target.getHealthPoints() - attack.calculate(0));
+            damage = target.getHealthPoints() - attack.calculate(dice);
+            target.setHealthPoints(damage);
         }
+        return damage;
     }
 
-    public Character useMagicalAbility(MagicAbility attack) {
+    public void useMagicalAbility(Character attacker, Character target, MagicAbility attack) {
         switch (attack.getType()) {
             case OFFENSIVE -> {
                 if (Statemachine.getCurrentState().equals(GameState.RUNATURN)) {
+                    Monster targetMonster = currentFight.get(getOpponent(target));
+                    checkFocus(targetMonster, attack);
                     if (lastMove != null && !lastMove.getType().equals(AbilityType.FOCUS)) {
-                        currentFight.setHealthPoints(lastMove.calculate(currentFight.getHealthPoints()
-                                - attack.calculate(runa.getFocusPoints(), currentFight.getPrimaryType())));
+                        targetMonster.setHealthPoints(lastMove.calculate(targetMonster.getHealthPoints()
+                                - attack.calculate(runa.getFocusPoints(), targetMonster.getPrimaryType())));
                         lastMove = null;
                     }
                     else {
-                        currentFight.setHealthPoints(currentFight.getHealthPoints()
-                                - attack.calculate(runa.getFocusPoints(), currentFight.getPrimaryType()));
+                        targetMonster.setHealthPoints(targetMonster.getHealthPoints()
+                                - attack.calculate(runa.getFocusPoints(), targetMonster.getPrimaryType()));
                     }
-                    return currentFight;
+                    currentFight.set(getOpponent(target), targetMonster);
                 }
                 else {
+                    checkFocus(runa, attack);
                     if (lastMove != null && !lastMove.getType().equals(AbilityType.FOCUS)) {
                         runa.setHealthPoints(lastMove.calculate(runa.getHealthPoints()
-                                - attack.calculate(currentFight.getFocusPoints(), MagicType.NONE)));
+                                - attack.calculate(currentFight.get(getOpponent(attacker)).getFocusPoints(), MagicType.NONE)));
                         lastMove = null;
                     }
                     else {
                         runa.setHealthPoints(runa.getHealthPoints()
-                                - attack.calculate(currentFight.getFocusPoints(), MagicType.NONE));
+                                - attack.calculate(currentFight.get(getOpponent(attacker)).getFocusPoints(), MagicType.NONE));
                     }
-                    return runa;
                 }
             }
             case DEFENSIVE -> {
                 lastMove = attack;
             }
         }
-        return null;
+        Statemachine.next();
+        checkDead();
+    }
+
+    private void checkDead() {
+        currentFight.removeIf(Character::isDead);
     }
 
     private void checkFocus(Character caster, Ability attack) {
@@ -156,11 +177,7 @@ public class RunasAdventure {
         return currentFloor;
     }
 
-    public Monster getTop() {
-        return monsterStack.peek();
-    }
-
-    public Monster getCurrentFight() {
+    public List<Monster> getCurrentFight() {
         return currentFight;
     }
 
