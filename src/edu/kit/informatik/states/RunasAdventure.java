@@ -181,6 +181,9 @@ public class RunasAdventure {
 
     private void checkDead() {
         currentFight.removeIf(Character::isDead);
+        if (runa.isDead()) {
+            Statemachine.lost();
+        }
     }
 
     private void checkFocus(Character caster, Ability attack) {

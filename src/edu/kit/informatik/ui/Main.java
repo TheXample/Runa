@@ -8,7 +8,9 @@ import edu.kit.informatik.abilities.PhysicalAbility;
 import edu.kit.informatik.characters.Character;
 import edu.kit.informatik.characters.Monster;
 import edu.kit.informatik.characters.Runa;
+import edu.kit.informatik.states.GameState;
 import edu.kit.informatik.states.RunasAdventure;
+import edu.kit.informatik.states.Statemachine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,7 +29,7 @@ public class Main {
         main.printHello();
         try {
             main.init();
-            while (!line.equals("quit")) {
+            while (!Statemachine.getCurrentState().equals(GameState.LOST)) {
                 switch (game.getState()) {
                     case SHUFFLE -> {
                         main.shuffle();

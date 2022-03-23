@@ -28,4 +28,8 @@ public class Statemachine {
     public static void setState(GameState newState) {
         currentState = newState;
     }
+
+    public static void lost() {
+        currentState = GameState.LOST;
+    }
 }
