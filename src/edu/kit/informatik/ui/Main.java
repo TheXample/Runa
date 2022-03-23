@@ -23,9 +23,8 @@ public class Main {
 
     private static RunasAdventure game;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Main main = new Main();
-        String line = "";
         main.printHello();
         try {
             main.init();
@@ -58,12 +57,12 @@ public class Main {
         System.out.println("Select card to play \n" + getRunasAbilities());
         int pos = selectTarget(game.getRuna().getAbilities().size());
         Ability use = game.getRuna().getAbilities().get(pos);
-        printUse(game.getRuna(), use);
         int target = 0;
         if (game.getCurrentFight().size() > 1 && use.getType().equals(AbilityType.OFFENSIVE)) {
             System.out.println("Select Runa’s target.\n" + getTargets());
             target = selectTarget(game.getCurrentFight().size());
         }
+        printUse(game.getRuna(), use);
         int dice = enterDice();
         switch (use.getUsageType()) {
             case PHYSICAL -> {
@@ -72,8 +71,12 @@ public class Main {
                         (PhysicalAbility) use, dice);
                 printDamage(current, dmg, use);
             }
-            case MAGIC -> game.useMagicalAbility(game.getRuna(), game.getCurrentFight().get(target),
-                    (MagicAbility) use);
+            case MAGIC -> {
+                Monster current = game.getCurrentFight().get(target);
+                int dmg = game.useMagicalAbility(game.getRuna(), game.getCurrentFight().get(target),
+                        (MagicAbility) use);
+                printDamage(current, dmg, use);
+            }
         }
     }
 
@@ -86,7 +89,8 @@ public class Main {
             printUse(monster, monster.getNextMove());
             switch (monster.getNextMove().getUsageType()) {
                 case PHYSICAL -> {
-                    int dmg = game.usePhysicalAbility(monster, game.getRuna(), (PhysicalAbility) monster.getNextMove(), 0);
+                    int dmg = game.usePhysicalAbility(monster, game.getRuna(),
+                            (PhysicalAbility) monster.getNextMove(), 0);
                     printDamage(game.getRuna(), dmg, monster.getNextMove());
                 }
                 case MAGIC -> {
@@ -165,26 +169,15 @@ public class Main {
         String line = reader.readLine();
         if (Parser.getRunaClass(line) != null) {
             game = new RunasAdventure(Parser.getRunaClass(line));
-            return;
-        }
-        if (!line.equals("quit")) {
-            init();
-        } else {
-            throw new IOException();
         }
     }
 
     private void shuffle() throws IOException {
-        System.out.println("To shuffle ability cards and monsters, enter two seeds \nEnter seeds [1--2147483647] separated by comma:");
+        System.out.println("To shuffle ability cards and monsters, enter two seeds \n"
+                + "Enter seeds [1--2147483647] separated by comma:");
         String line = reader.readLine();
         if (Parser.getSeeds(line) != null) {
             game.shuffleCards(Parser.getSeeds(line)[1], Parser.getSeeds(line)[0]);
-            return;
-        }
-        if (!line.equals("quit")) {
-            shuffle();
-        } else {
-            throw new IOException();
         }
     }
 

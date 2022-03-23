@@ -21,7 +21,7 @@ import java.util.*;
 
 public class RunasAdventure {
 
-    private Runa runa;
+    private final Runa runa;
 
     private Queue<Monster> monsterStack;
 
