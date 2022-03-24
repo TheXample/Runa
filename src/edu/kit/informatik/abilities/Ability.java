@@ -102,7 +102,7 @@ public class Ability extends Card {
         if (input == null) {
             return false;
         }
-        return this.getName().equals(input.getName());
+        return this.getName().equals(input.getName()) && this.getAbilityLevel() == input.getAbilityLevel();
     }
 
     /**

@@ -45,9 +45,9 @@ public class Main {
                     && !Statemachine.getCurrentState().equals(GameState.WIN)) {
                 switch (game.getState()) {
                     case SHUFFLE: {
-                        main.shuffle(game.getCurrentFloor());
-                        main.printStage(1, game.getCurrentFloor());
+                        main.shuffle();
                         game.enterRoom();
+                        main.printStage(1, game.getCurrentFloor());
                         break;
                     }
                     case RUNATURN: {
@@ -65,6 +65,7 @@ public class Main {
                     }
                     case HEALING: {
                         main.heal();
+                        main.printStage(game.getCurrentRoom(), game.getCurrentFloor());
                         break;
                     }
                     case RUNABOSSFIGHT: {
@@ -99,16 +100,18 @@ public class Main {
     private void printUpgrade() {
         game.fightReward(0, null);
         if (!Statemachine.getCurrentState().equals(GameState.WIN)) {
-            for (int i = 0; i < game.getRuna().getAbilities().size(); i++) {
-                if (i < 2) {
-                    System.out.println("Runa gets " + printAbility(game.getRuna().getAbilities().get(i)));
+            for (Ability newAb: game.getRuna().getAbilities()) {
+                for (Ability classAb: game.getRuna().getClassAbilities(game.getCurrentFloor())) {
+                    if (newAb.equalsAbility(classAb)) {
+                        System.out.println("Runa gets " + printAbility(newAb));
+                    }
                 }
             }
         }
     }
 
     private void heal() throws IOException {
-        System.out.println(printRuna(game.getRuna(), false) + "can discard ability cards for healing (or none)");
+        System.out.println(printRuna(game.getRuna(), false) + " can discard ability cards for healing (or none)");
         getRunasAbilities();
         double damage = 50 - game.getRuna().getHealthPoints();
         int amount = (int) Math.ceil(damage / 10);
@@ -117,7 +120,7 @@ public class Main {
             List<Ability> found = new ArrayList<>();
             for (int i = 1; i <= game.getRuna().getAbilities().size(); i++) {
                 if (selected.contains(i)) {
-                    found.add(game.getRuna().getAbilities().get(i - 1));
+                    found.add(game.getRuna().getAbilities().get(i));
                 }
             }
             game.heal(found);
@@ -228,7 +231,13 @@ public class Main {
                 break;
             }
         }
-        game.checkDead();
+        printDeath(game.checkDead());
+    }
+
+    private void printDeath(Character input) {
+        if (input != null) {
+            System.out.println(input.getName() + " dies");
+        }
     }
 
     private void printUse(Character user, Ability ability) {
@@ -260,7 +269,7 @@ public class Main {
             }
             monster.rmTop();
         }
-        game.checkDead();
+        printDeath(game.checkDead());
     }
 
     private void printDamage(Character target, int damage, Ability ability) {
@@ -328,12 +337,12 @@ public class Main {
         }
     }
 
-    private void shuffle(int floor) throws IOException {
+    private void shuffle() throws IOException {
         System.out.println("To shuffle ability cards and monsters, enter two seeds");
         System.out.println("Enter seeds [1--2147483647] separated by comma:");
         String line = READER.readLine();
         if (Parser.getSeeds(line) != null) {
-            game.shuffleCards(floor, Parser.getSeeds(line)[1], Parser.getSeeds(line)[0]);
+            game.shuffleCards(Parser.getSeeds(line)[1], Parser.getSeeds(line)[0]);
         }
     }
 

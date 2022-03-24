@@ -1,11 +1,12 @@
-package edu.kit.informatik.characters.monsters.one;
+package edu.kit.informatik.characters.monsters.two;
 
 import edu.kit.informatik.abilities.Ability;
 import edu.kit.informatik.abilities.MagicType;
+import edu.kit.informatik.abilities.magical.Focus;
+import edu.kit.informatik.abilities.magical.offensive.FireMonster;
+import edu.kit.informatik.abilities.magical.offensive.LightningMonster;
 import edu.kit.informatik.abilities.physical.defensive.Block;
 import edu.kit.informatik.abilities.physical.offensive.Bite;
-import edu.kit.informatik.abilities.magical.Focus;
-import edu.kit.informatik.abilities.magical.offensive.LightningMonster;
 import edu.kit.informatik.characters.Monster;
 
 import java.util.LinkedList;
@@ -18,24 +19,25 @@ import java.util.Queue;
  * @author Hanne
  * @version 0.1
  */
-public class SpiderKing extends Monster {
+public class MegaSaurus extends Monster {
 
     private static final Queue<Ability> ABILITYSTACK = new LinkedList<>(List.of(new Bite(1),
-            new Block(1), new Focus(1), new LightningMonster(1, 1)));
+            new Block(2), new Focus(3),
+            new FireMonster(1, 1), new LightningMonster(1, 1)));
 
     private static final boolean ISBOSS = true;
 
     private static final MagicType PRIMARYTYPE = MagicType.LIGHTNING;
 
-    private static final String NAME = "Spider King";
+    private static final String NAME = "Mega Saurus";
 
-    private static final int HEALTHPOINTS = 50;
+    private static final int HEALTHPOINTS = 100;
 
 
     /**
      * Instantiates a new Spider king.
      */
-    public SpiderKing() {
+    public MegaSaurus() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }
 }

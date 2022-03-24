@@ -71,6 +71,30 @@ public class Runa extends Character {
     }
 
     /**
+     * Gets class abilities.
+     *
+     * @param level the level
+     * @return the class abilities
+     */
+    public List<Ability> getClassAbilities(int level) {
+        switch (runaClass) {
+            case MAGE: {
+                return new ArrayList<>(List.of(new Focus(level), new Water(level)));
+            }
+            case WARRIOR: {
+                return new ArrayList<>(List.of(new Thrust(level), new Parry(level)));
+            }
+            case PALADIN: {
+                return new ArrayList<>(List.of(new Slash(level), new Reflect(level)));
+            }
+            default: {
+                break;
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    /**
      * Gets abilities.
      *
      * @return the abilities
@@ -118,9 +142,11 @@ public class Runa extends Character {
      * Upgrade abilities.
      */
     public void upgradeAbilities() {
-        for (int i = 0; i < abilities.size(); i++) {
-            if (i < 2) {
-                abilities.get(i).upgrade();
+        for (Ability curr: abilities) {
+            for (Ability classAb: getClassAbilities(1)) {
+                if (classAb.equalsAbility(curr)) {
+                    curr.upgrade();
+                }
             }
         }
     }

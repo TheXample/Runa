@@ -101,7 +101,7 @@ public class Parser {
             List<Integer> reti = new ArrayList<>();
             String[] split = input.split("[,]");
             for (int i = 0; i < split.length; i++) {
-                reti.add(Integer.parseInt(split[i]));
+                reti.add(Integer.parseInt(split[i]) - 1);
                 if (reti.get(i) > max) {
                     return null;
                 }

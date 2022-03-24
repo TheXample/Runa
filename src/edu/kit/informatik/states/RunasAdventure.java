@@ -17,6 +17,7 @@ import edu.kit.informatik.characters.Monster;
 import edu.kit.informatik.characters.Runa;
 import edu.kit.informatik.characters.RunaType;
 import edu.kit.informatik.characters.monsters.one.*;
+import edu.kit.informatik.characters.monsters.two.*;
 
 import java.util.*;
 
@@ -57,42 +58,42 @@ public class RunasAdventure {
     /**
      * Shuffle cards.
      *
-     * @param floor        the floor
      * @param seedMonster  the seed monster
      * @param seedAbilties the seed abilties
      */
-    public void shuffleCards(int floor, long seedMonster, long seedAbilties) {
-        initMonster(floor, seedMonster);
+    public void shuffleCards(long seedMonster, long seedAbilties) {
+        initMonster(seedMonster);
         initAbilities(seedAbilties);
     }
 
-    private void initMonster(int floor, long seed) {
+    private void initMonster(long seed) {
         ArrayList<Monster> monsterList = new ArrayList<>();
-        if (floor == 1) {
+        if (currentFloor == 1) {
             monsterList = new ArrayList<>(List.of(new Frog(), new Ghost(), new Goblin(), new Gorgon(),
                     new Mushroomlin(), new Skeleton(), new Rat(), new Spider()));
         }
-        if (floor == 2) {
-
+        if (currentFloor == 2) {
+            monsterList = new ArrayList<>(List.of(new Snake(), new DarkElf(), new ShadowBlade(), new Hornet(),
+                    new Tarantula(), new Bear(), new Mushroomlon(), new WildBoar()));
         }
         Collections.shuffle(monsterList, new Random(seed));
-        monsterStack.addAll(monsterList);
+        monsterStack = new LinkedList<>(monsterList);
     }
 
     private void initAbilities(long seed) {
-        ArrayList<Ability> abilitiesList = new ArrayList<>(List.of(new Slash(1), new Swing(1),
-                new Thrust(1), new Pierce(1), new Parry(1), new Reflect(1), new Water(1),
-                new Ice(1), new Fire(1), new Lightning(1)));
-        for (Ability curr: runa.getAbilities()) {
-            for (Ability listAbility: abilitiesList) {
-                if (listAbility.equalsAbility(curr)) {
-                    abilitiesList.remove(listAbility);
-                    break;
+        ArrayList<Ability> abilitiesList = new ArrayList<>(List.of(new Slash(currentFloor), new Swing(currentFloor),
+                new Thrust(currentFloor), new Pierce(currentFloor), new Parry(currentFloor), new Reflect(currentFloor),
+                new Water(currentFloor), new Ice(currentFloor), new Fire(currentFloor), new Lightning(currentFloor)));
+
+        for (Ability ability: new ArrayList<>(abilitiesList)) {
+            for (Ability classAb: runa.getClassAbilities(currentFloor)) {
+                if (classAb.equalsAbility(ability)) {
+                    abilitiesList.remove(ability);
                 }
             }
         }
         Collections.shuffle(abilitiesList, new Random(seed));
-        abilities.addAll(abilitiesList);
+        abilities = new LinkedList<>(abilitiesList);
     }
 
     /**
@@ -100,12 +101,15 @@ public class RunasAdventure {
      */
     public void enterRoom() {
         if (currentRoom == 3) {
+            currentFight = new ArrayList<>();
             if (currentFloor == 1) {
-                currentFight = new ArrayList<>();
                 currentFight.add(new SpiderKing());
-                Statemachine.bossFight();
-                currentRoom++;
             }
+            if (currentFloor == 2) {
+                currentFight.add(new MegaSaurus());
+            }
+            Statemachine.bossFight();
+            currentRoom++;
             return;
         }
         if (currentRoom == 0) {
@@ -285,16 +289,26 @@ public class RunasAdventure {
 
     /**
      * Check dead.
+     *
+     * @return the character
      */
-    public void checkDead() {
+    public Character checkDead() {
+        Character died = null;
+        for (Character chara: new ArrayList<Character>(currentFight)) {
+            if (chara.isDead()) {
+                died = chara;
+                currentFight.remove(chara);
+            }
+        }
         currentFight.removeIf(Character::isDead);
         if (runa.isDead()) {
             Statemachine.lost();
-            return;
+            return runa;
         }
         if (currentFight.size() == 0) {
             Statemachine.fightWon();
         }
+        return died;
     }
 
     private boolean canCast(Character caster, MagicAbility attack) {
@@ -330,6 +344,8 @@ public class RunasAdventure {
                 Statemachine.win();
                 return;
             }
+            currentFloor = 2;
+            currentRoom = 0;
         }
         Statemachine.next();
     }
