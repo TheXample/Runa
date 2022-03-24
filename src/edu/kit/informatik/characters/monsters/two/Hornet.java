@@ -4,7 +4,6 @@ import edu.kit.informatik.abilities.Ability;
 import edu.kit.informatik.abilities.MagicType;
 import edu.kit.informatik.abilities.magical.Focus;
 import edu.kit.informatik.abilities.magical.offensive.FireMonster;
-import edu.kit.informatik.abilities.magical.offensive.WaterMonster;
 import edu.kit.informatik.abilities.physical.offensive.Scratch;
 import edu.kit.informatik.characters.Monster;
 

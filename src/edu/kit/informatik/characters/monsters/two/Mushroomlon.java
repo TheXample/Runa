@@ -2,9 +2,7 @@ package edu.kit.informatik.characters.monsters.two;
 
 import edu.kit.informatik.abilities.Ability;
 import edu.kit.informatik.abilities.MagicType;
-import edu.kit.informatik.abilities.magical.Focus;
 import edu.kit.informatik.abilities.magical.defensive.Deflect;
-import edu.kit.informatik.abilities.magical.offensive.WaterMonster;
 import edu.kit.informatik.abilities.physical.defensive.Block;
 import edu.kit.informatik.abilities.physical.offensive.Scratch;
 import edu.kit.informatik.characters.Monster;

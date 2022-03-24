@@ -3,9 +3,7 @@ package edu.kit.informatik.characters.monsters.two;
 import edu.kit.informatik.abilities.Ability;
 import edu.kit.informatik.abilities.MagicType;
 import edu.kit.informatik.abilities.magical.Focus;
-import edu.kit.informatik.abilities.magical.offensive.Ice;
 import edu.kit.informatik.abilities.magical.offensive.IceMonster;
-import edu.kit.informatik.abilities.magical.offensive.WaterMonster;
 import edu.kit.informatik.abilities.physical.offensive.Bite;
 import edu.kit.informatik.characters.Monster;
 
