@@ -17,12 +17,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+/**
+ * The type Main.
+ * @author Hanne
+ * @version 0.1
+ */
 public class Main {
 
-    private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
     private static RunasAdventure game;
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         Main main = new Main();
         main.printHello();
@@ -47,6 +57,9 @@ public class Main {
                     }
                     case FIGHTWON: {
                         System.out.println("WOOOOHOOOOO");
+                        break;
+                    }
+                    default: {
                         break;
                     }
                 }
@@ -85,6 +98,9 @@ public class Main {
                 printDamage(current, dmg, use);
                 break;
             }
+            default: {
+                break;
+            }
         }
     }
 
@@ -107,6 +123,9 @@ public class Main {
                     printDamage(game.getRuna(), dmg, monster.getNextMove());
                     break;
                 }
+                default: {
+                    break;
+                }
             }
             monster.rmTop();
         }
@@ -120,7 +139,7 @@ public class Main {
 
     private int enterDice() throws IOException {
         printSelect("dice roll", game.getRuna().getDice().getValue());
-        int parsed = Parser.getSelected(reader.readLine(), game.getRuna().getDice().getValue());
+        int parsed = Parser.getSelected(READER.readLine(), game.getRuna().getDice().getValue());
         if (parsed != -1) {
             return parsed;
         }
@@ -130,7 +149,7 @@ public class Main {
 
     private int selectTarget(int max) throws IOException {
         printSelect("number", max);
-        int parsed = Parser.getSelected(reader.readLine(), max);
+        int parsed = Parser.getSelected(READER.readLine(), max);
         if (parsed != -1) {
             return parsed - 1;
         }
@@ -138,7 +157,7 @@ public class Main {
     }
 
     private void printSelect(String type, int max) {
-        System.out.println("Enter " + type + " [1--" + max +"]:");
+        System.out.println("Enter " + type + " [1--" + max + "]:");
     }
 
     private void getTargets() {
@@ -172,7 +191,7 @@ public class Main {
 
     private void init() throws IOException {
         System.out.println("Enter number [1--3]:");
-        String line = reader.readLine();
+        String line = READER.readLine();
         if (Parser.getRunaClass(line) != null) {
             game = new RunasAdventure(Parser.getRunaClass(line));
         }
@@ -181,7 +200,7 @@ public class Main {
     private void shuffle() throws IOException {
         System.out.println("To shuffle ability cards and monsters, enter two seeds");
         System.out.println("Enter seeds [1--2147483647] separated by comma:");
-        String line = reader.readLine();
+        String line = READER.readLine();
         if (Parser.getSeeds(line) != null) {
             game.shuffleCards(Parser.getSeeds(line)[1], Parser.getSeeds(line)[0]);
         }

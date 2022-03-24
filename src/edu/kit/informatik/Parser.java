@@ -4,11 +4,23 @@ import edu.kit.informatik.characters.RunaType;
 
 import java.io.IOException;
 
+/**
+ * The type Parser.
+ * @author Hanne
+ * @version 0.1
+ */
 public class Parser {
 
     private static final String REGEXSEED = "(([2][0,1][0-4][0-7][0-4][0-8][0-3][0-6][0-4][0-7])|"
             + "(([1][0-9])|([1-9]))([0-9]{0,8}))";
 
+    /**
+     * Gets runa class.
+     *
+     * @param input the input
+     * @return the runa class
+     * @throws IOException the io exception
+     */
     public static RunaType getRunaClass(String input) throws IOException {
         if (input.matches("[1-3]")) {
             if (input.equals("1")) {
@@ -25,6 +37,13 @@ public class Parser {
         return null;
     }
 
+    /**
+     * Get seeds int [ ].
+     *
+     * @param input the input
+     * @return the int [ ]
+     * @throws IOException the io exception
+     */
     public static int[] getSeeds(String input) throws IOException {
         if (input.matches(REGEXSEED + "[,]" + REGEXSEED)) {
             String[] split = input.split("[,]");
@@ -38,6 +57,14 @@ public class Parser {
         return null;
     }
 
+    /**
+     * Gets selected.
+     *
+     * @param input the input
+     * @param max   the max
+     * @return the selected
+     * @throws IOException the io exception
+     */
     public static int getSelected(String input, int max) throws IOException {
         if (input.matches("[1-" + max + "]")) {
             return Integer.parseInt(input);

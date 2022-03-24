@@ -6,13 +6,17 @@ import edu.kit.informatik.abilities.physical.offensive.Bite;
 import edu.kit.informatik.abilities.physical.defensive.Parry;
 import edu.kit.informatik.abilities.magical.Focus;
 import edu.kit.informatik.abilities.magical.offensive.LightningMonster;
-import edu.kit.informatik.card.Stack;
 import edu.kit.informatik.characters.Monster;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * The type Spider king.
+ * @author Hanne
+ * @version 0.1
+ */
 public class Spider_King extends Monster {
 
     private static final Queue<Ability> ABILITYSTACK = new LinkedList<>(List.of(new Bite(1), new Parry(1),
@@ -27,6 +31,9 @@ public class Spider_King extends Monster {
     private static final int HEALTHPOINTS = 50;
 
 
+    /**
+     * Instantiates a new Spider king.
+     */
     public Spider_King() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }

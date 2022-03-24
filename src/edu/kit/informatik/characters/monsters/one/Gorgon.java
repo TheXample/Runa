@@ -4,14 +4,17 @@ import edu.kit.informatik.abilities.Ability;
 import edu.kit.informatik.abilities.MagicType;
 import edu.kit.informatik.abilities.magical.Focus;
 import edu.kit.informatik.abilities.magical.offensive.FireMonster;
-import edu.kit.informatik.abilities.magical.offensive.WaterMonster;
-import edu.kit.informatik.card.Stack;
 import edu.kit.informatik.characters.Monster;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * The type Gorgon.
+ * @author Hanne
+ * @version 0.1
+ */
 public class Gorgon extends Monster {
 
     private static final Queue<Ability> ABILITYSTACK = new LinkedList<>(List.of(new Focus(1),
@@ -26,6 +29,9 @@ public class Gorgon extends Monster {
     private static final int HEALTHPOINTS = 13;
 
 
+    /**
+     * Instantiates a new Gorgon.
+     */
     public Gorgon() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }

@@ -19,6 +19,11 @@ import edu.kit.informatik.characters.monsters.one.*;
 
 import java.util.*;
 
+/**
+ * The type Runas adventure.
+ * @author Hanne
+ * @version 0.1
+ */
 public class RunasAdventure {
 
     private final Runa runa;
@@ -33,6 +38,11 @@ public class RunasAdventure {
 
     private Ability lastMove;
 
+    /**
+     * Instantiates a new Runas adventure.
+     *
+     * @param runaClass the runa class
+     */
     public RunasAdventure(RunaType runaClass) {
         currentFloor = 1;
         runa = new Runa(runaClass);
@@ -41,6 +51,12 @@ public class RunasAdventure {
         this.abilities = new LinkedList<>();
     }
 
+    /**
+     * Shuffle cards.
+     *
+     * @param seedMonster  the seed monster
+     * @param seedAbilties the seed abilties
+     */
     public void shuffleCards(long seedMonster, long seedAbilties) {
         initMonster(seedMonster);
         initAbilities(seedAbilties);
@@ -60,7 +76,7 @@ public class RunasAdventure {
                 new Ice(1), new Fire(1), new Lightning(1)));
         for (Ability curr: runa.getAbilities()) {
             for (Ability listAbility: abilitiesList) {
-                if (listAbility.equals(curr)) {
+                if (listAbility.equalsAbility(curr)) {
                     abilitiesList.remove(listAbility);
                     break;
                 }
@@ -70,12 +86,24 @@ public class RunasAdventure {
         abilities.addAll(abilitiesList);
     }
 
+    /**
+     * Enter room.
+     */
     public void enterRoom() {
         currentFight.add(monsterStack.poll());
         currentFight.add(monsterStack.poll());
         Statemachine.next();
     }
 
+    /**
+     * Use physical ability int.
+     *
+     * @param attacker the attacker
+     * @param target   the target
+     * @param attack   the attack
+     * @param dice     the dice
+     * @return the int
+     */
     public int usePhysicalAbility(Character attacker, Character target, PhysicalAbility attack, int dice) {
         int damage = 0;
         switch (attack.getType()) {
@@ -94,6 +122,9 @@ public class RunasAdventure {
                 lastMove = attack;
                 break;
             }
+            default: {
+                break;
+            }
         }
         setStateMonster();
         checkDead();
@@ -102,7 +133,7 @@ public class RunasAdventure {
 
     private int getOpponent(Character target) {
         for (int i = 0; i < currentFight.size(); i++) {
-            if (target.equals(currentFight.get(i))) {
+            if (target.equalsCharacter(currentFight.get(i))) {
                 return i;
             }
         }
@@ -123,6 +154,14 @@ public class RunasAdventure {
         return damage;
     }
 
+    /**
+     * Use magical ability int.
+     *
+     * @param attacker the attacker
+     * @param target   the target
+     * @param attack   the attack
+     * @return the int
+     */
     public int useMagicalAbility(Character attacker, Character target, MagicAbility attack) {
         int dmg = 0;
         switch (attack.getType()) {
@@ -161,6 +200,9 @@ public class RunasAdventure {
                 lastMove = attack;
                 break;
             }
+            default: {
+                break;
+            }
         }
         setStateMonster();
         checkDead();
@@ -196,18 +238,38 @@ public class RunasAdventure {
         }
     }
 
+    /**
+     * Gets runa.
+     *
+     * @return the runa
+     */
     public Runa getRuna() {
         return runa;
     }
 
+    /**
+     * Gets current floor.
+     *
+     * @return the current floor
+     */
     public int getCurrentFloor() {
         return currentFloor;
     }
 
+    /**
+     * Gets current fight.
+     *
+     * @return the current fight
+     */
     public List<Monster> getCurrentFight() {
         return currentFight;
     }
 
+    /**
+     * Gets state.
+     *
+     * @return the state
+     */
     public GameState getState() {
         return Statemachine.getCurrentState();
     }

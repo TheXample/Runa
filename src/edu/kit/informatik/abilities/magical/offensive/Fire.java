@@ -4,15 +4,25 @@ import edu.kit.informatik.abilities.AbilityType;
 import edu.kit.informatik.abilities.MagicType;
 import edu.kit.informatik.abilities.MagicAbility;
 
+/**
+ * The type Fire.
+ * @author Hannes
+ * @version 0.1
+ */
 public class Fire extends MagicAbility {
 
-    private static final String DESCRIPTION = "(2n + 5) ∗ f magischer Schaden " +
-            "+ 2n magischer Schaden, falls Ziel ein Eis-Monster";
+    private static final String DESCRIPTION = "(2n + 5) ∗ f magischer Schaden "
+            + "+ 2n magischer Schaden, falls Ziel ein Eis-Monster";
 
     private static final String NAME = "Fire";
 
     private static final int COST = 1;
 
+    /**
+     * Instantiates a new Fire.
+     *
+     * @param abilityLevel the ability level
+     */
     public Fire(int abilityLevel) {
         super(NAME, AbilityType.OFFENSIVE, DESCRIPTION, false, COST, MagicType.FIRE, abilityLevel);
     }

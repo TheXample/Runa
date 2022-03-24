@@ -11,11 +11,16 @@ import edu.kit.informatik.dice.DiceType;
 
 import java.util.List;
 
-public class Runa extends Character{
+/**
+ * The type Runa.
+ * @author Hanne
+ * @version 0.1
+ */
+public class Runa extends Character {
 
-    private static final int maxHealth = 50;
+    private static final int MAXHEALTH = 50;
 
-    private static final int minFocus = 1;
+    private static final int MINFOCUS = 1;
 
     private static final String NAME = "Runa";
 
@@ -27,8 +32,13 @@ public class Runa extends Character{
 
     private int level;
 
+    /**
+     * Instantiates a new Runa.
+     *
+     * @param runaClass the runa class
+     */
     public Runa(RunaType runaClass) {
-        super(NAME, maxHealth , minFocus);
+        super(NAME, MAXHEALTH , MINFOCUS);
         this.dice = DiceType.D_SIX;
         this.runaClass = runaClass;
         this.level = 1;
@@ -49,17 +59,35 @@ public class Runa extends Character{
                 abilities = List.of(new Slash(level), new Reflect(level));
                 break;
             }
+            default: {
+                break;
+            }
         }
     }
 
+    /**
+     * Gets abilities.
+     *
+     * @return the abilities
+     */
     public List<Ability> getAbilities() {
         return abilities;
     }
 
+    /**
+     * Gets runa class.
+     *
+     * @return the runa class
+     */
     public RunaType getRunaClass() {
         return runaClass;
     }
 
+    /**
+     * Upgrade dice boolean.
+     *
+     * @return the boolean
+     */
     public boolean upgradeDice() {
         switch (dice) {
             case D_SIX: {
@@ -74,24 +102,43 @@ public class Runa extends Character{
                 dice = DiceType.D_Twelve;
                 return true;
             }
+            default: {
+                break;
+            }
         }
         return false;
     }
 
+    /**
+     * Upgrade abilities.
+     */
     public void upgradeAbilities() {
         for (Ability curr: abilities) {
             curr.upgrade();
         }
     }
 
+    /**
+     * Level up.
+     */
     public void levelUP() {
         this.level = this.level + 1;
     }
 
+    /**
+     * Add ability.
+     *
+     * @param ability the ability
+     */
     public void addAbility(Ability ability) {
         this.abilities.add(ability);
     }
 
+    /**
+     * Gets dice.
+     *
+     * @return the dice
+     */
     public DiceType getDice() {
         return dice;
     }
