@@ -20,7 +20,7 @@ public enum AbilityType {
     /**
      * Magic ability type.
      */
-    MAGIC("mgc"),
+    MAGIC("mag"),
     /**
      * Physical ability type.
      */

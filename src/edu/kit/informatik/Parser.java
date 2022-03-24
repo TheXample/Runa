@@ -3,6 +3,8 @@ package edu.kit.informatik;
 import edu.kit.informatik.characters.RunaType;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type Parser.
@@ -66,7 +68,10 @@ public class Parser {
      * @throws IOException the io exception
      */
     public static int getSelected(String input, int max) throws IOException {
-        if (input.matches("[1-" + max + "]")) {
+        if (input.matches("[1-9][0-9]*")) {
+            if (Integer.parseInt(input) > max) {
+                return -1;
+            }
             return Integer.parseInt(input);
         }
         checkQuit(input);
@@ -77,5 +82,32 @@ public class Parser {
         if (input.equals("quit")) {
             throw new IOException();
         }
+    }
+
+    /**
+     * Parse multi list.
+     *
+     * @param input the input
+     * @param max   the max
+     * @return the list
+     * @throws IOException the io exception
+     */
+    public static List<Integer> parseMulti(String input, int max) throws IOException {
+        if (input.equals("")) {
+            return List.of(-1);
+        }
+        if (input.matches("([1-9][0-9]*[,])*[1-9][0-9]*")) {
+            List<Integer> reti = new ArrayList<>();
+            String[] split = input.split("[,]");
+            for (int i = 0; i < split.length; i++) {
+                reti.add(Integer.parseInt(split[i]));
+                if (reti.get(i) > max) {
+                    return null;
+                }
+            }
+            return reti;
+        }
+        checkQuit(input);
+        return null;
     }
 }

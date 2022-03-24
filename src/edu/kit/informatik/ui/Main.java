@@ -5,6 +5,7 @@ import edu.kit.informatik.abilities.Ability;
 import edu.kit.informatik.abilities.AbilityType;
 import edu.kit.informatik.abilities.MagicAbility;
 import edu.kit.informatik.abilities.PhysicalAbility;
+import edu.kit.informatik.abilities.magical.defensive.Reflect;
 import edu.kit.informatik.characters.Character;
 import edu.kit.informatik.characters.Monster;
 import edu.kit.informatik.characters.Runa;
@@ -15,6 +16,7 @@ import edu.kit.informatik.states.Statemachine;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,10 +40,11 @@ public class Main {
         main.printHello();
         try {
             main.init();
-            while (!Statemachine.getCurrentState().equals(GameState.LOST)) {
+            while (!Statemachine.getCurrentState().equals(GameState.LOST)
+                    && !Statemachine.getCurrentState().equals(GameState.WIN)) {
                 switch (game.getState()) {
                     case SHUFFLE: {
-                        main.shuffle();
+                        main.shuffle(game.getCurrentFloor());
                         main.printStage(1, game.getCurrentFloor());
                         game.enterRoom();
                         break;
@@ -56,7 +59,24 @@ public class Main {
                         break;
                     }
                     case FIGHTWON: {
-                        System.out.println("WOOOOHOOOOO");
+                        main.reward();
+                        break;
+                    }
+                    case HEALING: {
+                        main.heal();
+                        break;
+                    }
+                    case RUNABOSSFIGHT: {
+                        main.printLevel();
+                        main.runaAttack();
+                        break;
+                    }
+                    case MONSTERBOSSFIGHT: {
+                        main.monsterAttack();
+                        break;
+                    }
+                    case BOSSWIN: {
+                        main.printUpgrade();
                         break;
                     }
                     default: {
@@ -67,12 +87,114 @@ public class Main {
         } catch (IOException ignored) {
 
         }
+        if (Statemachine.getCurrentState().equals(GameState.LOST)) {
+            System.out.println("Runa dies");
+        }
+        if (Statemachine.getCurrentState().equals(GameState.WIN)) {
+            System.out.println("Runa wins");
+        }
+    }
 
+    private void printUpgrade() {
+        game.fightReward(0, null);
+        if (!Statemachine.getCurrentState().equals(GameState.WIN)) {
+            for (int i = 0; i < game.getRuna().getAbilities().size(); i++) {
+                if (i < 2) {
+                    System.out.println("Runa gets " + printAbility(game.getRuna().getAbilities().get(i)));
+                }
+            }
+        }
+    }
+
+    private void heal() throws IOException {
+        System.out.println(printRuna(game.getRuna(), false) + "can discard ability cards for healing (or none)");
+        getRunasAbilities();
+        double damage = 50 - game.getRuna().getHealthPoints();
+        int amount = (int) Math.ceil(damage / 10);
+        if (amount > 0) {
+            List<Integer> selected = selectMultiTarget(game.getRuna().getAbilities().size(), amount, false);
+            List<Ability> found = new ArrayList<>();
+            for (int i = 1; i <= game.getRuna().getAbilities().size(); i++) {
+                if (selected.contains(i)) {
+                    found.add(game.getRuna().getAbilities().get(i - 1));
+                }
+            }
+            game.heal(found);
+            if (damage < found.size() * 10) {
+                System.out.println("Runa gains " + damage + " health");
+            }
+            else {
+                System.out.println("Runa gains " + found.size() * 10 + " health");
+            }
+        }
+        game.enterRoom();
+    }
+
+    private void reward() throws IOException {
+        System.out.println("Choose Runa’s reward");
+        System.out.println("1) new ability cards");
+        System.out.println("2) next player dice");
+        int selected = selectTarget(2) + 1;
+        if (selected == 1) {
+            List<Ability> drawnCards = new ArrayList<>();
+            if (game.getCurrentRoom() == 1) {
+                for (int i = 0; i < 2; i++) {
+                    drawnCards.add(game.getTopAbility());
+                }
+            }
+            else if (game.getCurrentRoom() > 1) {
+                for (int i = 0; i < 4; i++) {
+                    drawnCards.add(game.getTopAbility());
+                }
+            }
+            List<Ability> chosen = selectReward(drawnCards);
+            game.fightReward(selected, chosen);
+            for (Ability rewardPrint: chosen) {
+                System.out.println("Runa get " + printAbility(rewardPrint));
+            }
+        }
+        else if (selected == 2) {
+            game.fightReward(selected, null);
+            System.out.println("Runa upgrades her die to a d" + game.getRuna().getDice().getValue());
+        }
+    }
+
+    private List<Ability> selectReward(List<Ability> rewards) throws IOException {
+        List<Ability> selected = new ArrayList<>();
+        System.out.println("Pick " + rewards.size() / 2 + " card(s) as loot");
+        for (int i = 0; i < rewards.size(); i++) {
+            System.out.println((i + 1) + ") " + printAbility(rewards.get(i)));
+        }
+        List<Integer> picked = new ArrayList<>();
+        if (rewards.size() / 2 > 1) {
+            picked = selectMultiTarget(rewards.size(), rewards.size() / 2, true);
+        }
+        else {
+            picked.add(selectTarget(rewards.size()));
+        }
+        for (Integer pick: picked) {
+            selected.add(rewards.get(pick));
+        }
+        return selected;
+    }
+
+    private List<Integer> selectMultiTarget(int max, int amount, boolean exact) throws IOException {
+        System.out.println("Enter numbers [1--" + max + "] separated by comma:");
+        List<Integer> parsed = Parser.parseMulti(READER.readLine(), max);
+        if (parsed != null && parsed.size() == amount && exact) {
+            return parsed;
+        }
+        else if (parsed != null && !exact) {
+            return parsed;
+        }
+        else {
+            return selectMultiTarget(max, amount, exact);
+        }
     }
 
     private void runaAttack() throws IOException {
         System.out.println("Select card to play");
-        System.out.println(getRunasAbilities());
+        getRunasAbilities();
         int pos = selectTarget(game.getRuna().getAbilities().size());
         Ability use = game.getRuna().getAbilities().get(pos);
         int target = 0;
@@ -82,9 +204,12 @@ public class Main {
             target = selectTarget(game.getCurrentFight().size());
         }
         printUse(game.getRuna(), use);
-        int dice = enterDice();
         switch (use.getUsageType()) {
             case PHYSICAL: {
+                int dice = 0;
+                if (use.getType().equals(AbilityType.OFFENSIVE)) {
+                    dice = enterDice();
+                }
                 Monster current = game.getCurrentFight().get(target);
                 int dmg = game.usePhysicalAbility(game.getRuna(), game.getCurrentFight().get(target),
                         (PhysicalAbility) use, dice);
@@ -93,15 +218,16 @@ public class Main {
             }
             case MAGIC: {
                 Monster current = game.getCurrentFight().get(target);
-                int dmg = game.useMagicalAbility(game.getRuna(), game.getCurrentFight().get(target),
+                List<Integer> dmg = game.useMagicalAbility(game.getRuna(), game.getCurrentFight().get(target),
                         (MagicAbility) use);
-                printDamage(current, dmg, use);
+                printDamage(current, dmg.get(0), use);
                 break;
             }
             default: {
                 break;
             }
         }
+        game.checkDead();
     }
 
     private void printUse(Character user, Ability ability) {
@@ -119,8 +245,12 @@ public class Main {
                     break;
                 }
                 case MAGIC: {
-                    int dmg = game.useMagicalAbility(monster, game.getRuna(), (MagicAbility) monster.getNextMove());
-                    printDamage(game.getRuna(), dmg, monster.getNextMove());
+                    List<Integer> dmg = game.useMagicalAbility(monster, game.getRuna(),
+                            (MagicAbility) monster.getNextMove());
+                    printDamage(game.getRuna(), dmg.get(0), monster.getNextMove());
+                    if (dmg.size() > 1) {
+                        printDamage(monster, dmg.get(1), new Reflect(1));
+                    }
                     break;
                 }
                 default: {
@@ -129,11 +259,13 @@ public class Main {
             }
             monster.rmTop();
         }
+        game.checkDead();
     }
 
     private void printDamage(Character target, int damage, Ability ability) {
-        if (ability.getType().equals(AbilityType.OFFENSIVE)) {
+        if (ability.getType().equals(AbilityType.OFFENSIVE) || ability.getClass().equals(Reflect.class)) {
             System.out.println(target.getName() + " takes " + damage + ability.getUsageType().getValue() + ". damage");
+
         }
     }
 
@@ -167,14 +299,12 @@ public class Main {
         }
     }
 
-    private String getRunasAbilities() {
+    private void getRunasAbilities() {
         List<Ability> runasAbilities = game.getRuna().getAbilities();
-        StringBuilder newBuilder = new StringBuilder();
         for (int i = 0; i < runasAbilities.size(); i++) {
-            String toAppend = (i + 1) + ") " + printAbility(runasAbilities.get(i));
-            newBuilder.append(toAppend);
+            System.out.println((i + 1) + ") " + printAbility(runasAbilities.get(i)));
+
         }
-        return newBuilder.toString();
     }
 
     private String printAbility(Ability input) {
@@ -197,12 +327,12 @@ public class Main {
         }
     }
 
-    private void shuffle() throws IOException {
+    private void shuffle(int floor) throws IOException {
         System.out.println("To shuffle ability cards and monsters, enter two seeds");
         System.out.println("Enter seeds [1--2147483647] separated by comma:");
         String line = READER.readLine();
         if (Parser.getSeeds(line) != null) {
-            game.shuffleCards(Parser.getSeeds(line)[1], Parser.getSeeds(line)[0]);
+            game.shuffleCards(floor, Parser.getSeeds(line)[1], Parser.getSeeds(line)[0]);
         }
     }
 
@@ -210,8 +340,11 @@ public class Main {
         System.out.println("----------------------------------------");
     }
 
-    private void printRuna(Runa runa) {
-        System.out.println("Runa (" + runa.getHealthPoints() + "/50 HP, " + runa.getFocusPoints() + "/6 FP)");
+    private String printRuna(Runa runa, boolean full) {
+        if (full) {
+            return ("Runa (" + runa.getHealthPoints() + "/50 HP, " + runa.getFocusPoints() + "/6 FP)");
+        }
+        return ("Runa (" + runa.getHealthPoints() + "/50 HP)");
     }
 
     private void printStage(int stage, int level) {
@@ -225,7 +358,7 @@ public class Main {
 
     private void printLevel() {
         printLine();
-        printRuna(game.getRuna());
+        System.out.println(printRuna(game.getRuna(), true));
         System.out.println("vs.");
         for (Monster monster: game.getCurrentFight()) {
             printMonster(monster);

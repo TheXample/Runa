@@ -9,6 +9,7 @@ import edu.kit.informatik.abilities.physical.offensive.Slash;
 import edu.kit.informatik.abilities.physical.offensive.Thrust;
 import edu.kit.informatik.dice.DiceType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,8 @@ public class Runa extends Character {
     private static final int MAXHEALTH = 50;
 
     private static final int MINFOCUS = 1;
+
+    private static final int MAXFOCUS = 6;
 
     private static final String NAME = "Runa";
 
@@ -42,21 +45,22 @@ public class Runa extends Character {
         this.dice = DiceType.D_SIX;
         this.runaClass = runaClass;
         this.level = 1;
+        abilities = new ArrayList<>();
         setClass(runaClass, level);
     }
 
     private void setClass(RunaType runaClass, int level) {
         switch (runaClass) {
             case MAGE: {
-                abilities = List.of(new Focus(level), new Water(level));
+                abilities.addAll(List.of(new Focus(level), new Water(level)));
                 break;
             }
             case WARRIOR: {
-                abilities = List.of(new Thrust(level), new Parry(level));
+                abilities.addAll(List.of(new Thrust(level), new Parry(level)));
                 break;
             }
             case PALADIN: {
-                abilities = List.of(new Slash(level), new Reflect(level));
+                abilities.addAll(List.of(new Slash(level), new Reflect(level)));
                 break;
             }
             default: {
@@ -113,8 +117,10 @@ public class Runa extends Character {
      * Upgrade abilities.
      */
     public void upgradeAbilities() {
-        for (Ability curr: abilities) {
-            curr.upgrade();
+        for (int i = 0; i < abilities.size(); i++) {
+            if (i < 2) {
+                abilities.get(i).upgrade();
+            }
         }
     }
 
@@ -131,7 +137,7 @@ public class Runa extends Character {
      * @param ability the ability
      */
     public void addAbility(Ability ability) {
-        this.abilities.add(ability);
+        abilities.add(ability);
     }
 
     /**
@@ -141,5 +147,34 @@ public class Runa extends Character {
      */
     public DiceType getDice() {
         return dice;
+    }
+
+    public void removeCard(Ability card) {
+        for (int i = 0; i < abilities.size(); i++) {
+            if (abilities.get(i).equalsAbility(card)) {
+                abilities.remove(abilities.get(i));
+            }
+        }
+    }
+
+    @Override
+    public void setFocusPoints(int focusPoints) {
+        if (focusPoints < 1 || focusPoints > MAXFOCUS) {
+            return;
+        }
+        this.focusPoints = focusPoints;
+    }
+
+    @Override
+    public void setHealthPoints(int healthPoints) {
+        if (healthPoints > MAXHEALTH) {
+            this.healthPoints = MAXHEALTH;
+            return;
+        }
+        if (healthPoints <= 0) {
+            this.healthPoints = 0;
+            return;
+        }
+        this.healthPoints = healthPoints;
     }
 }

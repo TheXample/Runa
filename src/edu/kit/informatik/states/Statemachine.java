@@ -15,7 +15,7 @@ public class Statemachine {
     public static void next() {
         switch (currentState) {
             case HEALING: {
-                currentState = GameState.SHUFFLE;
+                currentState = GameState.RUNATURN;
                 break;
             }
             case RUNATURN: {
@@ -38,17 +38,42 @@ public class Statemachine {
                 currentState = GameState.RUNATURN;
                 break;
             }
+            case BOSSWIN: {
+                currentState = GameState.SHUFFLE;
+                break;
+            }
+            case RUNABOSSFIGHT: {
+                currentState = GameState.MONSTERBOSSFIGHT;
+                break;
+            }
+            case MONSTERBOSSFIGHT: {
+                currentState = GameState.RUNABOSSFIGHT;
+                break;
+            }
             default: {
                 break;
             }
         }
     }
 
-    /**
-     * Fight won.
-     */
     public static void fightWon() {
-        currentState = GameState.FIGHTWON;
+        switch (currentState) {
+            case MONSTERBOSSFIGHT: {
+                currentState = GameState.BOSSWIN;
+                break;
+            }
+            case RUNABOSSFIGHT: {
+                currentState = GameState.BOSSWIN;
+                break;
+            }
+            default: {
+                currentState = GameState.FIGHTWON;
+            }
+        }
+    }
+
+    public static void bossFight() {
+        currentState = GameState.RUNABOSSFIGHT;
     }
 
     /**
@@ -81,5 +106,9 @@ public class Statemachine {
      */
     public static void lost() {
         currentState = GameState.LOST;
+    }
+
+    public static void win() {
+        currentState = GameState.WIN;
     }
 }

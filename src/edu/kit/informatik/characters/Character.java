@@ -10,9 +10,9 @@ import edu.kit.informatik.card.Card;
  */
 public class Character extends Card {
 
-    private int healthPoints;
+    protected int focusPoints;
 
-    private int focusPoints;
+    protected int healthPoints;
 
     private Ability lastMove;
 

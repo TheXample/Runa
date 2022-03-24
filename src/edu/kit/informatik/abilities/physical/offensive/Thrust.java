@@ -27,9 +27,9 @@ public class Thrust extends PhysicalAbility {
     @Override
     public int calculate(int dice) {
         if (dice >= 6) {
-            return 6 * this.getAbilityLevel() + 4 * this.getAbilityLevel();
+            return 6 * this.getAbilityLevel() + dice + 4 * this.getAbilityLevel();
         }
-        return 6 * this.getAbilityLevel();
+        return 6 * this.getAbilityLevel() + dice;
     }
 
 }
