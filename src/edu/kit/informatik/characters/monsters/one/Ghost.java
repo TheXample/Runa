@@ -12,6 +12,7 @@ import java.util.Queue;
 
 /**
  * The type Ghost.
+ *
  * @author Hanne
  * @version 0.1
  */

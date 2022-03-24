@@ -6,6 +6,7 @@ import edu.kit.informatik.abilities.MagicAbility;
 
 /**
  * The type Water.
+ *
  * @author Hannes
  * @version 0.1
  */

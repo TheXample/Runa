@@ -12,6 +12,7 @@ import java.util.Queue;
 
 /**
  * The type Skeleton.
+ *
  * @author Hanne
  * @version 0.1
  */

@@ -12,6 +12,7 @@ import java.util.Queue;
 
 /**
  * The type Frog.
+ *
  * @author Hanne
  * @version 0.1
  */

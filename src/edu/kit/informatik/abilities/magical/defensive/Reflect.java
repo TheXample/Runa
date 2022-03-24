@@ -6,6 +6,7 @@ import edu.kit.informatik.abilities.MagicAbility;
 
 /**
  * The type Reflect.
+ *
  * @author Hannes
  * @version 0.1
  */

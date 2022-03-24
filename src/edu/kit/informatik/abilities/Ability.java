@@ -4,6 +4,7 @@ import edu.kit.informatik.card.Card;
 
 /**
  * The type Ability.
+ *
  * @author Hannes
  * @version 0.1
  */

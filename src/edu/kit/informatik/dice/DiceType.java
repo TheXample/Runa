@@ -2,6 +2,7 @@ package edu.kit.informatik.dice;
 
 /**
  * The enum Dice type.
+ *
  * @author Hanne
  * @version 0.1
  */

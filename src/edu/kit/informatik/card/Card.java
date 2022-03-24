@@ -2,6 +2,7 @@ package edu.kit.informatik.card;
 
 /**
  * The type Card.
+ *
  * @author Hannes
  * @version 0.1
  */

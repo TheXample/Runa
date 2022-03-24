@@ -22,6 +22,7 @@ import java.util.*;
 
 /**
  * The type Runas adventure.
+ *
  * @author Hanne
  * @version 0.1
  */
@@ -56,6 +57,7 @@ public class RunasAdventure {
     /**
      * Shuffle cards.
      *
+     * @param floor        the floor
      * @param seedMonster  the seed monster
      * @param seedAbilties the seed abilties
      */
@@ -281,6 +283,9 @@ public class RunasAdventure {
         Statemachine.next();
     }
 
+    /**
+     * Check dead.
+     */
     public void checkDead() {
         currentFight.removeIf(Character::isDead);
         if (runa.isDead()) {
@@ -301,6 +306,12 @@ public class RunasAdventure {
         }
     }
 
+    /**
+     * Fight reward.
+     *
+     * @param choice      the choice
+     * @param chosenCards the chosen cards
+     */
     public void fightReward(int choice, List<Ability> chosenCards) {
         runa.setFocusPoints(1);
         if (Statemachine.getCurrentState().equals(GameState.FIGHTWON)) {
@@ -323,6 +334,11 @@ public class RunasAdventure {
         Statemachine.next();
     }
 
+    /**
+     * Heal.
+     *
+     * @param discard the discard
+     */
     public void heal(List<Ability> discard) {
         for (Ability toDiscard: discard) {
             runa.removeCard(toDiscard);
@@ -383,10 +399,20 @@ public class RunasAdventure {
         this.currentFloor = currentFloor;
     }
 
+    /**
+     * Gets current room.
+     *
+     * @return the current room
+     */
     public int getCurrentRoom() {
         return currentRoom;
     }
 
+    /**
+     * Gets top ability.
+     *
+     * @return the top ability
+     */
     public Ability getTopAbility() {
         return abilities.poll();
     }

@@ -11,6 +11,7 @@ import java.util.Queue;
 
 /**
  * The type Rat.
+ *
  * @author Hanne
  * @version 0.1
  */

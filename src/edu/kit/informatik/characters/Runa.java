@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * The type Runa.
+ *
  * @author Hanne
  * @version 0.1
  */
@@ -149,6 +150,11 @@ public class Runa extends Character {
         return dice;
     }
 
+    /**
+     * Remove card.
+     *
+     * @param card the card
+     */
     public void removeCard(Ability card) {
         for (int i = 0; i < abilities.size(); i++) {
             if (abilities.get(i).equalsAbility(card)) {

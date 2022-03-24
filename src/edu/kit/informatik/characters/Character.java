@@ -5,13 +5,20 @@ import edu.kit.informatik.card.Card;
 
 /**
  * The type Character.
+ *
  * @author Hanne
  * @version 0.1
  */
 public class Character extends Card {
 
+    /**
+     * The Focus points.
+     */
     protected int focusPoints;
 
+    /**
+     * The Health points.
+     */
     protected int healthPoints;
 
     private Ability lastMove;

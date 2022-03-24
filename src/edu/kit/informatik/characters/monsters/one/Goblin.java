@@ -12,6 +12,7 @@ import java.util.Queue;
 
 /**
  * The type Goblin.
+ *
  * @author Hanne
  * @version 0.1
  */

@@ -5,6 +5,7 @@ import edu.kit.informatik.abilities.PhysicalAbility;
 
 /**
  * The type Parry.
+ *
  * @author Hannes
  * @version 0.1
  */

@@ -21,6 +21,7 @@ import java.util.List;
 
 /**
  * The type Main.
+ *
  * @author Hanne
  * @version 0.1
  */

@@ -37,11 +37,23 @@ public enum GameState {
      */
     HEALING,
 
+    /**
+     * Runabossfight game state.
+     */
     RUNABOSSFIGHT,
 
+    /**
+     * Monsterbossfight game state.
+     */
     MONSTERBOSSFIGHT,
 
+    /**
+     * Bosswin game state.
+     */
     BOSSWIN,
 
+    /**
+     * Win game state.
+     */
     WIN
 }

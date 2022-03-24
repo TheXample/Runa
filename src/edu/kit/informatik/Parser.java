@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * The type Parser.
+ *
  * @author Hanne
  * @version 0.1
  */

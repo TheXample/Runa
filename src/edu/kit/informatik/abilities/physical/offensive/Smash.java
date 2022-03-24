@@ -5,6 +5,7 @@ import edu.kit.informatik.abilities.PhysicalAbility;
 
 /**
  * The type Smash.
+ *
  * @author Hannes
  * @version 0.1
  */

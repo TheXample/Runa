@@ -2,6 +2,7 @@ package edu.kit.informatik.abilities;
 
 /**
  * The type Magic ability.
+ *
  * @author Hannes
  * @version 0.1
  */

@@ -6,6 +6,7 @@ import edu.kit.informatik.abilities.MagicAbility;
 
 /**
  * The type Lightning.
+ *
  * @author Hannes
  * @version 0.1
  */

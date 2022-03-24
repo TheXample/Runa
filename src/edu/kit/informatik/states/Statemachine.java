@@ -2,6 +2,7 @@ package edu.kit.informatik.states;
 
 /**
  * The type Statemachine.
+ *
  * @author Hanne
  * @version 0.1
  */
@@ -56,6 +57,9 @@ public class Statemachine {
         }
     }
 
+    /**
+     * Fight won.
+     */
     public static void fightWon() {
         switch (currentState) {
             case MONSTERBOSSFIGHT: {
@@ -72,6 +76,9 @@ public class Statemachine {
         }
     }
 
+    /**
+     * Boss fight.
+     */
     public static void bossFight() {
         currentState = GameState.RUNABOSSFIGHT;
     }
@@ -108,6 +115,9 @@ public class Statemachine {
         currentState = GameState.LOST;
     }
 
+    /**
+     * Win.
+     */
     public static void win() {
         currentState = GameState.WIN;
     }

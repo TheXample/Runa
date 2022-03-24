@@ -14,6 +14,7 @@ import java.util.Queue;
 
 /**
  * The type Spider king.
+ *
  * @author Hanne
  * @version 0.1
  */

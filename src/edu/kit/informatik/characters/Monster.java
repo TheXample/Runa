@@ -7,6 +7,7 @@ import java.util.Queue;
 
 /**
  * The type Monster.
+ *
  * @author Hanne
  * @version 0.1
  */
