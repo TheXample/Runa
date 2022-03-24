@@ -24,7 +24,8 @@ public abstract class MagicAbility extends Ability {
      * @param magicType    the magic type
      * @param abilityLevel the ability level
      */
-    public MagicAbility(String name, AbilityType type, String description, boolean breaksFocus, int cost, MagicType magicType, int abilityLevel) {
+    public MagicAbility(String name, AbilityType type, String description, boolean breaksFocus,
+                        int cost, MagicType magicType, int abilityLevel) {
         super(name, type, description, breaksFocus, abilityLevel, USAGE);
         this.cost = cost;
         this.magicType = magicType;

@@ -28,7 +28,8 @@ public class Monster extends Character {
      * @param primaryType  the primary type
      * @param isBoss       the is boss
      */
-    public Monster(String name, int healthPoints, int focusPoints, Queue<Ability> abilities, MagicType primaryType, boolean isBoss) {
+    public Monster(String name, int healthPoints, int focusPoints, Queue<Ability> abilities,
+                   MagicType primaryType, boolean isBoss) {
         super(name, healthPoints, focusPoints);
         this.abilities = abilities;
         this.primaryType = primaryType;

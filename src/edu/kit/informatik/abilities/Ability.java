@@ -29,7 +29,8 @@ public class Ability extends Card {
      * @param abilityLevel the ability level
      * @param usageType    the usage type
      */
-    public Ability(String name, AbilityType type, String description, boolean breaksFocus, int abilityLevel, AbilityType usageType) {
+    public Ability(String name, AbilityType type, String description, boolean breaksFocus,
+                   int abilityLevel, AbilityType usageType) {
         super(name);
         this.type = type;
         this.description = description;

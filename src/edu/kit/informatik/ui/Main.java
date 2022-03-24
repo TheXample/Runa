@@ -105,7 +105,7 @@ public class Main {
     }
 
     private void printUse(Character user, Ability ability) {
-        System.out.println( user.getName() + " uses " + printAbility(ability));
+        System.out.println(user.getName() + " uses " + printAbility(ability));
     }
 
     private void monsterAttack() throws IOException {

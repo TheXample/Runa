@@ -170,7 +170,8 @@ public class RunasAdventure {
                     Monster targetMonster = currentFight.get(getOpponent(target));
                     checkFocus(targetMonster, attack);
                     if (lastMove != null && !lastMove.getType().equals(AbilityType.FOCUS)) {
-                        dmg = lastMove.calculate(attack.calculate(runa.getFocusPoints(), targetMonster.getPrimaryType()));
+                        dmg = lastMove.calculate(attack.calculate(runa.getFocusPoints(),
+                                targetMonster.getPrimaryType()));
                         targetMonster.setHealthPoints(targetMonster.getHealthPoints() - dmg);
                         lastMove = null;
                     }
@@ -184,12 +185,14 @@ public class RunasAdventure {
                 else {
                     checkFocus(runa, attack);
                     if (lastMove != null && !lastMove.getType().equals(AbilityType.FOCUS)) {
-                        dmg = lastMove.calculate(attack.calculate(currentFight.get(getOpponent(attacker)).getFocusPoints(), MagicType.NONE));
+                        dmg = lastMove.calculate(attack.calculate(currentFight.get(
+                                getOpponent(attacker)).getFocusPoints(), MagicType.NONE));
                         runa.setHealthPoints(runa.getHealthPoints() - dmg);
                         lastMove = null;
                     }
                     else {
-                        dmg = attack.calculate(currentFight.get(getOpponent(attacker)).getFocusPoints(), MagicType.NONE);
+                        dmg = attack.calculate(currentFight.get(getOpponent(attacker)).getFocusPoints(),
+                                MagicType.NONE);
                         runa.setHealthPoints(runa.getHealthPoints()
                                 - dmg);
                     }

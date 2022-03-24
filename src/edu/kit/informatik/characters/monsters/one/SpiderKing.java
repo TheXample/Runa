@@ -17,7 +17,7 @@ import java.util.Queue;
  * @author Hanne
  * @version 0.1
  */
-public class Spider_King extends Monster {
+public class SpiderKing extends Monster {
 
     private static final Queue<Ability> ABILITYSTACK = new LinkedList<>(List.of(new Bite(1), new Parry(1),
             new Focus(1), new LightningMonster(1, 1)));
@@ -34,7 +34,7 @@ public class Spider_King extends Monster {
     /**
      * Instantiates a new Spider king.
      */
-    public Spider_King() {
+    public SpiderKing() {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
     }
 }
