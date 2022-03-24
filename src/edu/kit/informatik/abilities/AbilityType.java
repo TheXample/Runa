@@ -32,6 +32,7 @@ public enum AbilityType {
     /**
      * inits the value.
      *
+     * @param value the value
      */
     AbilityType(final String value) {
         this.value = value;

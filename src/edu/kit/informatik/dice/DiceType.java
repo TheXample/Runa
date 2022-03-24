@@ -28,6 +28,11 @@ public enum DiceType {
     private final int value;
 
 
+    /**
+     * Inits value.
+     *
+     * @param value the value
+     */
     DiceType(final int value) {
         this.value = value;
     }
