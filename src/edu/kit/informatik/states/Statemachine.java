@@ -14,7 +14,7 @@ public class Statemachine {
                 currentState = GameState.MONSTERTURNONE;
                 break;
             }
-            case SHUFFLE, MONSTERTURNTWO: {
+            case MONSTERTURNTWO: {
                 currentState = GameState.RUNATURN;
                 break;
             }
@@ -24,6 +24,10 @@ public class Statemachine {
             }
             case FIGHTWON: {
                 currentState = GameState.HEALING;
+                break;
+            }
+            case SHUFFLE: {
+                currentState = GameState.RUNATURN;
                 break;
             }
         }

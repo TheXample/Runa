@@ -79,18 +79,20 @@ public class RunasAdventure {
     public int usePhysicalAbility(Character attacker, Character target, PhysicalAbility attack, int dice) {
         int damage = 0;
         switch (attack.getType()) {
-            case OFFENSIVE -> {
+            case OFFENSIVE: {
                 checkFocus(attacker, attack);
                 if (Statemachine.getCurrentState().equals(GameState.RUNATURN)) {
                     damage = setPhysicalDamage(currentFight.get(getOpponent(target)), attack, dice);
                     getOpponent(target);
+                    break;
                 }
                 else {
                     damage = setPhysicalDamage(runa, attack, dice);
                 }
             }
-            case DEFENSIVE -> {
+            case DEFENSIVE: {
                 lastMove = attack;
+                break;
             }
         }
         setStateMonster();
@@ -124,7 +126,7 @@ public class RunasAdventure {
     public int useMagicalAbility(Character attacker, Character target, MagicAbility attack) {
         int dmg = 0;
         switch (attack.getType()) {
-            case OFFENSIVE -> {
+            case OFFENSIVE: {
                 if (Statemachine.getCurrentState().equals(GameState.RUNATURN)) {
                     Monster targetMonster = currentFight.get(getOpponent(target));
                     checkFocus(targetMonster, attack);
@@ -153,9 +155,11 @@ public class RunasAdventure {
                                 - dmg);
                     }
                 }
+                break;
             }
-            case DEFENSIVE -> {
+            case DEFENSIVE: {
                 lastMove = attack;
+                break;
             }
         }
         setStateMonster();
