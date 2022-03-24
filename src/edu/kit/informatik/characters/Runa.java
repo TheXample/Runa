@@ -37,14 +37,17 @@ public class Runa extends Character{
 
     private void setClass(RunaType runaClass, int level) {
         switch (runaClass) {
-            case MAGE -> {
+            case MAGE: {
                 abilities = List.of(new Focus(level), new Water(level));
+                break;
             }
-            case WARRIOR -> {
+            case WARRIOR: {
                 abilities = List.of(new Thrust(level), new Parry(level));
+                break;
             }
-            case PALADIN -> {
+            case PALADIN: {
                 abilities = List.of(new Slash(level), new Reflect(level));
+                break;
             }
         }
     }
@@ -59,15 +62,15 @@ public class Runa extends Character{
 
     public boolean upgradeDice() {
         switch (dice) {
-            case D_SIX -> {
+            case D_SIX: {
                 dice = DiceType.D_EIGHT;
                 return true;
             }
-            case D_EIGHT -> {
+            case D_EIGHT: {
                 dice = DiceType.D_TEN;
                 return true;
             }
-            case D_TEN -> {
+            case D_TEN: {
                 dice = DiceType.D_Twelve;
                 return true;
             }

@@ -1,5 +1,6 @@
 package edu.kit.informatik.characters;
 
+import edu.kit.informatik.abilities.Ability;
 import edu.kit.informatik.card.Card;
 
 public class Character extends Card {
@@ -8,10 +9,13 @@ public class Character extends Card {
 
     private int focusPoints;
 
+    private Ability lastMove;
+
     public Character(String name, int healthPoints, int focusPoints) {
         super(name);
         this.healthPoints = healthPoints;
         this.focusPoints = focusPoints;
+        lastMove = null;
     }
 
     public int getHealthPoints() {
@@ -39,5 +43,13 @@ public class Character extends Card {
 
     public boolean isDead() {
         return getHealthPoints() == 0;
+    }
+
+    public Ability getLastMove() {
+        return lastMove;
+    }
+
+    public void setLastMove(Ability lastMove) {
+        this.lastMove = lastMove;
     }
 }

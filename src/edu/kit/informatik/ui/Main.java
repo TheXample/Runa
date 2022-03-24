@@ -30,20 +30,24 @@ public class Main {
             main.init();
             while (!Statemachine.getCurrentState().equals(GameState.LOST)) {
                 switch (game.getState()) {
-                    case SHUFFLE -> {
+                    case SHUFFLE: {
                         main.shuffle();
                         main.printStage(1, game.getCurrentFloor());
                         game.enterRoom();
+                        break;
                     }
-                    case RUNATURN -> {
+                    case RUNATURN: {
                         main.printLevel();
                         main.runaAttack();
+                        break;
                     }
-                    case MONSTERTURNONE -> {
+                    case MONSTERTURNONE: {
                         main.monsterAttack();
+                        break;
                     }
-                    case FIGHTWON -> {
+                    case FIGHTWON: {
                         System.out.println("WOOOOHOOOOO");
+                        break;
                     }
                 }
             }
@@ -54,28 +58,32 @@ public class Main {
     }
 
     private void runaAttack() throws IOException {
-        System.out.println("Select card to play \n" + getRunasAbilities());
+        System.out.println("Select card to play");
+        System.out.println(getRunasAbilities());
         int pos = selectTarget(game.getRuna().getAbilities().size());
         Ability use = game.getRuna().getAbilities().get(pos);
         int target = 0;
         if (game.getCurrentFight().size() > 1 && use.getType().equals(AbilityType.OFFENSIVE)) {
-            System.out.println("Select Runa’s target.\n" + getTargets());
+            System.out.println("Select Runa’s target.");
+            getTargets();
             target = selectTarget(game.getCurrentFight().size());
         }
         printUse(game.getRuna(), use);
         int dice = enterDice();
         switch (use.getUsageType()) {
-            case PHYSICAL -> {
+            case PHYSICAL: {
                 Monster current = game.getCurrentFight().get(target);
                 int dmg = game.usePhysicalAbility(game.getRuna(), game.getCurrentFight().get(target),
                         (PhysicalAbility) use, dice);
                 printDamage(current, dmg, use);
+                break;
             }
-            case MAGIC -> {
+            case MAGIC: {
                 Monster current = game.getCurrentFight().get(target);
                 int dmg = game.useMagicalAbility(game.getRuna(), game.getCurrentFight().get(target),
                         (MagicAbility) use);
                 printDamage(current, dmg, use);
+                break;
             }
         }
     }
@@ -88,14 +96,16 @@ public class Main {
         for (Monster monster: game.getCurrentFight()) {
             printUse(monster, monster.getNextMove());
             switch (monster.getNextMove().getUsageType()) {
-                case PHYSICAL -> {
+                case PHYSICAL: {
                     int dmg = game.usePhysicalAbility(monster, game.getRuna(),
                             (PhysicalAbility) monster.getNextMove(), 0);
                     printDamage(game.getRuna(), dmg, monster.getNextMove());
+                    break;
                 }
-                case MAGIC -> {
+                case MAGIC: {
                     int dmg = game.useMagicalAbility(monster, game.getRuna(), (MagicAbility) monster.getNextMove());
                     printDamage(game.getRuna(), dmg, monster.getNextMove());
+                    break;
                 }
             }
             monster.rmTop();
@@ -131,21 +141,18 @@ public class Main {
         System.out.println("Enter " + type + " [1--" + max +"]:");
     }
 
-    private String getTargets() {
+    private void getTargets() {
         List<Monster> monsters = game.getCurrentFight();
-        StringBuilder newBuilder = new StringBuilder();
         for (int i = 0; i < monsters.size(); i++) {
-            String toAppend = (i + 1) + ") " + monsters.get(i).getName() + "\n";
-            newBuilder.append(toAppend);
+            System.out.println((i + 1) + ") " + monsters.get(i).getName());
         }
-        return newBuilder.toString();
     }
 
     private String getRunasAbilities() {
         List<Ability> runasAbilities = game.getRuna().getAbilities();
         StringBuilder newBuilder = new StringBuilder();
         for (int i = 0; i < runasAbilities.size(); i++) {
-            String toAppend = (i + 1) + ") " + printAbility(runasAbilities.get(i)) + "\n";
+            String toAppend = (i + 1) + ") " + printAbility(runasAbilities.get(i));
             newBuilder.append(toAppend);
         }
         return newBuilder.toString();
@@ -156,12 +163,11 @@ public class Main {
     }
 
     private void printHello() {
-        System.out.println("""
-                Welcome to Runa's Strive\s
-                Select Runa's character class\s
-                1) Warrior\s
-                2) Mage\s
-                3) Paladin\s""");
+        System.out.println("Welcome to Runa's Strive");
+        System.out.println("Select Runa's character class");
+        System.out.println("1) Warrior");
+        System.out.println("2) Mage");
+        System.out.println("3) Paladin");
     }
 
     private void init() throws IOException {
@@ -173,8 +179,8 @@ public class Main {
     }
 
     private void shuffle() throws IOException {
-        System.out.println("To shuffle ability cards and monsters, enter two seeds \n"
-                + "Enter seeds [1--2147483647] separated by comma:");
+        System.out.println("To shuffle ability cards and monsters, enter two seeds");
+        System.out.println("Enter seeds [1--2147483647] separated by comma:");
         String line = reader.readLine();
         if (Parser.getSeeds(line) != null) {
             game.shuffleCards(Parser.getSeeds(line)[1], Parser.getSeeds(line)[0]);

@@ -46,4 +46,5 @@ public class Monster extends Character{
     public void rmTop() {
         abilities.add(abilities.poll());
     }
+
 }

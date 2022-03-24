@@ -6,11 +6,26 @@ public class Statemachine {
 
     public static void next() {
         switch (currentState) {
-            case HEALING -> currentState = GameState.SHUFFLE;
-            case RUNATURN -> currentState = GameState.MONSTERTURNONE;
-            case SHUFFLE, MONSTERTURNTWO -> currentState = GameState.RUNATURN;
-            case MONSTERTURNONE -> currentState = GameState.MONSTERTURNTWO;
-            case FIGHTWON -> currentState = GameState.HEALING;
+            case HEALING: {
+                currentState = GameState.SHUFFLE;
+                break;
+            }
+            case RUNATURN: {
+                currentState = GameState.MONSTERTURNONE;
+                break;
+            }
+            case SHUFFLE, MONSTERTURNTWO: {
+                currentState = GameState.RUNATURN;
+                break;
+            }
+            case MONSTERTURNONE: {
+                currentState = GameState.MONSTERTURNTWO;
+                break;
+            }
+            case FIGHTWON: {
+                currentState = GameState.HEALING;
+                break;
+            }
         }
     }
     public static void fightWon() {
