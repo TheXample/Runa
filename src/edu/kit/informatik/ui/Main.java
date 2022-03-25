@@ -35,6 +35,8 @@ public class Main {
 
     private static final int TWO = 2;
 
+    private static final int TEN = 10;
+
     /**
      * The entry point of application.
      *
@@ -42,7 +44,7 @@ public class Main {
      * @throws IllegalArgumentException the illegal argument exception
      */
     public static void main(String[] args) throws IllegalArgumentException {
-        if (args.length != 0) {
+        if (args.length != ZERO) {
             throw new IllegalArgumentException("args have to be empty");
         }
         Main main = new Main();
@@ -55,7 +57,7 @@ public class Main {
                     case SHUFFLE: {
                         main.shuffle();
                         game.enterRoom();
-                        main.printStage(1, game.getCurrentFloor());
+                        main.printStage(ONE, game.getCurrentFloor());
                         break;
                     }
                     case RUNATURN: {
@@ -107,13 +109,13 @@ public class Main {
 
     private void printFocus() {
         int focusChange = game.checkChangeFocus();
-        if (focusChange > 0) {
+        if (focusChange > ZERO) {
             System.out.println("Runa gains " + focusChange + " focus");
         }
     }
 
     private void printUpgrade() {
-        game.fightReward(0, null);
+        game.fightReward(ZERO, null);
         if (!Statemachine.getCurrentState().equals(GameState.WIN)) {
             for (Ability newAb: game.getRuna().getAbilities()) {
                 for (Ability classAb: game.getRuna().getClassAbilities(game.getCurrentFloor())) {
@@ -127,14 +129,14 @@ public class Main {
 
     private void heal() throws IOException {
         double damage = 50 - game.getRuna().getHealthPoints();
-        int amount = (int) Math.ceil(damage / 10);
-        if (amount > 0) {
+        int amount = (int) Math.ceil(damage / TEN);
+        if (amount > ZERO) {
             System.out.println(printRuna(game.getRuna(), false) + " can discard ability cards for healing (or none)");
             getRunasAbilities();
             List<Integer> selected = selectMultiTarget(
                     game.getRuna().getAbilities().size(), amount, false, "numbers");
             List<Ability> found = new ArrayList<>();
-            for (int i = 1; i <= game.getRuna().getAbilities().size(); i++) {
+            for (int i = ONE; i <= game.getRuna().getAbilities().size(); i++) {
                 if (selected.contains(i)) {
                     found.add(game.getRuna().getAbilities().get(i));
                 }
@@ -295,7 +297,8 @@ public class Main {
 
     private void printDamage(Character target, int damage, Ability ability) {
         if (ability.getType().equals(AbilityType.OFFENSIVE) || ability.getClass().equals(Reflect.class)) {
-            System.out.println(target.getName() + " takes " + damage + ability.getUsageType().getValue() + ". damage");
+            System.out.println(target.getName() + " takes " + damage + " "
+                    + ability.getUsageType().getValue() + ". damage");
 
         }
     }
