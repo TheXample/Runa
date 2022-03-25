@@ -174,7 +174,7 @@ public class Main {
             List<Ability> chosen = selectReward(drawnCards);
             game.fightReward(selected, chosen);
             for (Ability rewardPrint: chosen) {
-                System.out.println("Runa get " + printAbility(rewardPrint));
+                System.out.println("Runa gets " + printAbility(rewardPrint));
             }
         }
         else if (selected == TWO) {
@@ -275,16 +275,16 @@ public class Main {
             switch (monster.getNextMove().getUsageType()) {
                 case PHYSICAL: {
                     int dmg = game.usePhysicalAbility(monster, game.getRuna(),
-                            (PhysicalAbility) monster.getNextMove(), 0);
+                            (PhysicalAbility) monster.getNextMove(), ZERO);
                     printDamage(game.getRuna(), dmg, monster.getNextMove());
                     break;
                 }
                 case MAGIC: {
                     List<Integer> dmg = game.useMagicalAbility(monster, game.getRuna(),
                             (MagicAbility) monster.getNextMove());
-                    printDamage(game.getRuna(), dmg.get(0), monster.getNextMove());
+                    printDamage(game.getRuna(), dmg.get(ZERO), monster.getNextMove());
                     if (dmg.size() > 1) {
-                        printDamage(monster, dmg.get(1), new Reflect(1));
+                        printDamage(monster, dmg.get(ONE), new Reflect(1));
                     }
                     break;
                 }
@@ -311,11 +311,11 @@ public class Main {
     private int enterDice() throws IOException {
         printSelect("dice roll", game.getRuna().getDice().getValue());
         int parsed = Parser.getSelected(READER.readLine(), game.getRuna().getDice().getValue());
-        if (parsed != -1) {
+        if (parsed != -ONE) {
             return parsed;
         }
         enterDice();
-        return -1;
+        return -ONE;
     }
 
     private int selectTarget(int max) throws IOException {
