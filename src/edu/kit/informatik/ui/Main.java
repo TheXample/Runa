@@ -148,7 +148,7 @@ public class Main {
                 System.out.println("Runa gains " + (int) damage + " health");
             }
             else {
-                System.out.println("Runa gains " + found.size() * 10 + " health");
+                System.out.println("Runa gains " + found.size() * TEN + " health");
             }
         }
         game.enterRoom();
@@ -185,12 +185,12 @@ public class Main {
 
     private List<Ability> selectReward(List<Ability> rewards) throws IOException {
         List<Ability> selected = new ArrayList<>();
-        System.out.println("Pick " + rewards.size() / 2 + " card(s) as loot");
+        System.out.println("Pick " + rewards.size() / TWO + " card(s) as loot");
         for (int i = 0; i < rewards.size(); i++) {
-            System.out.println((i + 1) + ") " + printAbility(rewards.get(i)));
+            System.out.println((i + ONE) + ") " + printAbility(rewards.get(i)));
         }
         List<Integer> picked = new ArrayList<>();
-        if (rewards.size() / 2 > 1) {
+        if (rewards.size() / TWO > ONE) {
             picked = selectMultiTarget(rewards.size(), rewards.size() / 2, true, "numbers");
         }
         else {
@@ -223,7 +223,7 @@ public class Main {
         Ability use = game.getRuna().getAbilities().get(pos);
         int target = 0;
         if (game.getCurrentFight().size() > 1 && use.getType().equals(AbilityType.OFFENSIVE)) {
-            System.out.println("Select Runa’s target.");
+            System.out.println("Select Runa's target.");
             getTargets();
             target = selectTarget(game.getCurrentFight().size());
         }
