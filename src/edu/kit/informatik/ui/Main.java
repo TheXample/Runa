@@ -37,6 +37,8 @@ public class Main {
 
     private static final int TEN = 10;
 
+    private static final int FOUR = 4;
+
     /**
      * The entry point of application.
      *
@@ -156,16 +158,16 @@ public class Main {
         System.out.println("Choose Runa's reward");
         System.out.println("1) new ability cards");
         System.out.println("2) next player dice");
-        int selected = selectTarget(2) + 1;
+        int selected = selectTarget(TWO) + ONE;
         if (selected == 1) {
             List<Ability> drawnCards = new ArrayList<>();
-            if (game.getCurrentRoom() == 1) {
-                for (int i = 0; i < 2; i++) {
+            if (game.getCurrentRoom() == ONE) {
+                for (int i = 0; i < TWO; i++) {
                     drawnCards.add(game.getTopAbility());
                 }
             }
             else if (game.getCurrentRoom() > 1) {
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < FOUR; i++) {
                     drawnCards.add(game.getTopAbility());
                 }
             }
@@ -175,7 +177,7 @@ public class Main {
                 System.out.println("Runa get " + printAbility(rewardPrint));
             }
         }
-        else if (selected == 2) {
+        else if (selected == TWO) {
             game.fightReward(selected, null);
             System.out.println("Runa upgrades her die to a d" + game.getRuna().getDice().getValue());
         }
@@ -296,6 +298,9 @@ public class Main {
     }
 
     private void printDamage(Character target, int damage, Ability ability) {
+        if (damage == ZERO) {
+            return;
+        }
         if (ability.getType().equals(AbilityType.OFFENSIVE) || ability.getClass().equals(Reflect.class)) {
             System.out.println(target.getName() + " takes " + damage + " "
                     + ability.getUsageType().getValue() + ". damage");
