@@ -15,7 +15,7 @@ public class Parser {
     private static final String REGEXSEED = "(([2][0,1][0-4][0-7][0-4][0-8][0-3][0-6][0-4][0-7])|"
             + "(([1][0-9])|([1-9]))([0-9]{0,8}))";
 
-    private static final int isSeed = 2147483647;
+    private static final int ISSEED = 2147483647;
 
     /**
      * Get seeds int [ ].
@@ -81,7 +81,7 @@ public class Parser {
                 if (!split[i].matches(REGEXSEED)) {
                     return null;
                 }
-                if (max != isSeed) {
+                if (max != ISSEED) {
                     reti.add(Integer.parseInt(split[i]) - 1);
                 }
                 else {

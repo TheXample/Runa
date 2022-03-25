@@ -37,7 +37,7 @@ public class Main {
      * @throws IllegalArgumentException the illegal argument exception
      */
     public static void main(String[] args) throws IllegalArgumentException {
-        if (!Arrays.stream(args).toList().isEmpty()) {
+        if (args.length != 0) {
             throw new IllegalArgumentException("args have to be empty");
         }
         Main main = new Main();
