@@ -140,7 +140,7 @@ public class RunasAdventure {
      * @return the int
      */
     public int usePhysicalAbility(Character attacker, Character target, PhysicalAbility attack, int dice) {
-        printFocus();
+        //printFocus();
         int damage = 0;
         switch (attack.getType()) {
             case OFFENSIVE: {
@@ -174,22 +174,39 @@ public class RunasAdventure {
     /**
      * Check change focus int.
      *
+     * @param user the user
      * @return the int
      */
-    public int checkChangeFocus() {
+    public int checkChangeFocus(Character user) {
         boolean clear = false;
-        for (Monster monster:currentFight) {
-            if (monster.getNextMove().isBreaksFocus() && runa.getLastMove() != null
-                    && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
-                clear = false;
-                break;
+        int reti = 0;
+        if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
+                || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
+            for (Monster monster:currentFight) {
+                if (monster.getNextMove().isBreaksFocus() && runa.getLastMove() != null
+                        && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
+                    clear = false;
+                    break;
+                }
+                clear = true;
             }
-            clear = true;
+            if (clear && runa.getLastMove() != null && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
+                reti = ((Focus) runa.getLastMove()).calculate(user.getFocusPoints(), MagicType.NONE);
+                runa.setFocusPoints(runa.getFocusPoints() + reti);
+            }
         }
-        if (clear && runa.getLastMove() != null && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
-            return ((Focus) runa.getLastMove()).calculate(runa.getFocusPoints(), MagicType.NONE);
+        if (Statemachine.getCurrentState().equals(GameState.MONSTERTURNONE)
+                || Statemachine.getCurrentState().equals(GameState.MONSTERBOSSFIGHT)) {
+            if ((runa.getLastMove() == null || !runa.getLastMove().isBreaksFocus()) && user.getLastMove() != null
+                    && user.getLastMove().getType().equals(AbilityType.FOCUS)) {
+                clear = true;
+            }
+            if (clear && user.getLastMove() != null && user.getLastMove().getType().equals(AbilityType.FOCUS)) {
+                reti = ((Focus) user.getLastMove()).calculate(user.getFocusPoints(), MagicType.NONE);
+                user.setFocusPoints(user.getFocusPoints() + reti);
+            }
         }
-        return 0;
+        return reti;
     }
 
     private void printFocus() {
@@ -247,7 +264,7 @@ public class RunasAdventure {
      */
     public List<Integer> useMagicalAbility(Character attacker, Character target, MagicAbility attack) {
         List<Integer> dmg = new ArrayList<>();
-        printFocus();
+        //printFocus();
         switch (attack.getType()) {
             case OFFENSIVE: {
                 if (!canCast(attacker, attack)) {

@@ -67,6 +67,7 @@ public class Main {
                         break;
                     }
                     case RUNATURN: {
+                        main.printFocus(game.getRuna());
                         main.printLevel();
                         main.runaAttack();
                         break;
@@ -86,6 +87,7 @@ public class Main {
                         break;
                     }
                     case RUNABOSSFIGHT: {
+                        main.printFocus(game.getRuna());
                         main.printLevel();
                         main.runaAttack();
                         break;
@@ -112,10 +114,10 @@ public class Main {
         }
     }
 
-    private void printFocus() {
-        int focusChange = game.checkChangeFocus();
+    private void printFocus(Character user) {
+        int focusChange = game.checkChangeFocus(user);
         if (focusChange > ZERO) {
-            System.out.println("Runa gains " + focusChange + " focus");
+            System.out.println(user.getName() + " gains " + focusChange + " focus");
         }
     }
 
@@ -272,6 +274,7 @@ public class Main {
 
     private void monsterAttack() throws IOException {
         for (Monster monster: game.getCurrentFight()) {
+            printFocus(monster);
             printUse(monster, monster.getNextMove());
             switch (monster.getNextMove().getUsageType()) {
                 case PHYSICAL: {
@@ -296,7 +299,6 @@ public class Main {
             monster.rmTop();
         }
         game.monsterTurnOver();
-        printFocus();
         printDeath(game.checkDead());
     }
 
