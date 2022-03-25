@@ -1,22 +1,21 @@
 package edu.kit.informatik.ui;
 
-import edu.kit.informatik.Parser;
-import edu.kit.informatik.abilities.Ability;
-import edu.kit.informatik.abilities.AbilityType;
-import edu.kit.informatik.abilities.MagicAbility;
-import edu.kit.informatik.abilities.PhysicalAbility;
-import edu.kit.informatik.abilities.magical.defensive.Reflect;
-import edu.kit.informatik.characters.Character;
-import edu.kit.informatik.characters.Monster;
-import edu.kit.informatik.characters.Runa;
-import edu.kit.informatik.states.GameState;
-import edu.kit.informatik.states.RunasAdventure;
-import edu.kit.informatik.states.Statemachine;
+import edu.kit.informatik.parser.Parser;
+import edu.kit.informatik.structure.abilities.*;
+import edu.kit.informatik.structure.abilities.magical.defensive.Reflect;
+import edu.kit.informatik.structure.characters.Character;
+import edu.kit.informatik.structure.characters.Monster;
+import edu.kit.informatik.structure.characters.Runa;
+import edu.kit.informatik.structure.characters.RunaType;
+import edu.kit.informatik.structure.states.GameState;
+import edu.kit.informatik.structure.RunasAdventure;
+import edu.kit.informatik.structure.states.Statemachine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,8 +34,12 @@ public class Main {
      * The entry point of application.
      *
      * @param args the input arguments
+     * @throws IllegalArgumentException the illegal argument exception
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IllegalArgumentException {
+        if (!Arrays.stream(args).toList().isEmpty()) {
+            throw new IllegalArgumentException("args have to be empty");
+        }
         Main main = new Main();
         main.printHello();
         try {
@@ -97,6 +100,13 @@ public class Main {
         }
     }
 
+    private void printFocus() {
+        int focusChange = game.checkChangeFocus();
+        if (focusChange > 0) {
+            System.out.println("Runa gains " + focusChange + " focus");
+        }
+    }
+
     private void printUpgrade() {
         game.fightReward(0, null);
         if (!Statemachine.getCurrentState().equals(GameState.WIN)) {
@@ -111,12 +121,13 @@ public class Main {
     }
 
     private void heal() throws IOException {
-        System.out.println(printRuna(game.getRuna(), false) + " can discard ability cards for healing (or none)");
-        getRunasAbilities();
         double damage = 50 - game.getRuna().getHealthPoints();
         int amount = (int) Math.ceil(damage / 10);
         if (amount > 0) {
-            List<Integer> selected = selectMultiTarget(game.getRuna().getAbilities().size(), amount, false);
+            System.out.println(printRuna(game.getRuna(), false) + " can discard ability cards for healing (or none)");
+            getRunasAbilities();
+            List<Integer> selected = selectMultiTarget(
+                    game.getRuna().getAbilities().size(), amount, false, "numbers");
             List<Ability> found = new ArrayList<>();
             for (int i = 1; i <= game.getRuna().getAbilities().size(); i++) {
                 if (selected.contains(i)) {
@@ -125,7 +136,7 @@ public class Main {
             }
             game.heal(found);
             if (damage < found.size() * 10) {
-                System.out.println("Runa gains " + damage + " health");
+                System.out.println("Runa gains " + (int) damage + " health");
             }
             else {
                 System.out.println("Runa gains " + found.size() * 10 + " health");
@@ -171,7 +182,7 @@ public class Main {
         }
         List<Integer> picked = new ArrayList<>();
         if (rewards.size() / 2 > 1) {
-            picked = selectMultiTarget(rewards.size(), rewards.size() / 2, true);
+            picked = selectMultiTarget(rewards.size(), rewards.size() / 2, true, "numbers");
         }
         else {
             picked.add(selectTarget(rewards.size()));
@@ -182,17 +193,17 @@ public class Main {
         return selected;
     }
 
-    private List<Integer> selectMultiTarget(int max, int amount, boolean exact) throws IOException {
-        System.out.println("Enter numbers [1--" + max + "] separated by comma:");
+    private List<Integer> selectMultiTarget(int max, int amount, boolean exact, String name) throws IOException {
+        System.out.println("Enter " + name + " [1--" + max + "] separated by comma:");
         List<Integer> parsed = Parser.parseMulti(READER.readLine(), max);
-        if (parsed != null && parsed.size() == amount && exact) {
+        if (parsed != null && parsed.size() == amount) {
             return parsed;
         }
-        else if (parsed != null && !exact) {
+        else if (parsed != null && parsed.size() < amount && !exact) {
             return parsed;
         }
         else {
-            return selectMultiTarget(max, amount, exact);
+            return selectMultiTarget(max, amount, exact, name);
         }
     }
 
@@ -217,14 +228,19 @@ public class Main {
                 Monster current = game.getCurrentFight().get(target);
                 int dmg = game.usePhysicalAbility(game.getRuna(), game.getCurrentFight().get(target),
                         (PhysicalAbility) use, dice);
-                printDamage(current, dmg, use);
+                if (use.getType().equals(AbilityType.OFFENSIVE)) {
+                    printDamage(current, dmg, use);
+                }
                 break;
             }
             case MAGIC: {
                 Monster current = game.getCurrentFight().get(target);
                 List<Integer> dmg = game.useMagicalAbility(game.getRuna(), game.getCurrentFight().get(target),
                         (MagicAbility) use);
-                printDamage(current, dmg.get(0), use);
+                printFocus();
+                if (use.getType().equals(AbilityType.OFFENSIVE)) {
+                    printDamage(current, dmg.get(0), use);
+                }
                 break;
             }
             default: {
@@ -330,20 +346,25 @@ public class Main {
     }
 
     private void init() throws IOException {
-        System.out.println("Enter number [1--3]:");
-        String line = READER.readLine();
-        if (Parser.getRunaClass(line) != null) {
-            game = new RunasAdventure(Parser.getRunaClass(line));
+
+        int choice = selectTarget(3);
+        if (choice == 0) {
+            game = new RunasAdventure(RunaType.WARRIOR);
+            return;
+        }
+        if (choice == 1) {
+            game = new RunasAdventure(RunaType.MAGE);
+            return;
+        }
+        if (choice == 2) {
+            game = new RunasAdventure(RunaType.PALADIN);
         }
     }
 
     private void shuffle() throws IOException {
         System.out.println("To shuffle ability cards and monsters, enter two seeds");
-        System.out.println("Enter seeds [1--2147483647] separated by comma:");
-        String line = READER.readLine();
-        if (Parser.getSeeds(line) != null) {
-            game.shuffleCards(Parser.getSeeds(line)[1], Parser.getSeeds(line)[0]);
-        }
+        List<Integer> selected = selectMultiTarget(2147483647, 2, true, "seeds");
+        game.shuffleCards(selected.get(1), selected.get(0));
     }
 
     private void printLine() {
@@ -352,7 +373,8 @@ public class Main {
 
     private String printRuna(Runa runa, boolean full) {
         if (full) {
-            return ("Runa (" + runa.getHealthPoints() + "/50 HP, " + runa.getFocusPoints() + "/6 FP)");
+            return ("Runa (" + runa.getHealthPoints() + "/50 HP, " + runa.getFocusPoints()
+                    + "/" + runa.getDice().getValue() + " FP)");
         }
         return ("Runa (" + runa.getHealthPoints() + "/50 HP)");
     }
