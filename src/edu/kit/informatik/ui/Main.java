@@ -35,9 +35,11 @@ public class Main {
 
     private static final int TWO = 2;
 
-    private static final int TEN = 10;
+    private static final int THREE = 3;
 
     private static final int FOUR = 4;
+
+    private static final int TEN = 10;
 
     /**
      * The entry point of application.
@@ -321,8 +323,8 @@ public class Main {
     private int selectTarget(int max) throws IOException {
         printSelect("number", max);
         int parsed = Parser.getSelected(READER.readLine(), max);
-        if (parsed != -1) {
-            return parsed - 1;
+        if (parsed != -ONE) {
+            return parsed - ONE;
         }
         return selectTarget(max);
     }
@@ -334,14 +336,14 @@ public class Main {
     private void getTargets() {
         List<Monster> monsters = game.getCurrentFight();
         for (int i = 0; i < monsters.size(); i++) {
-            System.out.println((i + 1) + ") " + monsters.get(i).getName());
+            System.out.println((i + ONE) + ") " + monsters.get(i).getName());
         }
     }
 
     private void getRunasAbilities() {
         List<Ability> runasAbilities = game.getRuna().getAbilities();
         for (int i = 0; i < runasAbilities.size(); i++) {
-            System.out.println((i + 1) + ") " + printAbility(runasAbilities.get(i)));
+            System.out.println((i + ONE) + ") " + printAbility(runasAbilities.get(i)));
 
         }
     }

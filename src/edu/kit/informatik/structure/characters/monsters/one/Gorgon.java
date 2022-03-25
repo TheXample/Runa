@@ -25,7 +25,7 @@ public class Gorgon extends Monster {
 
     private static final MagicType PRIMARYTYPE = MagicType.FIRE;
 
-    private static final String NAME = "Goorgon";
+    private static final String NAME = "Gorgon";
 
     private static final int HEALTHPOINTS = 13;
 
