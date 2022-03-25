@@ -41,6 +41,8 @@ public class Main {
 
     private static final int TEN = 10;
 
+    private static final int MAXSEED = 2147483647;
+
     /**
      * The entry point of application.
      *
@@ -362,24 +364,24 @@ public class Main {
 
     private void init() throws IOException {
 
-        int choice = selectTarget(3);
-        if (choice == 0) {
+        int choice = selectTarget(THREE);
+        if (choice == ZERO) {
             game = new RunasAdventure(RunaType.WARRIOR);
             return;
         }
-        if (choice == 1) {
+        if (choice == ONE) {
             game = new RunasAdventure(RunaType.MAGE);
             return;
         }
-        if (choice == 2) {
+        if (choice == TWO) {
             game = new RunasAdventure(RunaType.PALADIN);
         }
     }
 
     private void shuffle() throws IOException {
         System.out.println("To shuffle ability cards and monsters, enter two seeds");
-        List<Integer> selected = selectMultiTarget(2147483647, 2, true, "seeds");
-        game.shuffleCards(selected.get(1), selected.get(0));
+        List<Integer> selected = selectMultiTarget(MAXSEED, TWO, true, "seeds");
+        game.shuffleCards(selected.get(ONE), selected.get(ZERO));
     }
 
     private void printLine() {
@@ -388,7 +390,7 @@ public class Main {
 
     private String printRuna(Runa runa, boolean full) {
         if (full) {
-            return ("Runa (" + runa.getHealthPoints() + "/50 HP, " + runa.getFocusPoints()
+            return ("Runa (" + runa.getHealthPoints() + "/" + Runa.getMaxhealth() + " HP, " + runa.getFocusPoints()
                     + "/" + runa.getDice().getValue() + " FP)");
         }
         return ("Runa (" + runa.getHealthPoints() + "/50 HP)");
