@@ -15,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,6 +28,12 @@ public class Main {
     private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
     private static RunasAdventure game;
+
+    private static final int ZERO = 0;
+
+    private static final int ONE = 1;
+
+    private static final int TWO = 2;
 
     /**
      * The entry point of application.
