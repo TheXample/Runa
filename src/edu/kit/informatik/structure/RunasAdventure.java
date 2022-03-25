@@ -319,6 +319,9 @@ public class RunasAdventure {
         return dmg;
     }
 
+    /**
+     * Monster turn over.
+     */
     public void monsterTurnOver() {
         if (Statemachine.getCurrentState().equals(GameState.MONSTERTURNONE)
              || Statemachine.getCurrentState().equals(GameState.MONSTERBOSSFIGHT)) {
