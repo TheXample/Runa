@@ -142,7 +142,7 @@ public class Main {
                 }
             }
             game.heal(found);
-            if (damage < found.size() * 10) {
+            if (damage < found.size() * TEN) {
                 System.out.println("Runa gains " + (int) damage + " health");
             }
             else {
@@ -153,7 +153,7 @@ public class Main {
     }
 
     private void reward() throws IOException {
-        System.out.println("Choose Runa’s reward");
+        System.out.println("Choose Runa's reward");
         System.out.println("1) new ability cards");
         System.out.println("2) next player dice");
         int selected = selectTarget(2) + 1;
