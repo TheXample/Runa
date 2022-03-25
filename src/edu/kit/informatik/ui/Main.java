@@ -140,8 +140,14 @@ public class Main {
         if (amount > ZERO && game.getRuna().getAbilities().size() > 1) {
             System.out.println(printRuna(game.getRuna(), false) + " can discard ability cards for healing (or none)");
             getRunasAbilities();
-            List<Integer> selected = selectMultiTarget(
-                    game.getRuna().getAbilities().size(), amount, false, "numbers");
+            List<Integer> selected = new ArrayList<>();
+            if (game.getRuna().getAbilities().size() > TWO) {
+                selected = selectMultiTarget(
+                        game.getRuna().getAbilities().size(), amount, false, "numbers");
+            } else {
+                selected.add(selectTarget(ONE));
+            }
+
             List<Ability> found = new ArrayList<>();
             for (int i = ZERO; i <= game.getRuna().getAbilities().size(); i++) {
                 if (selected.contains(i)) {
