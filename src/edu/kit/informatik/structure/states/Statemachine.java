@@ -23,12 +23,8 @@ public class Statemachine {
                 currentState = GameState.MONSTERTURNONE;
                 break;
             }
-            case MONSTERTURNTWO: {
-                currentState = GameState.RUNATURN;
-                break;
-            }
             case MONSTERTURNONE: {
-                currentState = GameState.MONSTERTURNTWO;
+                currentState = GameState.RUNATURN;
                 break;
             }
             case FIGHTWON: {

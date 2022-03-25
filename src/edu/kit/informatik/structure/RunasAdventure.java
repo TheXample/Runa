@@ -151,7 +151,6 @@ public class RunasAdventure {
                     break;
                 }
                 else {
-
                     damage = setPhysicalDamage(runa, attack, dice);
                 }
                 attacker.setLastMove(null);
@@ -164,8 +163,11 @@ public class RunasAdventure {
                 break;
             }
         }
+        if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
+                || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
+            Statemachine.next();
+        }
         checkFocus(target, attack);
-        setStateMonster();
         return damage;
     }
 
@@ -177,7 +179,8 @@ public class RunasAdventure {
     public int checkChangeFocus() {
         boolean clear = false;
         for (Monster monster:currentFight) {
-            if (monster.getNextMove().isBreaksFocus() && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
+            if (monster.getNextMove().isBreaksFocus() && runa.getLastMove() != null
+                    && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
                 clear = false;
                 break;
             }
@@ -199,7 +202,7 @@ public class RunasAdventure {
                 monster.setLastMove(null);
             }
         }
-        if (curr.equals(GameState.RUNATURN)) {
+        if (curr.equals(GameState.RUNATURN) || curr.equals(GameState.RUNABOSSFIGHT)) {
             for (Monster monster: currentFight) {
                 if (monster.getLastMove() != null && monster.getLastMove().getType().equals(AbilityType.FOCUS)) {
                     int focus = ((Focus) monster.getLastMove()).calculate(monster.getFocusPoints(), MagicType.NONE);
@@ -208,7 +211,6 @@ public class RunasAdventure {
                 }
             }
         }
-
     }
 
     private int getOpponent(Character target) {
@@ -307,24 +309,21 @@ public class RunasAdventure {
                 break;
             }
         }
-        setStateMonster();
+        if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
+                || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
+            Statemachine.next();
+        }
         if (dmg.size() < 1) {
             dmg.add(0);
         }
         return dmg;
     }
 
-    private void setStateMonster() {
-        if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
-                || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
+    public void monsterTurnOver() {
+        if (Statemachine.getCurrentState().equals(GameState.MONSTERTURNONE)
+             || Statemachine.getCurrentState().equals(GameState.MONSTERBOSSFIGHT)) {
             Statemachine.next();
-            return;
         }
-        if (currentFight.size() == 1 && Statemachine.getCurrentState().equals(GameState.MONSTERTURNONE)) {
-            Statemachine.setState(GameState.RUNATURN);
-            return;
-        }
-        Statemachine.next();
     }
 
     /**
@@ -403,20 +402,9 @@ public class RunasAdventure {
 
 
     private void checkFocus(Character target, Ability attack) {
-        GameState curr = Statemachine.getCurrentState();
-        if (curr.equals(GameState.RUNATURN) || curr.equals(GameState.RUNABOSSFIGHT)) {
-            if (attack.isBreaksFocus() && target.getLastMove() != null
-                    && target.getLastMove().getType().equals(AbilityType.FOCUS)) {
-                target.setLastMove(null);
-            }
-        }
-        else if (curr.equals(GameState.MONSTERBOSSFIGHT) || curr.equals(GameState.MONSTERTURNONE)
-                || curr.equals(GameState.MONSTERTURNTWO)) {
-            if (attack.isBreaksFocus()
-                    && runa.getLastMove() != null
-                    && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
-                runa.setLastMove(null);
-            }
+        if (attack.isBreaksFocus() && target.getLastMove() != null
+                && target.getLastMove().getType().equals(AbilityType.FOCUS)) {
+            target.setLastMove(null);
         }
     }
 

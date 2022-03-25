@@ -22,7 +22,7 @@ import java.util.Queue;
 public class MegaSaurus extends Monster {
 
     private static final Queue<Ability> ABILITYSTACK = new LinkedList<>(List.of(new Bite(1),
-            new Block(2), new Focus(3),
+            new Block(2), new Focus(2),
             new FireMonster(1, 1), new LightningMonster(1, 1)));
 
     private static final boolean ISBOSS = true;

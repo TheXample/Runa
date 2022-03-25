@@ -81,6 +81,7 @@ public class Main {
                     }
                     case HEALING: {
                         main.heal();
+                        game.enterRoom();
                         main.printStage(game.getCurrentRoom(), game.getCurrentFloor());
                         break;
                     }
@@ -95,6 +96,7 @@ public class Main {
                     }
                     case BOSSWIN: {
                         main.printUpgrade();
+                        main.heal();
                         break;
                     }
                     default: {
@@ -104,9 +106,6 @@ public class Main {
             }
         } catch (IOException ignored) {
 
-        }
-        if (Statemachine.getCurrentState().equals(GameState.LOST)) {
-            System.out.println("Runa dies");
         }
         if (Statemachine.getCurrentState().equals(GameState.WIN)) {
             System.out.println("Runa wins");
@@ -136,13 +135,13 @@ public class Main {
     private void heal() throws IOException {
         double damage = Runa.getMaxhealth() - game.getRuna().getHealthPoints();
         int amount = (int) Math.ceil(damage / TEN);
-        if (amount > ZERO) {
+        if (amount > ZERO && game.getRuna().getAbilities().size() > 1) {
             System.out.println(printRuna(game.getRuna(), false) + " can discard ability cards for healing (or none)");
             getRunasAbilities();
             List<Integer> selected = selectMultiTarget(
                     game.getRuna().getAbilities().size(), amount, false, "numbers");
             List<Ability> found = new ArrayList<>();
-            for (int i = ONE; i <= game.getRuna().getAbilities().size(); i++) {
+            for (int i = ZERO; i <= game.getRuna().getAbilities().size(); i++) {
                 if (selected.contains(i)) {
                     found.add(game.getRuna().getAbilities().get(i));
                 }
@@ -155,7 +154,6 @@ public class Main {
                 System.out.println("Runa gains " + found.size() * TEN + " health");
             }
         }
-        game.enterRoom();
     }
 
     private void reward() throws IOException {
@@ -250,7 +248,6 @@ public class Main {
                 Monster current = game.getCurrentFight().get(target);
                 List<Integer> dmg = game.useMagicalAbility(game.getRuna(), game.getCurrentFight().get(target),
                         (MagicAbility) use);
-                printFocus();
                 if (use.getType().equals(AbilityType.OFFENSIVE)) {
                     printDamage(current, dmg.get(ZERO), use);
                 }
@@ -298,6 +295,8 @@ public class Main {
             }
             monster.rmTop();
         }
+        game.monsterTurnOver();
+        printFocus();
         printDeath(game.checkDead());
     }
 

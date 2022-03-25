@@ -139,13 +139,8 @@ public class Runa extends Character {
      * Upgrade abilities.
      */
     public void upgradeAbilities() {
-        for (Ability curr: abilities) {
-            for (Ability classAb: getClassAbilities(1)) {
-                if (classAb.equalsAbility(curr)) {
-                    curr.upgrade();
-                }
-            }
-        }
+        level++;
+        abilities.addAll(getClassAbilities(level));
     }
 
     /**
