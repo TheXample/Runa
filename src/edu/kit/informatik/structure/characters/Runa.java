@@ -199,4 +199,13 @@ public class Runa extends Character {
         }
         this.healthPoints = healthPoints;
     }
+
+    /**
+     * Gets maxhealth.
+     *
+     * @return the maxhealth
+     */
+    public static int getMaxhealth() {
+        return MAXHEALTH;
+    }
 }

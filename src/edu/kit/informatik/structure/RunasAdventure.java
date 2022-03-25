@@ -71,8 +71,8 @@ public class RunasAdventure {
     private void initMonster(long seed) {
         ArrayList<Monster> monsterList = new ArrayList<>();
         if (currentFloor == 1) {
-            monsterList = new ArrayList<>(List.of(new Frog(), new Ghost(), new Goblin(), new Gorgon(),
-                    new Mushroomlin(), new Skeleton(), new Rat(), new Spider()));
+            monsterList = new ArrayList<>(List.of(new Frog(), new Ghost(), new Gorgon(), new Skeleton(),
+                    new Spider(), new Goblin(), new Rat(), new Mushroomlin()));
         }
         if (currentFloor == 2) {
             monsterList = new ArrayList<>(List.of(new Snake(), new DarkElf(), new ShadowBlade(), new Hornet(),

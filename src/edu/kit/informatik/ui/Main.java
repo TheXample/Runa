@@ -128,7 +128,7 @@ public class Main {
     }
 
     private void heal() throws IOException {
-        double damage = 50 - game.getRuna().getHealthPoints();
+        double damage = Runa.getMaxhealth() - game.getRuna().getHealthPoints();
         int amount = (int) Math.ceil(damage / TEN);
         if (amount > ZERO) {
             System.out.println(printRuna(game.getRuna(), false) + " can discard ability cards for healing (or none)");
