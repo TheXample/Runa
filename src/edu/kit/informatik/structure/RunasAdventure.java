@@ -199,26 +199,13 @@ public class RunasAdventure {
                 monster.setLastMove(null);
             }
         }
-        if (curr.equals(GameState.MONSTERTURNTWO)) {
-            Monster monster = currentFight.get(0);
-            if (monster.getLastMove() != null && monster.getLastMove().getType().equals(AbilityType.FOCUS)) {
-                int focus = ((Focus) monster.getLastMove()).calculate(monster.getFocusPoints(), MagicType.NONE);
-                monster.setFocusPoints(monster.getFocusPoints() + focus);
-                monster.setLastMove(null);
-            }
-        }
         if (curr.equals(GameState.RUNATURN)) {
-            Monster monster;
-            if (currentFight.size() > 1) {
-                monster = currentFight.get(1);
-            }
-            else {
-                monster = currentFight.get(0);
-            }
-            if (monster.getLastMove() != null && monster.getLastMove().getType().equals(AbilityType.FOCUS)) {
-                int focus = ((Focus) monster.getLastMove()).calculate(monster.getFocusPoints(), MagicType.NONE);
-                monster.setFocusPoints(monster.getFocusPoints() + focus);
-                monster.setLastMove(null);
+            for (Monster monster: currentFight) {
+                if (monster.getLastMove() != null && monster.getLastMove().getType().equals(AbilityType.FOCUS)) {
+                    int focus = ((Focus) monster.getLastMove()).calculate(monster.getFocusPoints(), MagicType.NONE);
+                    monster.setFocusPoints(monster.getFocusPoints() + focus);
+                    monster.setLastMove(null);
+                }
             }
         }
 
