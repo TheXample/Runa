@@ -140,7 +140,6 @@ public class RunasAdventure {
      * @return the int
      */
     public int usePhysicalAbility(Character attacker, Character target, PhysicalAbility attack, int dice) {
-        //printFocus();
         int damage = 0;
         switch (attack.getType()) {
             case OFFENSIVE: {
@@ -209,27 +208,6 @@ public class RunasAdventure {
         return reti;
     }
 
-    private void printFocus() {
-        GameState curr = Statemachine.getCurrentState();
-        if (curr.equals(GameState.MONSTERBOSSFIGHT) || curr.equals(GameState.MONSTERTURNONE)) {
-            Character monster = runa;
-            if (monster.getLastMove() != null && monster.getLastMove().getType().equals(AbilityType.FOCUS)) {
-                int focus = ((Focus) monster.getLastMove()).calculate(monster.getFocusPoints(), MagicType.NONE);
-                monster.setFocusPoints(monster.getFocusPoints() + focus);
-                monster.setLastMove(null);
-            }
-        }
-        if (curr.equals(GameState.RUNATURN) || curr.equals(GameState.RUNABOSSFIGHT)) {
-            for (Monster monster: currentFight) {
-                if (monster.getLastMove() != null && monster.getLastMove().getType().equals(AbilityType.FOCUS)) {
-                    int focus = ((Focus) monster.getLastMove()).calculate(monster.getFocusPoints(), MagicType.NONE);
-                    monster.setFocusPoints(monster.getFocusPoints() + focus);
-                    monster.setLastMove(null);
-                }
-            }
-        }
-    }
-
     private int getOpponent(Character target) {
         for (int i = 0; i < currentFight.size(); i++) {
             if (target.equalsCharacter(currentFight.get(i))) {
@@ -264,7 +242,6 @@ public class RunasAdventure {
      */
     public List<Integer> useMagicalAbility(Character attacker, Character target, MagicAbility attack) {
         List<Integer> dmg = new ArrayList<>();
-        //printFocus();
         switch (attack.getType()) {
             case OFFENSIVE: {
                 if (!canCast(attacker, attack)) {

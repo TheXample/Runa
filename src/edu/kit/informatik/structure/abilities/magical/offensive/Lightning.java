@@ -30,7 +30,7 @@ public class Lightning extends MagicAbility {
 
     @Override
     public int calculate(int focusPoints, MagicType opposingType) {
-        if (opposingType.equals(MagicType.LIGHTNING)) {
+        if (opposingType.equals(MagicType.FIRE)) {
             return (2 * this.getAbilityLevel() + 5) * focusPoints + 2 + 2 * this.getAbilityLevel();
         }
         return (2 * this.getAbilityLevel() + 5) * focusPoints + 2;
