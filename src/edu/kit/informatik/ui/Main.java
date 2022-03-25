@@ -145,7 +145,7 @@ public class Main {
                 selected = selectMultiTarget(
                         game.getRuna().getAbilities().size(), amount, false, "numbers");
             } else {
-                selected.add(selectTarget(ONE));
+                selected.add(selectTarget(game.getRuna().getAbilities().size()));
             }
 
             List<Ability> found = new ArrayList<>();
