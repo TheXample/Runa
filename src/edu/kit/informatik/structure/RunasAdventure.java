@@ -84,8 +84,9 @@ public class RunasAdventure {
 
     private void initAbilities(long seed) {
         ArrayList<Ability> abilitiesList = new ArrayList<>(List.of(new Slash(currentFloor), new Swing(currentFloor),
-                new Thrust(currentFloor), new Pierce(currentFloor), new Parry(currentFloor), new Reflect(currentFloor),
-                new Water(currentFloor), new Ice(currentFloor), new Fire(currentFloor), new Lightning(currentFloor)));
+                new Thrust(currentFloor), new Pierce(currentFloor), new Parry(currentFloor), new Focus(currentFloor),
+                new Reflect(currentFloor), new Water(currentFloor), new Ice(currentFloor), new Fire(currentFloor),
+                new Lightning(currentFloor)));
 
         for (Ability ability: new ArrayList<>(abilitiesList)) {
             for (Ability classAb: runa.getClassAbilities(currentFloor)) {

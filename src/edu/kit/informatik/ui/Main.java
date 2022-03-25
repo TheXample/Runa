@@ -221,8 +221,8 @@ public class Main {
         getRunasAbilities();
         int pos = selectTarget(game.getRuna().getAbilities().size());
         Ability use = game.getRuna().getAbilities().get(pos);
-        int target = 0;
-        if (game.getCurrentFight().size() > 1 && use.getType().equals(AbilityType.OFFENSIVE)) {
+        int target = ZERO;
+        if (game.getCurrentFight().size() > ONE && use.getType().equals(AbilityType.OFFENSIVE)) {
             System.out.println("Select Runa's target.");
             getTargets();
             target = selectTarget(game.getCurrentFight().size());
@@ -230,7 +230,7 @@ public class Main {
         printUse(game.getRuna(), use);
         switch (use.getUsageType()) {
             case PHYSICAL: {
-                int dice = 0;
+                int dice = ZERO;
                 if (use.getType().equals(AbilityType.OFFENSIVE)) {
                     dice = enterDice();
                 }
@@ -248,7 +248,7 @@ public class Main {
                         (MagicAbility) use);
                 printFocus();
                 if (use.getType().equals(AbilityType.OFFENSIVE)) {
-                    printDamage(current, dmg.get(0), use);
+                    printDamage(current, dmg.get(ZERO), use);
                 }
                 break;
             }
