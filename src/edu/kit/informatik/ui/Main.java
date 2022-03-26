@@ -285,6 +285,8 @@ public class Main {
     private void monsterAttack() throws IOException {
         for (Monster monster: game.getCurrentFight()) {
             printFocus(monster);
+        }
+        for (Monster monster: game.getCurrentFight()) {
             printUse(monster, monster.getNextMove());
             switch (monster.getNextMove().getUsageType()) {
                 case PHYSICAL: {
