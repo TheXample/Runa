@@ -307,7 +307,7 @@ public class Main {
                 selected = selectMultiTarget(
                         game.getRuna().getAbilities().size(), amount, false, "numbers");
             } else {
-                int picked = selectTarget("numbers", game.getRuna().getAbilities().size(), false);
+                int picked = selectTarget("number", game.getRuna().getAbilities().size(), false);
                 if (picked != -ONE) {
                     selected.add(picked);
                 }
