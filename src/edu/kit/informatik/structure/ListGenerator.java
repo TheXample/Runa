@@ -35,8 +35,11 @@ import java.util.List;
 
 /**
  * The type List generator.
+ *
+ * @author Hanne
+ * @version 0.1
  */
-public class ListGenerator {
+public final class ListGenerator {
 
     private ListGenerator() {
 

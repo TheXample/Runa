@@ -6,7 +6,7 @@ package edu.kit.informatik.structure.states;
  * @author Hanne
  * @version 0.1
  */
-public class Statemachine {
+public final class Statemachine {
 
     private static GameState currentState = GameState.SHUFFLE;
 

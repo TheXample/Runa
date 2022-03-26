@@ -10,7 +10,7 @@ import java.util.List;
  * @author Hanne
  * @version 0.1
  */
-public class Parser {
+public final class Parser {
 
     private static final String REGEXSEED = "(([2][0,1][0-4][0-7][0-4][0-8][0-3][0-6][0-4][0-7])|"
             + "(([1][0-9])|([1-9]))([0-9]{0,8}))";
