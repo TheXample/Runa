@@ -16,6 +16,10 @@ public class Thrust extends PhysicalAbility {
 
     private static final String NAME = "Thrust";
 
+    private static final int SIX = 6;
+
+    private static final int FOUR = 4;
+
     /**
      * Instantiates a new Thrust.
      *
@@ -27,10 +31,10 @@ public class Thrust extends PhysicalAbility {
 
     @Override
     public int calculate(int dice) {
-        if (dice >= 6) {
-            return 6 * this.getAbilityLevel() + dice + 4 * this.getAbilityLevel();
+        if (dice >= SIX) {
+            return SIX * this.getAbilityLevel() + dice + FOUR * this.getAbilityLevel();
         }
-        return 6 * this.getAbilityLevel() + dice;
+        return SIX * this.getAbilityLevel() + dice;
     }
 
 }

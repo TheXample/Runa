@@ -15,6 +15,8 @@ public class Claw extends PhysicalAbility {
 
     private static final String NAME = "Claw";
 
+    private static final int SIX = 6;
+
     /**
      * Instantiates a new Claw.
      *
@@ -26,7 +28,7 @@ public class Claw extends PhysicalAbility {
 
     @Override
     public int calculate(int dice) {
-        return 6 * this.getAbilityLevel();
+        return SIX * this.getAbilityLevel();
     }
 
 }

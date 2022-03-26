@@ -15,6 +15,10 @@ public class Block extends PhysicalAbility {
 
     private static final String NAME = "Block";
 
+    private static final int ZERO = 0;
+
+    private static final int SEVEN = 7;
+
     /**
      * Instantiates a new Parry.
      *
@@ -26,10 +30,10 @@ public class Block extends PhysicalAbility {
 
     @Override
     public int calculate(int damage) {
-        if (damage >= 7 * getAbilityLevel()) {
-            return damage - 7 * getAbilityLevel();
+        if (damage >= SEVEN * getAbilityLevel()) {
+            return damage - SEVEN * getAbilityLevel();
         }
-        return 0;
+        return ZERO;
     }
 
 }

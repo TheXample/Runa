@@ -16,6 +16,10 @@ public class LightningMonster extends MagicAbility {
 
     private static final String NAME = "Lightning";
 
+    private static final int TWO = 2;
+
+    private static final int FOURTEEN = 14;
+
     /**
      * Instantiates a new Lightning monster.
      *
@@ -28,6 +32,6 @@ public class LightningMonster extends MagicAbility {
 
     @Override
     public int calculate(int focusPoints, MagicType opposingType) {
-        return 14 * this.getAbilityLevel() + 2;
+        return FOURTEEN * this.getAbilityLevel() + TWO;
     }
 }

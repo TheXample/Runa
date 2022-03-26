@@ -19,6 +19,10 @@ public class Fire extends MagicAbility {
 
     private static final int COST = 1;
 
+    private static final int TWO = 2;
+
+    private static final int FIVE = 5;
+
     /**
      * Instantiates a new Fire.
      *
@@ -31,8 +35,8 @@ public class Fire extends MagicAbility {
     @Override
     public int calculate(int focusPoints, MagicType opposingType) {
         if (opposingType.equals(MagicType.LIGHTNING)) {
-            return (2 * this.getAbilityLevel() + 5) * focusPoints + 2 * this.getAbilityLevel();
+            return (TWO * this.getAbilityLevel() + FIVE) * focusPoints + TWO * this.getAbilityLevel();
         }
-        return (2 * this.getAbilityLevel() + 5) * focusPoints;
+        return (TWO * this.getAbilityLevel() + FIVE) * focusPoints;
     }
 }

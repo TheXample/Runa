@@ -16,6 +16,10 @@ public class IceMonster extends MagicAbility {
 
     private static final String NAME = "Ice";
 
+    private static final int TWO = 2;
+
+    private static final int TEN = 10;
+
     /**
      * Instantiates a new Ice monster.
      *
@@ -28,6 +32,6 @@ public class IceMonster extends MagicAbility {
 
     @Override
     public int calculate(int focusPoints, MagicType opposingType) {
-        return 10 * this.getAbilityLevel() + 2;
+        return TEN * this.getAbilityLevel() + TWO;
     }
 }

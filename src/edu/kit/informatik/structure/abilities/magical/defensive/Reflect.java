@@ -19,6 +19,8 @@ public class Reflect extends MagicAbility {
 
     private static final int COST = 0;
 
+    private static final int TEN = 10;
+
     /**
      * Instantiates a new Reflect.
      *
@@ -30,8 +32,8 @@ public class Reflect extends MagicAbility {
 
     @Override
     public int calculate(int damage, MagicType opposingType) {
-        if (damage > 10 * this.getAbilityLevel()) {
-            return 10 * this.getAbilityLevel();
+        if (damage > TEN * this.getAbilityLevel()) {
+            return TEN * this.getAbilityLevel();
         }
         return damage;
     }

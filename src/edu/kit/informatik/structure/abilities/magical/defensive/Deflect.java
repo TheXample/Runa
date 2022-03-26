@@ -18,6 +18,12 @@ public class Deflect extends MagicAbility {
 
     private static final int COST = 0;
 
+    private static final int TWO = 2;
+
+    private static final int ELEVEN = 11;
+
+    private static final int TEN = 10;
+
     /**
      * Instantiates a new Deflect.
      *
@@ -28,10 +34,10 @@ public class Deflect extends MagicAbility {
     }
 
     @Override
-    public int calculate(int focusPoints, MagicType opposingType) {
-        if (focusPoints > 11 * this.getAbilityLevel() + 2) {
-            return focusPoints - 10 * this.getAbilityLevel();
+    public int calculate(int damage, MagicType opposingType) {
+        if (damage > ELEVEN * this.getAbilityLevel() + TWO) {
+            return damage - TEN * this.getAbilityLevel();
         }
-        return 0;
+        return COST;
     }
 }

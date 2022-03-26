@@ -16,6 +16,9 @@ public class FireMonster extends MagicAbility {
 
     private static final String NAME = "Fire";
 
+    private static final int TWELVE = 12;
+
+    private static final int TWO = 2;
 
     /**
      * Instantiates a new Fire monster.
@@ -29,6 +32,6 @@ public class FireMonster extends MagicAbility {
 
     @Override
     public int calculate(int focusPoints, MagicType opposingType) {
-        return 12 * this.getAbilityLevel() + 2;
+        return TWELVE * this.getAbilityLevel() + TWO;
     }
 }

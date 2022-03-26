@@ -60,8 +60,8 @@ public class RunasAdventure {
      * @param runaClass the runa class
      */
     public RunasAdventure(RunaType runaClass) {
-        currentFloor = 1;
-        currentRoom = 0;
+        currentFloor = ONE;
+        currentRoom = ZERO;
         runa = new Runa(runaClass);
         currentFight = new ArrayList<>();
         this.monsterStack = new LinkedList<>();
@@ -102,27 +102,27 @@ public class RunasAdventure {
      * Enter room.
      */
     public void enterRoom() {
-        if (currentRoom == 3) {
+        if (currentRoom == THREE) {
             currentFight = new ArrayList<>();
-            if (currentFloor == 1) {
+            if (currentFloor == ONE) {
                 currentFight.add(new SpiderKing());
             }
-            if (currentFloor == 2) {
+            if (currentFloor == TWO) {
                 currentFight.add(new MegaSaurus());
             }
             Statemachine.bossFight();
             currentRoom++;
             return;
         }
-        if (currentRoom == 0) {
+        if (currentRoom == ZERO) {
             currentRoom++;
         }
-        else if (currentRoom < 3) {
+        else if (currentRoom < THREE) {
             currentRoom++;
             currentFight.add(monsterStack.poll());
         }
-        else if (currentRoom == 4) {
-            currentRoom = 1;
+        else if (currentRoom == FOUR) {
+            currentRoom = ONE;
             currentFloor++;
         }
         currentFight.add(monsterStack.poll());
@@ -139,7 +139,7 @@ public class RunasAdventure {
      * @return the int
      */
     public int usePhysicalAbility(Character attacker, Character target, PhysicalAbility attack, int dice) {
-        int damage = 0;
+        int damage = ZERO;
         switch (attack.getType()) {
             case OFFENSIVE: {
                 if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
@@ -177,7 +177,7 @@ public class RunasAdventure {
      */
     public int checkChangeFocus(Character user) {
         boolean clear = false;
-        int reti = 0;
+        int reti = ZERO;
         if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
                 || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
             for (Monster monster:currentFight) {
@@ -213,11 +213,11 @@ public class RunasAdventure {
                 return i;
             }
         }
-        return -1;
+        return -ONE;
     }
 
     private int setPhysicalDamage(Character target, PhysicalAbility attack, int dice) {
-        int damage = 0;
+        int damage;
         if (target.getLastMove() != null && target.getLastMove().getType().equals(AbilityType.DEFENSIVE)
                 && target.getLastMove().getUsageType().equals(AbilityType.PHYSICAL)) {
             damage = target.getLastMove().calculate(attack.calculate(dice));
@@ -254,11 +254,11 @@ public class RunasAdventure {
                             && target.getLastMove().getUsageType().equals(AbilityType.MAGIC)) {
                         dmg.add(target.getLastMove().calculate(attack.calculate(runa.getFocusPoints(),
                                 targetMonster.getPrimaryType())));
-                        targetMonster.setHealthPoints(targetMonster.getHealthPoints() - dmg.get(0));
+                        targetMonster.setHealthPoints(targetMonster.getHealthPoints() - dmg.get(ZERO));
                     }
                     else {
                         dmg.add(attack.calculate(runa.getFocusPoints(), targetMonster.getPrimaryType()));
-                        targetMonster.setHealthPoints(targetMonster.getHealthPoints() - dmg.get(0));
+                        targetMonster.setHealthPoints(targetMonster.getHealthPoints() - dmg.get(ZERO));
                     }
                     currentFight.set(getOpponent(target), targetMonster);
                     attacker.setLastMove(null);
@@ -276,13 +276,13 @@ public class RunasAdventure {
                             dmg.add(target.getLastMove().calculate(attack.calculate(currentFight.get(
                                     getOpponent(attacker)).getFocusPoints(), MagicType.NONE)));
                         }
-                        target.setHealthPoints(target.getHealthPoints() - dmg.get(0));
+                        target.setHealthPoints(target.getHealthPoints() - dmg.get(ZERO));
                         target.setLastMove(null);
                     }
                     else {
                         dmg.add(attack.calculate(currentFight.get(getOpponent(attacker)).getFocusPoints(),
                                 MagicType.NONE));
-                        runa.setHealthPoints(runa.getHealthPoints() - dmg.get(0));
+                        runa.setHealthPoints(runa.getHealthPoints() - dmg.get(ZERO));
                     }
                 }
                 attacker.setFocusPoints(attacker.getFocusPoints() - attack.getCost());
@@ -306,8 +306,8 @@ public class RunasAdventure {
                 || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
             Statemachine.next();
         }
-        if (dmg.size() < 1) {
-            dmg.add(0);
+        if (dmg.size() < ONE) {
+            dmg.add(ZERO);
         }
         return dmg;
     }
@@ -340,7 +340,7 @@ public class RunasAdventure {
             Statemachine.lost();
             return runa;
         }
-        if (currentFight.size() == 0) {
+        if (currentFight.size() == ZERO) {
             Statemachine.fightWon();
         }
         return died;
@@ -363,18 +363,18 @@ public class RunasAdventure {
                     runa.addAbility(newAbility);
                 }
             }
-            if (choice == 2) {
+            if (choice == TWO) {
                 runa.upgradeDice();
             }
         }
         if (Statemachine.getCurrentState().equals(GameState.BOSSWIN)) {
             runa.upgradeAbilities();
-            if (currentFloor == 2) {
+            if (currentFloor == TWO) {
                 Statemachine.win();
                 return;
             }
-            currentFloor = 2;
-            currentRoom = 0;
+            currentFloor = TWO;
+            currentRoom = ZERO;
         }
         Statemachine.next();
     }
@@ -388,7 +388,7 @@ public class RunasAdventure {
         for (Ability toDiscard: discard) {
             runa.removeCard(toDiscard);
         }
-        runa.setHealthPoints(runa.getHealthPoints() + 10 * discard.size());
+        runa.setHealthPoints(runa.getHealthPoints() + TEN * discard.size());
     }
 
 

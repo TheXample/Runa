@@ -16,6 +16,10 @@ public class WaterMonster extends MagicAbility {
 
     private static final String NAME = "Water";
 
+    private static final int TWO = 2;
+
+    private static final int EIGHT = 8;
+
     /**
      * Instantiates a new Water monster.
      *
@@ -28,6 +32,6 @@ public class WaterMonster extends MagicAbility {
 
     @Override
     public int calculate(int focusPoints, MagicType opposingType) {
-        return 8 * this.getAbilityLevel() + 2;
+        return EIGHT * this.getAbilityLevel() + TWO;
     }
 }

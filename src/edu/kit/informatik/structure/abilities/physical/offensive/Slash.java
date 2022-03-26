@@ -16,6 +16,8 @@ public class Slash extends PhysicalAbility {
 
     private static final String NAME = "Slash";
 
+    private static final int FOUR = 4;
+
     /**
      * Instantiates a new Slash.
      *
@@ -27,7 +29,7 @@ public class Slash extends PhysicalAbility {
 
     @Override
     public int calculate(int dice) {
-        return 4 * this.getAbilityLevel() + dice;
+        return FOUR * this.getAbilityLevel() + dice;
     }
 
 }

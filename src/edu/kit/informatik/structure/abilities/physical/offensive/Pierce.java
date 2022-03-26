@@ -16,6 +16,12 @@ public class Pierce extends PhysicalAbility {
 
     private static final String NAME = "Pierce";
 
+    private static final int FIVE = 5;
+
+    private static final int SIX = 6;
+
+    private static final int SEVEN = 7;
+
     /**
      * Instantiates a new Pierce.
      *
@@ -27,10 +33,10 @@ public class Pierce extends PhysicalAbility {
 
     @Override
     public int calculate(int dice) {
-        if (dice >= 6) {
-            return 7 * this.getAbilityLevel() + dice + 5 * this.getAbilityLevel();
+        if (dice >= SIX) {
+            return SEVEN * this.getAbilityLevel() + dice + FIVE * this.getAbilityLevel();
         }
-        return 7 * this.getAbilityLevel() + dice;
+        return SEVEN * this.getAbilityLevel() + dice;
     }
 
 }

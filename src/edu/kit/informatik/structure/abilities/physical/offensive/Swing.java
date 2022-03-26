@@ -16,6 +16,8 @@ public class Swing extends PhysicalAbility {
 
     private static final String NAME = "Swing";
 
+    private static final int FIVE = 5;
+
     /**
      * Instantiates a new Swing.
      *
@@ -27,7 +29,7 @@ public class Swing extends PhysicalAbility {
 
     @Override
     public int calculate(int dice) {
-        return 5 * this.getAbilityLevel() + dice;
+        return FIVE * this.getAbilityLevel() + dice;
     }
 
 }

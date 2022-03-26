@@ -15,6 +15,8 @@ public class Scratch extends PhysicalAbility {
 
     private static final String NAME = "Scratch";
 
+    private static final int FIVE = 5;
+
     /**
      * Instantiates a new Scratch.
      *
@@ -26,7 +28,7 @@ public class Scratch extends PhysicalAbility {
 
     @Override
     public int calculate(int dice) {
-        return 5 * this.getAbilityLevel();
+        return FIVE * this.getAbilityLevel();
     }
 
 }

@@ -15,6 +15,8 @@ public class Smash extends PhysicalAbility {
 
     private static final String NAME = "Smash";
 
+    private static final int EIGHT = 8;
+
     /**
      * Instantiates a new Smash.
      *
@@ -26,7 +28,7 @@ public class Smash extends PhysicalAbility {
 
     @Override
     public int calculate(int dice) {
-        return 8 * this.getAbilityLevel();
+        return EIGHT * this.getAbilityLevel();
     }
 
 }

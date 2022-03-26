@@ -19,6 +19,10 @@ public class Water extends MagicAbility {
 
     private static final int COST = 1;
 
+    private static final int TWO = 2;
+
+    private static final int FOUR = 4;
+
     /**
      * Instantiates a new Water.
      *
@@ -31,8 +35,8 @@ public class Water extends MagicAbility {
     @Override
     public int calculate(int focusPoints, MagicType opposingType) {
         if (opposingType.equals(MagicType.LIGHTNING)) {
-            return (2 * this.getAbilityLevel() + 4) * focusPoints + 2 * this.getAbilityLevel();
+            return (TWO * this.getAbilityLevel() + FOUR) * focusPoints + TWO * this.getAbilityLevel();
         }
-        return (2 * this.getAbilityLevel() + 4) * focusPoints;
+        return (TWO * this.getAbilityLevel() + FOUR) * focusPoints;
     }
 }

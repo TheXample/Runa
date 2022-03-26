@@ -15,6 +15,8 @@ public class Bite extends PhysicalAbility {
 
     private static final String NAME = "Bite";
 
+    private static final int TEN = 10;
+
     /**
      * Instantiates a new Bite.
      *
@@ -26,7 +28,7 @@ public class Bite extends PhysicalAbility {
 
     @Override
     public int calculate(int dice) {
-        return 10 * this.getAbilityLevel();
+        return TEN * this.getAbilityLevel();
     }
 
 }
