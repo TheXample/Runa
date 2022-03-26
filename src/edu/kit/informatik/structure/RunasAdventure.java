@@ -1,23 +1,18 @@
 package edu.kit.informatik.structure;
 
-import edu.kit.informatik.structure.abilities.*;
+import edu.kit.informatik.structure.abilities.Ability;
+import edu.kit.informatik.structure.abilities.AbilityType;
+import edu.kit.informatik.structure.abilities.MagicType;
+import edu.kit.informatik.structure.abilities.PhysicalAbility;
+import edu.kit.informatik.structure.abilities.MagicAbility;
 import edu.kit.informatik.structure.abilities.magical.Focus;
 import edu.kit.informatik.structure.abilities.magical.defensive.Reflect;
-import edu.kit.informatik.structure.abilities.magical.offensive.Fire;
-import edu.kit.informatik.structure.abilities.magical.offensive.Ice;
-import edu.kit.informatik.structure.abilities.magical.offensive.Lightning;
-import edu.kit.informatik.structure.abilities.magical.offensive.Water;
-import edu.kit.informatik.structure.abilities.physical.defensive.Parry;
-import edu.kit.informatik.structure.abilities.physical.offensive.Pierce;
-import edu.kit.informatik.structure.abilities.physical.offensive.Slash;
-import edu.kit.informatik.structure.abilities.physical.offensive.Swing;
-import edu.kit.informatik.structure.abilities.physical.offensive.Thrust;
 import edu.kit.informatik.structure.characters.Character;
 import edu.kit.informatik.structure.characters.Monster;
 import edu.kit.informatik.structure.characters.Runa;
 import edu.kit.informatik.structure.characters.RunaType;
-import edu.kit.informatik.structure.characters.monsters.one.*;
-import edu.kit.informatik.structure.characters.monsters.two.*;
+import edu.kit.informatik.structure.characters.monsters.one.SpiderKing;
+import edu.kit.informatik.structure.characters.monsters.two.MegaSaurus;
 import edu.kit.informatik.structure.states.GameState;
 import edu.kit.informatik.structure.states.Statemachine;
 
@@ -69,25 +64,13 @@ public class RunasAdventure {
     }
 
     private void initMonster(long seed) {
-        ArrayList<Monster> monsterList = new ArrayList<>();
-        if (currentFloor == 1) {
-            monsterList = new ArrayList<>(List.of(new Frog(), new Ghost(), new Gorgon(), new Skeleton(),
-                    new Spider(), new Goblin(), new Rat(), new Mushroomlin()));
-        }
-        if (currentFloor == 2) {
-            monsterList = new ArrayList<>(List.of(new Snake(), new DarkElf(), new ShadowBlade(), new Hornet(),
-                    new Tarantula(), new Bear(), new Mushroomlon(), new WildBoar()));
-        }
+        List<Monster> monsterList = ListGenerator.generateFloor(currentFloor);
         Collections.shuffle(monsterList, new Random(seed));
         monsterStack = new LinkedList<>(monsterList);
     }
 
     private void initAbilities(long seed) {
-        ArrayList<Ability> abilitiesList = new ArrayList<>(List.of(new Slash(currentFloor), new Swing(currentFloor),
-                new Thrust(currentFloor), new Pierce(currentFloor), new Parry(currentFloor), new Focus(currentFloor),
-                new Reflect(currentFloor), new Water(currentFloor), new Ice(currentFloor), new Fire(currentFloor),
-                new Lightning(currentFloor)));
-
+        List<Ability> abilitiesList = ListGenerator.generateAbilities(currentFloor);
         for (Ability ability: new ArrayList<>(abilitiesList)) {
             for (Ability classAb: runa.getClassAbilities(currentFloor)) {
                 if (classAb.equalsAbility(ability)) {
@@ -348,12 +331,7 @@ public class RunasAdventure {
     }
 
     private boolean canCast(Character caster, MagicAbility attack) {
-        if (caster.getFocusPoints() >= attack.getCost()) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return caster.getFocusPoints() >= attack.getCost();
     }
 
     /**

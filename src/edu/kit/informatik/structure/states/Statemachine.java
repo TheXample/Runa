@@ -10,6 +10,10 @@ public class Statemachine {
 
     private static GameState currentState = GameState.SHUFFLE;
 
+    private Statemachine() {
+
+    }
+
     /**
      * Next.
      */

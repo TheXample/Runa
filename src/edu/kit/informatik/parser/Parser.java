@@ -17,6 +17,10 @@ public class Parser {
 
     private static final int ISSEED = 2147483647;
 
+    private Parser() {
+
+    }
+
     /**
      * Get seeds int [ ].
      *

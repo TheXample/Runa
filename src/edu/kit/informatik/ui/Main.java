@@ -1,7 +1,10 @@
 package edu.kit.informatik.ui;
 
 import edu.kit.informatik.parser.Parser;
-import edu.kit.informatik.structure.abilities.*;
+import edu.kit.informatik.structure.abilities.Ability;
+import edu.kit.informatik.structure.abilities.AbilityType;
+import edu.kit.informatik.structure.abilities.MagicAbility;
+import edu.kit.informatik.structure.abilities.PhysicalAbility;
 import edu.kit.informatik.structure.abilities.magical.defensive.Reflect;
 import edu.kit.informatik.structure.characters.Character;
 import edu.kit.informatik.structure.characters.Monster;
@@ -107,7 +110,7 @@ public class Main {
                 }
             }
         } catch (IOException ignored) {
-
+            return;
         }
         if (Statemachine.getCurrentState().equals(GameState.WIN)) {
             System.out.println("Runa wins");
