@@ -68,13 +68,11 @@ public class Main {
                     }
                     case SHUFFLE: {
                         main.shuffle();
-                        game.enterRoom();
-                        main.printStage();
+                        main.enterRoom();
                         break;
                     }
                     case RUNATURN: {
-                        main.printFocus(game.getRuna());
-                        main.printLevel();
+                        main.nextStage();
                         main.runaAttack();
                         break;
                     }
@@ -88,13 +86,11 @@ public class Main {
                     }
                     case HEALING: {
                         main.heal();
-                        game.enterRoom();
-                        main.printStage();
+                        main.enterRoom();
                         break;
                     }
                     case RUNABOSSFIGHT: {
-                        main.printFocus(game.getRuna());
-                        main.printLevel();
+                        main.nextStage();
                         main.runaAttack();
                         break;
                     }
@@ -112,7 +108,7 @@ public class Main {
                     }
                 }
             }
-        } catch (IOException ignored) {
+        } catch (EndGameException ignored) {
             return;
         }
         if (Statemachine.getCurrentState().equals(GameState.WIN)) {
@@ -145,6 +141,16 @@ public class Main {
         System.out.println("To shuffle ability cards and monsters, enter two seeds");
         List<Integer> selected = selectMultiTarget(MAXSEED, TWO, true, "seeds");
         game.shuffleCards(selected.get(ONE), selected.get(ZERO));
+    }
+
+    private void enterRoom() {
+        game.enterRoom();
+        printStage();
+    }
+
+    private void nextStage() {
+        printFocus(game.getRuna().getName(), game.checkChangeFocus(game.getRuna()));
+        printLevel();
     }
 
     private void runaAttack() throws EndGameException {
@@ -190,7 +196,7 @@ public class Main {
 
     private void monsterAttack() throws EndGameException {
         for (Monster monster: game.getCurrentFight()) {
-            printFocus(monster);
+            printFocus(monster.getName(), game.checkChangeFocus(monster));
         }
         List<Monster> iterate = new ArrayList<>(game.getCurrentFight());
         for (Monster monster: iterate) {
@@ -418,10 +424,10 @@ public class Main {
         System.out.println(user.getName() + " uses " + printAbility(ability));
     }
 
-    private void printFocus(Character user) {
-        int focusChange = game.checkChangeFocus(user);
+    private void printFocus(String name, int focusChange) {
+        //int focusChange = game.checkChangeFocus(user);
         if (focusChange > ZERO) {
-            System.out.println(user.getName() + " gains " + focusChange + " focus");
+            System.out.println(name + " gains " + focusChange + " focus");
         }
     }
 
