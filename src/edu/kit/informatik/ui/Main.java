@@ -145,21 +145,25 @@ public class Main {
                 selected = selectMultiTarget(
                         game.getRuna().getAbilities().size(), amount, false, "numbers");
             } else {
-                selected.add(selectTarget(game.getRuna().getAbilities().size()));
+                int picked = selectTarget(game.getRuna().getAbilities().size(), false);
+                if (picked != -1) {
+                    selected.add(picked);
+                }
             }
-
             List<Ability> found = new ArrayList<>();
             for (int i = ZERO; i <= game.getRuna().getAbilities().size(); i++) {
                 if (selected.contains(i)) {
                     found.add(game.getRuna().getAbilities().get(i));
                 }
             }
-            game.heal(found);
-            if (damage < found.size() * TEN) {
-                System.out.println("Runa gains " + (int) damage + " health");
-            }
-            else {
-                System.out.println("Runa gains " + found.size() * TEN + " health");
+            if (found.size() > ZERO) {
+                game.heal(found);
+                if (damage < found.size() * TEN) {
+                    System.out.println("Runa gains " + (int) damage + " health");
+                }
+                else {
+                    System.out.println("Runa gains " + found.size() * TEN + " health");
+                }
             }
         }
     }
@@ -168,7 +172,7 @@ public class Main {
         System.out.println("Choose Runa's reward");
         System.out.println("1) new ability cards");
         System.out.println("2) next player dice");
-        int selected = selectTarget(TWO) + ONE;
+        int selected = selectTarget(TWO, true) + ONE;
         if (selected == 1) {
             List<Ability> drawnCards = new ArrayList<>();
             if (game.getCurrentRoom() == ONE) {
@@ -204,7 +208,7 @@ public class Main {
             picked = selectMultiTarget(rewards.size(), rewards.size() / 2, true, "numbers");
         }
         else {
-            picked.add(selectTarget(rewards.size()));
+            picked.add(selectTarget(rewards.size(), true));
         }
         for (Integer pick: picked) {
             selected.add(rewards.get(pick));
@@ -229,13 +233,13 @@ public class Main {
     private void runaAttack() throws IOException {
         System.out.println("Select card to play");
         getRunasAbilities();
-        int pos = selectTarget(game.getRuna().getAbilities().size());
+        int pos = selectTarget(game.getRuna().getAbilities().size(), true);
         Ability use = game.getRuna().getAbilities().get(pos);
         int target = ZERO;
         if (game.getCurrentFight().size() > ONE && use.getType().equals(AbilityType.OFFENSIVE)) {
             System.out.println("Select Runa's target.");
             getTargets();
-            target = selectTarget(game.getCurrentFight().size());
+            target = selectTarget(game.getCurrentFight().size(), true);
         }
         printUse(game.getRuna(), use);
         switch (use.getUsageType()) {
@@ -329,13 +333,16 @@ public class Main {
         return -ONE;
     }
 
-    private int selectTarget(int max) throws IOException {
+    private int selectTarget(int max, boolean hasToSelect) throws IOException {
         printSelect("number", max);
         int parsed = Parser.getSelected(READER.readLine(), max);
         if (parsed != -ONE) {
             return parsed - ONE;
         }
-        return selectTarget(max);
+        else if (!hasToSelect) {
+            return -1;
+        }
+        return selectTarget(max, hasToSelect);
     }
 
     private void printSelect(String type, int max) {
@@ -371,7 +378,7 @@ public class Main {
 
     private void init() throws IOException {
 
-        int choice = selectTarget(THREE);
+        int choice = selectTarget(THREE, true);
         if (choice == ZERO) {
             game = new RunasAdventure(RunaType.WARRIOR);
             return;
