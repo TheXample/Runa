@@ -1,20 +1,21 @@
 package edu.kit.informatik.structure;
 
-import edu.kit.informatik.structure.abilities.Ability;
-import edu.kit.informatik.structure.abilities.AbilityType;
-import edu.kit.informatik.structure.abilities.MagicType;
-import edu.kit.informatik.structure.abilities.PhysicalAbility;
-import edu.kit.informatik.structure.abilities.MagicAbility;
-import edu.kit.informatik.structure.abilities.magical.Focus;
-import edu.kit.informatik.structure.abilities.magical.defensive.Reflect;
-import edu.kit.informatik.structure.characters.Character;
-import edu.kit.informatik.structure.characters.Monster;
-import edu.kit.informatik.structure.characters.Runa;
-import edu.kit.informatik.structure.characters.RunaType;
-import edu.kit.informatik.structure.characters.monsters.one.SpiderKing;
-import edu.kit.informatik.structure.characters.monsters.two.MegaSaurus;
-import edu.kit.informatik.structure.states.GameState;
-import edu.kit.informatik.structure.states.Statemachine;
+import edu.kit.informatik.structure.card.abilities.Ability;
+import edu.kit.informatik.structure.card.abilities.AbilityType;
+import edu.kit.informatik.structure.card.abilities.MagicType;
+import edu.kit.informatik.structure.card.abilities.PhysicalAbility;
+import edu.kit.informatik.structure.card.abilities.MagicAbility;
+import edu.kit.informatik.structure.card.abilities.magical.Focus;
+import edu.kit.informatik.structure.card.abilities.magical.defensive.Reflect;
+import edu.kit.informatik.structure.card.characters.Character;
+import edu.kit.informatik.structure.card.characters.Monster;
+import edu.kit.informatik.structure.card.characters.Runa;
+import edu.kit.informatik.structure.card.characters.RunaType;
+import edu.kit.informatik.structure.card.characters.monsters.one.SpiderKing;
+import edu.kit.informatik.structure.card.characters.monsters.two.MegaSaurus;
+import edu.kit.informatik.util.states.GameState;
+import edu.kit.informatik.util.generator.ListGenerator;
+import edu.kit.informatik.util.states.Statemachine;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.List;
@@ -66,7 +67,10 @@ public class RunasAdventure {
         currentFight = new ArrayList<>();
         this.monsterStack = new LinkedList<>();
         this.abilities = new LinkedList<>();
+        Statemachine.next();
     }
+
+    //-----------------------------------------init functions-----------------------------------------------------------
 
     /**
      * Shuffle cards.
@@ -129,6 +133,8 @@ public class RunasAdventure {
         Statemachine.next();
     }
 
+    //--------------------------------------------fight functions-------------------------------------------------------
+
     /**
      * Use physical ability int.
      *
@@ -145,7 +151,6 @@ public class RunasAdventure {
                 if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
                         || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
                     damage = setPhysicalDamage(currentFight.get(getOpponent(target)), attack, dice);
-                    getOpponent(target);
                     break;
                 }
                 else {
@@ -167,53 +172,6 @@ public class RunasAdventure {
         }
         checkFocus(target, attack);
         return damage;
-    }
-
-    /**
-     * Check change focus int.
-     *
-     * @param user the user
-     * @return the int
-     */
-    public int checkChangeFocus(Character user) {
-        boolean clear = false;
-        int reti = ZERO;
-        if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
-                || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
-            for (Monster monster:currentFight) {
-                if (monster.getLastMove() != null && monster.getLastMove().isBreaksFocus()
-                        && runa.getLastMove() != null && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
-                    clear = false;
-                    break;
-                }
-                clear = true;
-            }
-            if (clear && runa.getLastMove() != null && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
-                reti = ((Focus) runa.getLastMove()).calculate(user.getFocusPoints(), MagicType.NONE);
-                runa.setFocusPoints(runa.getFocusPoints() + reti);
-            }
-        }
-        if (Statemachine.getCurrentState().equals(GameState.MONSTERTURNONE)
-                || Statemachine.getCurrentState().equals(GameState.MONSTERBOSSFIGHT)) {
-            if ((runa.getLastMove() == null || !runa.getLastMove().isBreaksFocus()) && user.getLastMove() != null
-                    && user.getLastMove().getType().equals(AbilityType.FOCUS)) {
-                clear = true;
-            }
-            if (clear && user.getLastMove() != null && user.getLastMove().getType().equals(AbilityType.FOCUS)) {
-                reti = ((Focus) user.getLastMove()).calculate(user.getFocusPoints(), MagicType.NONE);
-                user.setFocusPoints(user.getFocusPoints() + reti);
-            }
-        }
-        return reti;
-    }
-
-    private int getOpponent(Character target) {
-        for (int i = 0; i < currentFight.size(); i++) {
-            if (target.equalsCharacter(currentFight.get(i))) {
-                return i;
-            }
-        }
-        return -ONE;
     }
 
     private int setPhysicalDamage(Character target, PhysicalAbility attack, int dice) {
@@ -249,45 +207,13 @@ public class RunasAdventure {
                 }
                 if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
                         || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
-                    Monster targetMonster = currentFight.get(getOpponent(target));
-                    if (target.getLastMove() != null && target.getLastMove().getType().equals(AbilityType.DEFENSIVE)
-                            && target.getLastMove().getUsageType().equals(AbilityType.MAGIC)) {
-                        dmg.add(target.getLastMove().calculate(attack.calculate(runa.getFocusPoints(),
-                                targetMonster.getPrimaryType())));
-                        targetMonster.setHealthPoints(targetMonster.getHealthPoints() - dmg.get(ZERO));
-                    }
-                    else {
-                        dmg.add(attack.calculate(runa.getFocusPoints(), targetMonster.getPrimaryType()));
-                        targetMonster.setHealthPoints(targetMonster.getHealthPoints() - dmg.get(ZERO));
-                    }
-                    currentFight.set(getOpponent(target), targetMonster);
-                    attacker.setLastMove(null);
+                    dmg = setMagicalDamage(runa, currentFight.get(getOpponent(target)), attack);
                 }
                 else {
-                    if (target.getLastMove() != null && target.getLastMove().getType().equals(AbilityType.DEFENSIVE)
-                            && target.getLastMove().getUsageType().equals(AbilityType.MAGIC)) {
-                        if (target.getLastMove().getName().equals("Reflect")) {
-                            int attackDmg = attack.calculate(attacker.getFocusPoints(), MagicType.NONE);
-                            dmg.add(attackDmg - ((Reflect) target.getLastMove()).calculate(attackDmg, MagicType.NONE));
-                            dmg.add(((Reflect) target.getLastMove()).calculate(attackDmg, MagicType.NONE));
-                            attacker.setHealthPoints(attacker.getHealthPoints() - dmg.get(dmg.size() - 1));
-                        }
-                        else {
-                            dmg.add(target.getLastMove().calculate(attack.calculate(currentFight.get(
-                                    getOpponent(attacker)).getFocusPoints(), MagicType.NONE)));
-                        }
-                        target.setHealthPoints(target.getHealthPoints() - dmg.get(ZERO));
-                        target.setLastMove(null);
-                    }
-                    else {
-                        dmg.add(attack.calculate(currentFight.get(getOpponent(attacker)).getFocusPoints(),
-                                MagicType.NONE));
-                        runa.setHealthPoints(runa.getHealthPoints() - dmg.get(ZERO));
-                    }
+                    dmg = setMagicalDamage(attacker, runa, attack);
                 }
-                attacker.setFocusPoints(attacker.getFocusPoints() - attack.getCost());
-                checkFocus(target, attack);
-                attacker.setLastMove(null);
+                attacker.setFocusPoints(attacker.getFocusPoints() - attack.getCost()); //reduces the focus points
+                attacker.setLastMove(null); //sets the last move of the attacker to null
                 break;
             }
             case DEFENSIVE: {
@@ -312,15 +238,81 @@ public class RunasAdventure {
         return dmg;
     }
 
+    private List<Integer> setMagicalDamage(Character attacker, Character defender, MagicAbility attack) {
+        List<Integer> dmg = new ArrayList<>();
+        if (defender.getLastMove() != null && defender.getLastMove().getType().equals(AbilityType.DEFENSIVE)
+                && defender.getLastMove().getUsageType().equals(AbilityType.MAGIC)) { //if lastmove is def.
+            if (defender.getLastMove().getName().equals("Reflect")) { //if lastmove is reflect
+                int attackDmg = attack.calculate(attacker.getFocusPoints(), MagicType.NONE); //attack damage
+                dmg.add(attackDmg - ((Reflect) defender.getLastMove()).calculate(
+                        attackDmg, MagicType.NONE)); //calculates the damage to the target
+                dmg.add(((Reflect) defender.getLastMove()).calculate(
+                        attackDmg, MagicType.NONE)); //calculates the damage to the attacker
+                attacker.setHealthPoints(attacker.getHealthPoints() - dmg.get(dmg.size() - ONE));
+            }
+            else { //calculates the damage normal as damage with a defensive ability
+                dmg.add(defender.getLastMove().calculate(attack.calculate(attacker.getFocusPoints(), MagicType.NONE)));
+            }
+            defender.setHealthPoints(defender.getHealthPoints() - dmg.get(ZERO)); //sets health of the target
+            defender.setLastMove(null); //sets the last move of the target to null
+        }
+        else { //calculates the damage without medigation
+            dmg.add(attack.calculate(attacker.getFocusPoints(),
+                    MagicType.NONE));
+            defender.setHealthPoints(defender.getHealthPoints() - dmg.get(ZERO));
+        }
+        return dmg;
+    }
+
+    /**
+     * Check change focus int.
+     *
+     * @param user the user
+     * @return the int
+     */
+    public int checkChangeFocus(Character user) {
+        boolean clear = false;
+        int reti = ZERO;
+        if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
+                || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
+            for (Monster monster:currentFight) {
+                if (monster.getLastMove() != null && monster.getLastMove().isBreaksFocus()
+                        && runa.getLastMove() != null && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
+                    clear = false;
+                    break;
+                }
+                clear = true;
+            }
+            if (clear && runa.getLastMove() != null && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
+                reti = ((Focus) runa.getLastMove()).calculate(user.getFocusPoints(), MagicType.NONE);
+                runa.setFocusPoints(runa.getFocusPoints() + reti);
+            }
+        }
+        if (Statemachine.getCurrentState().equals(GameState.MONSTERTURN)
+                || Statemachine.getCurrentState().equals(GameState.MONSTERBOSSFIGHT)) {
+            if ((runa.getLastMove() == null || !runa.getLastMove().isBreaksFocus()) && user.getLastMove() != null
+                    && user.getLastMove().getType().equals(AbilityType.FOCUS)) {
+                clear = true;
+            }
+            if (clear && user.getLastMove() != null && user.getLastMove().getType().equals(AbilityType.FOCUS)) {
+                reti = ((Focus) user.getLastMove()).calculate(user.getFocusPoints(), MagicType.NONE);
+                user.setFocusPoints(user.getFocusPoints() + reti);
+            }
+        }
+        return reti;
+    }
+
     /**
      * Monster turn over.
      */
     public void monsterTurnOver() {
-        if (Statemachine.getCurrentState().equals(GameState.MONSTERTURNONE)
+        if (Statemachine.getCurrentState().equals(GameState.MONSTERTURN)
              || Statemachine.getCurrentState().equals(GameState.MONSTERBOSSFIGHT)) {
             Statemachine.next();
         }
     }
+
+    //-------------------------------------------after fight functions--------------------------------------------------
 
     /**
      * Check dead.
@@ -335,7 +327,6 @@ public class RunasAdventure {
                 currentFight.remove(chara);
             }
         }
-        currentFight.removeIf(Character::isDead);
         if (runa.isDead()) {
             Statemachine.lost();
             return runa;
@@ -344,10 +335,6 @@ public class RunasAdventure {
             Statemachine.fightWon();
         }
         return died;
-    }
-
-    private boolean canCast(Character caster, MagicAbility attack) {
-        return caster.getFocusPoints() >= attack.getCost();
     }
 
     /**
@@ -391,6 +378,7 @@ public class RunasAdventure {
         runa.setHealthPoints(runa.getHealthPoints() + TEN * discard.size());
     }
 
+    //-----------------------------------------private helper functions-------------------------------------------------
 
     private void checkFocus(Character target, Ability attack) {
         if (attack.isBreaksFocus() && target.getLastMove() != null
@@ -398,6 +386,21 @@ public class RunasAdventure {
             target.setLastMove(null);
         }
     }
+
+    private int getOpponent(Character target) {
+        for (int i = 0; i < currentFight.size(); i++) {
+            if (target.equalsCharacter(currentFight.get(i))) {
+                return i;
+            }
+        }
+        return -ONE;
+    }
+
+    private boolean canCast(Character caster, MagicAbility attack) {
+        return caster.getFocusPoints() >= attack.getCost();
+    }
+
+    //----------------------------------------------getters-------------------------------------------------------------
 
     /**
      * Gets runa.
@@ -431,7 +434,7 @@ public class RunasAdventure {
      *
      * @return the state
      */
-    public GameState getState() {
+    public static GameState getState() {
         return Statemachine.getCurrentState();
     }
 
