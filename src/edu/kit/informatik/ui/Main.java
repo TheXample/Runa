@@ -163,7 +163,7 @@ public class Main {
             case PHYSICAL: {
                 int dice = ZERO;
                 if (use.getType().equals(AbilityType.OFFENSIVE)) {
-                    dice = selectTarget("dice roll", game.getRuna().getDice().getValue(), true);
+                    dice = selectTarget("dice roll", game.getRuna().getDice().getValue(), true) + ONE;
                 }
                 int dmg = game.usePhysicalAbility(game.getRuna(), game.getCurrentFight().get(target),
                         (PhysicalAbility) use, dice);
