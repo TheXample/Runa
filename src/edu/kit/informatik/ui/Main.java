@@ -134,6 +134,9 @@ public class Main {
             }
             case TWO: {
                 game = new RunasAdventure(RunaType.PALADIN);
+                return;
+            }
+            default: {
             }
         }
     }
