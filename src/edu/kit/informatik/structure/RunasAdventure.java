@@ -182,8 +182,8 @@ public class RunasAdventure {
         if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
                 || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
             for (Monster monster:currentFight) {
-                if (monster.getNextMove().isBreaksFocus() && runa.getLastMove() != null
-                        && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
+                if (monster.getLastMove() != null && monster.getLastMove().isBreaksFocus()
+                        && runa.getLastMove() != null && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
                     clear = false;
                     break;
                 }
