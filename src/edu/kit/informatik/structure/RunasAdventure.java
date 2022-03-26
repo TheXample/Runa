@@ -15,7 +15,6 @@ import edu.kit.informatik.structure.characters.monsters.one.SpiderKing;
 import edu.kit.informatik.structure.characters.monsters.two.MegaSaurus;
 import edu.kit.informatik.structure.states.GameState;
 import edu.kit.informatik.structure.states.Statemachine;
-
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.List;
@@ -30,6 +29,18 @@ import java.util.Random;
  * @version 0.1
  */
 public class RunasAdventure {
+
+    private static final int ZERO = 0;
+
+    private static final int ONE = 1;
+
+    private static final int TWO = 2;
+
+    private static final int THREE = 3;
+
+    private static final int FOUR = 4;
+
+    private static final int TEN = 10;
 
     private final Runa runa;
 

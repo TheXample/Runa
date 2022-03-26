@@ -140,7 +140,10 @@ public class Main {
     private void heal() throws IOException {
         double damage = Runa.getMaxhealth() - game.getRuna().getHealthPoints();
         int amount = (int) Math.ceil(damage / TEN);
-        if (amount > ZERO && game.getRuna().getAbilities().size() > 1) {
+        if (amount == game.getRuna().getAbilities().size()) {
+            amount--;
+        }
+        if (amount > ZERO && game.getRuna().getAbilities().size() > ONE) {
             System.out.println(printRuna(game.getRuna(), false) + " can discard ability cards for healing (or none)");
             getRunasAbilities();
             List<Integer> selected = new ArrayList<>();
@@ -149,7 +152,7 @@ public class Main {
                         game.getRuna().getAbilities().size(), amount, false, "numbers");
             } else {
                 int picked = selectTarget(game.getRuna().getAbilities().size(), false);
-                if (picked != -1) {
+                if (picked != -ONE) {
                     selected.add(picked);
                 }
             }
@@ -311,10 +314,13 @@ public class Main {
                     break;
                 }
             }
+            printDeath(game.checkDead());
+            if (Statemachine.getCurrentState().equals(GameState.LOST)) {
+                return;
+            }
             monster.rmTop();
         }
         game.monsterTurnOver();
-        printDeath(game.checkDead());
     }
 
     private void printDamage(Character target, int damage, Ability ability) {
