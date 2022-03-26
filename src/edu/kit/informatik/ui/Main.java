@@ -1,5 +1,6 @@
 package edu.kit.informatik.ui;
 
+import edu.kit.informatik.util.parser.EndGameException;
 import edu.kit.informatik.util.parser.Parser;
 import edu.kit.informatik.structure.card.abilities.Ability;
 import edu.kit.informatik.structure.card.abilities.AbilityType;
@@ -121,8 +122,8 @@ public class Main {
 
     //-----------------------------------private primary functions------------------------------------------------------
 
-    private void init() throws IOException {
-        switch (selectTarget(THREE, true)) {
+    private void init() throws EndGameException {
+        switch (selectTarget("number", THREE, true)) {
             case ZERO: {
                 game = new RunasAdventure(RunaType.WARRIOR);
                 return;
@@ -137,35 +138,34 @@ public class Main {
         }
     }
 
-    private void shuffle() throws IOException {
+    private void shuffle() throws EndGameException {
         System.out.println("To shuffle ability cards and monsters, enter two seeds");
         List<Integer> selected = selectMultiTarget(MAXSEED, TWO, true, "seeds");
         game.shuffleCards(selected.get(ONE), selected.get(ZERO));
     }
 
-    private void runaAttack() throws IOException {
+    private void runaAttack() throws EndGameException {
         System.out.println("Select card to play");
         printAbilities();
-        int pos = selectTarget(game.getRuna().getAbilities().size(), true);
-        Ability use = game.getRuna().getAbilities().get(pos);
+        Ability use = game.getRuna().getAbilities().get(
+                selectTarget("number", game.getRuna().getAbilities().size(), true));
         int target = ZERO;
         if (game.getCurrentFight().size() > ONE && use.getType().equals(AbilityType.OFFENSIVE)) {
             System.out.println("Select Runa's target.");
             printTargets();
-            target = selectTarget(game.getCurrentFight().size(), true);
+            target = selectTarget("number", game.getCurrentFight().size(), true);
         }
         printUse(game.getRuna(), use);
         switch (use.getUsageType()) {
             case PHYSICAL: {
                 int dice = ZERO;
                 if (use.getType().equals(AbilityType.OFFENSIVE)) {
-                    dice = enterDice();
+                    dice = selectTarget("dice roll", game.getRuna().getDice().getValue(), true);
                 }
-                Monster current = game.getCurrentFight().get(target);
                 int dmg = game.usePhysicalAbility(game.getRuna(), game.getCurrentFight().get(target),
                         (PhysicalAbility) use, dice);
                 if (use.getType().equals(AbilityType.OFFENSIVE)) {
-                    printDamage(current, dmg, use);
+                    printDamage(game.getCurrentFight().get(target), dmg, use);
                 }
                 break;
             }
@@ -185,7 +185,7 @@ public class Main {
         printDeath(game.checkDead());
     }
 
-    private void monsterAttack() throws IOException {
+    private void monsterAttack() throws EndGameException {
         for (Monster monster: game.getCurrentFight()) {
             printFocus(monster);
         }
@@ -234,11 +234,11 @@ public class Main {
         }
     }
 
-    private void reward() throws IOException {
+    private void reward() throws EndGameException {
         System.out.println("Choose Runa's reward");
         System.out.println("1) new ability cards");
         System.out.println("2) next player dice");
-        int selected = selectTarget(TWO, true) + ONE;
+        int selected = selectTarget("number", TWO, true) + ONE;
         if (selected == 1) {
             List<Ability> drawnCards = new ArrayList<>();
             if (game.getCurrentRoom() == ONE) {
@@ -266,7 +266,7 @@ public class Main {
         }
     }
 
-    private List<Ability> selectReward(List<Ability> rewards) throws IOException {
+    private List<Ability> selectReward(List<Ability> rewards) throws EndGameException {
         List<Ability> selected = new ArrayList<>();
         int sizeRewards = rewards.size();
         if (sizeRewards % TWO != ZERO) {
@@ -281,7 +281,7 @@ public class Main {
             picked = selectMultiTarget(rewards.size(), sizeRewards / 2, true, "numbers");
         }
         else {
-            picked.add(selectTarget(rewards.size(), true));
+            picked.add(selectTarget("number", rewards.size(), true));
         }
         for (Integer pick: picked) {
             selected.add(rewards.get(pick));
@@ -289,21 +289,22 @@ public class Main {
         return selected;
     }
 
-    private void heal() throws IOException {
+    private void heal() throws EndGameException {
         double damage = Runa.getMaxhealth() - game.getRuna().getHealthPoints();
         int amount = (int) Math.ceil(damage / TEN);
         if (amount == game.getRuna().getAbilities().size()) {
             amount--;
         }
         if (amount > ZERO && game.getRuna().getAbilities().size() > ONE) {
-            System.out.println(printRuna(game.getRuna(), false) + " can discard ability cards for healing (or none)");
+            System.out.println(printRuna(game.getRuna(), false)
+                    + " can discard ability cards for healing (or none)");
             printAbilities();
             List<Integer> selected = new ArrayList<>();
             if (game.getRuna().getAbilities().size() > TWO) {
                 selected = selectMultiTarget(
                         game.getRuna().getAbilities().size(), amount, false, "numbers");
             } else {
-                int picked = selectTarget(game.getRuna().getAbilities().size(), false);
+                int picked = selectTarget("numbers", game.getRuna().getAbilities().size(), false);
                 if (picked != -ONE) {
                     selected.add(picked);
                 }
@@ -326,33 +327,33 @@ public class Main {
         }
     }
 
-    //------------------------------------private helper functions------------------------------------------------------
+    //------------------------------------private input functions------------------------------------------------------
 
-    private int enterDice() throws IOException {
-        printSelect("dice roll", game.getRuna().getDice().getValue());
-        int parsed = Parser.getSelected(READER.readLine(), game.getRuna().getDice().getValue());
-        if (parsed != -ONE) {
-            return parsed;
+    private int selectTarget(String name, int max, boolean hasToSelect) throws EndGameException {
+        printSelect(name, max);
+        int parsed;
+        try {
+            parsed = Parser.getSelected(READER.readLine(), max);
+        } catch (IOException ex) {
+            return selectTarget("number", max, hasToSelect);
         }
-        enterDice();
-        return -ONE;
-    }
-
-    private int selectTarget(int max, boolean hasToSelect) throws IOException {
-        printSelect("number", max);
-        int parsed = Parser.getSelected(READER.readLine(), max);
         if (parsed != -ONE) {
             return parsed - ONE;
         }
         else if (!hasToSelect) {
             return -1;
         }
-        return selectTarget(max, hasToSelect);
+        return selectTarget("number", max, hasToSelect);
     }
 
-    private List<Integer> selectMultiTarget(int max, int amount, boolean exact, String name) throws IOException {
+    private List<Integer> selectMultiTarget(int max, int amount, boolean exact, String name) throws EndGameException {
         System.out.println("Enter " + name + " [1--" + max + "] separated by comma:");
-        List<Integer> parsed = Parser.parseMulti(READER.readLine(), max);
+        List<Integer> parsed = new ArrayList<>();
+        try {
+            parsed = Parser.parseMulti(READER.readLine(), max);
+        } catch (IOException ex) {
+            selectMultiTarget(max, amount, exact, name);
+        }
         if (parsed != null && parsed.size() == amount) {
             return parsed;
         }

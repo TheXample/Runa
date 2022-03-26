@@ -28,7 +28,7 @@ public final class Parser {
      * @return the int [ ]
      * @throws IOException the io exception
      */
-    public static int[] getSeeds(String input) throws IOException {
+    public static int[] getSeeds(String input) throws EndGameException {
         if (input.matches(REGEXSEED + "[,]" + REGEXSEED)) {
             String[] split = input.split("[,]");
             int[] seeds = new int[2];
@@ -49,7 +49,7 @@ public final class Parser {
      * @return the selected
      * @throws IOException the io exception
      */
-    public static int getSelected(String input, int max) throws IOException {
+    public static int getSelected(String input, int max) throws EndGameException {
         if (input.matches("[1-9][0-9]*")) {
             if (Integer.parseInt(input) > max) {
                 return -1;
@@ -60,9 +60,9 @@ public final class Parser {
         return -1;
     }
 
-    private static void checkQuit(String input) throws IOException {
+    private static void checkQuit(String input) throws EndGameException {
         if (input.equals("quit")) {
-            throw new IOException();
+            throw new EndGameException();
         }
     }
 
@@ -74,7 +74,7 @@ public final class Parser {
      * @return the list
      * @throws IOException the io exception
      */
-    public static List<Integer> parseMulti(String input, int max) throws IOException {
+    public static List<Integer> parseMulti(String input, int max) throws EndGameException {
         if (input.equals("")) {
             return List.of(-1);
         }
