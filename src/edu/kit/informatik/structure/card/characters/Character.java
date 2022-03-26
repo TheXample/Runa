@@ -118,6 +118,11 @@ public class Character extends Card {
         this.lastMove = lastMove;
     }
 
+    /**
+     * Gets primary type.
+     *
+     * @return the primary type
+     */
     public MagicType getPrimaryType() {
         return primaryType;
     }
