@@ -245,20 +245,21 @@ public class RunasAdventure {
             if (defender.getLastMove().getName().equals("Reflect")) { //if lastmove is reflect
                 int attackDmg = attack.calculate(attacker.getFocusPoints(), MagicType.NONE); //attack damage
                 dmg.add(attackDmg - ((Reflect) defender.getLastMove()).calculate(
-                        attackDmg, MagicType.NONE)); //calculates the damage to the target
+                        attackDmg, defender.getPrimaryType())); //calculates the damage to the target
                 dmg.add(((Reflect) defender.getLastMove()).calculate(
-                        attackDmg, MagicType.NONE)); //calculates the damage to the attacker
+                        attackDmg, defender.getPrimaryType())); //calculates the damage to the attacker
                 attacker.setHealthPoints(attacker.getHealthPoints() - dmg.get(dmg.size() - ONE));
             }
             else { //calculates the damage normal as damage with a defensive ability
-                dmg.add(defender.getLastMove().calculate(attack.calculate(attacker.getFocusPoints(), MagicType.NONE)));
+                dmg.add(defender.getLastMove().calculate(
+                        attack.calculate(attacker.getFocusPoints(), defender.getPrimaryType())));
             }
             defender.setHealthPoints(defender.getHealthPoints() - dmg.get(ZERO)); //sets health of the target
             defender.setLastMove(null); //sets the last move of the target to null
         }
         else { //calculates the damage without medigation
             dmg.add(attack.calculate(attacker.getFocusPoints(),
-                    MagicType.NONE));
+                    defender.getPrimaryType()));
             defender.setHealthPoints(defender.getHealthPoints() - dmg.get(ZERO));
         }
         return dmg;

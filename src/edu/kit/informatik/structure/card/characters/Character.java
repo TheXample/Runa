@@ -2,6 +2,7 @@ package edu.kit.informatik.structure.card.characters;
 
 import edu.kit.informatik.structure.card.abilities.Ability;
 import edu.kit.informatik.structure.card.Card;
+import edu.kit.informatik.structure.card.abilities.MagicType;
 
 /**
  * The type Character.
@@ -23,17 +24,21 @@ public class Character extends Card {
 
     private Ability lastMove;
 
+    private final MagicType primaryType;
+
     /**
      * Instantiates a new Character.
      *
      * @param name         the name
      * @param healthPoints the health points
      * @param focusPoints  the focus points
+     * @param primaryType  the primary type
      */
-    public Character(String name, int healthPoints, int focusPoints) {
+    public Character(String name, int healthPoints, int focusPoints, MagicType primaryType) {
         super(name);
         this.healthPoints = healthPoints;
         this.focusPoints = focusPoints;
+        this.primaryType = primaryType;
         lastMove = null;
     }
 
@@ -111,5 +116,9 @@ public class Character extends Card {
      */
     public void setLastMove(Ability lastMove) {
         this.lastMove = lastMove;
+    }
+
+    public MagicType getPrimaryType() {
+        return primaryType;
     }
 }

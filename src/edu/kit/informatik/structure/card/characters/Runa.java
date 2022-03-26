@@ -1,6 +1,7 @@
 package edu.kit.informatik.structure.card.characters;
 
 import edu.kit.informatik.structure.card.abilities.Ability;
+import edu.kit.informatik.structure.card.abilities.MagicType;
 import edu.kit.informatik.structure.card.abilities.magical.Focus;
 import edu.kit.informatik.structure.card.abilities.magical.defensive.Reflect;
 import edu.kit.informatik.structure.card.abilities.magical.offensive.Water;
@@ -26,6 +27,8 @@ public class Runa extends Character {
 
     private static final String NAME = "Runa";
 
+    private static final MagicType PRIMARYTYPE = MagicType.NONE;
+
     private int maxFocus;
 
     private DiceType dice;
@@ -42,7 +45,7 @@ public class Runa extends Character {
      * @param runaClass the runa class
      */
     public Runa(RunaType runaClass) {
-        super(NAME, MAXHEALTH , MINFOCUS);
+        super(NAME, MAXHEALTH , MINFOCUS, PRIMARYTYPE);
         this.dice = DiceType.D_FOUR;
         this.maxFocus = dice.getValue();
         this.runaClass = runaClass;
