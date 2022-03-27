@@ -162,9 +162,11 @@ public class Main {
             case PHYSICAL: {
                 int dice = ZERO;
                 if (use.getType().equals(AbilityType.OFFENSIVE)) { //if needed gets a dice roll of the player
-                    dice = Terminal.selectTarget("dice roll", game.getRuna().getDice().getValue(), true) + ONE;
+                    dice = Terminal.selectTarget("dice roll", game.getRuna().getDice().getValue(), true)
+                            + ONE;
                 }
-                Terminal.printDamage(game.getCurrentFight().get(target), game.usePhysicalAbility(game.getRuna(), game.getCurrentFight().get(target),
+                Terminal.printDamage(game.getCurrentFight().get(target), game.usePhysicalAbility(game.getRuna(),
+                        game.getCurrentFight().get(target),
                         (PhysicalAbility) use, dice), use); //calculates and prints the damage of the attack
                 break;
             }
