@@ -84,29 +84,29 @@ public class RunasAdventure {
     }
 
     private void initMonster(long seed) {
-        List<Monster> monsterList = ListGenerator.generateFloor(currentFloor);
-        Collections.shuffle(monsterList, new Random(seed));
-        monsterStack = new LinkedList<>(monsterList);
+        List<Monster> monsterList = ListGenerator.generateFloor(currentFloor); //generates the current monster list
+        Collections.shuffle(monsterList, new Random(seed)); //shuffles the current monster list
+        monsterStack = new LinkedList<>(monsterList); //inits the monsterStack with the shuffled cards
     }
 
     private void initAbilities(long seed) {
-        List<Ability> abilitiesList = ListGenerator.generateAbilities(currentFloor);
-        for (Ability ability: new ArrayList<>(abilitiesList)) {
+        List<Ability> abilitiesList = ListGenerator.generateAbilities(currentFloor); //generates abilities
+        for (Ability ability: new ArrayList<>(abilitiesList)) { //removes the class abilities from the generated list
             for (Ability classAb: runa.getClassAbilities(currentFloor)) {
                 if (classAb.equalsAbility(ability)) {
                     abilitiesList.remove(ability);
                 }
             }
         }
-        Collections.shuffle(abilitiesList, new Random(seed));
-        abilities = new LinkedList<>(abilitiesList);
+        Collections.shuffle(abilitiesList, new Random(seed)); //shuffles the ability list
+        abilities = new LinkedList<>(abilitiesList); //inits the abilities stack with the shuffled list
     }
 
     /**
      * Enter room.
      */
     public void enterRoom() {
-        if (currentRoom == THREE) {
+        if (currentRoom == THREE) { //if current room is 3 adds the Boss to the current fight
             currentFight = new ArrayList<>();
             if (currentFloor == ONE) {
                 currentFight.add(new SpiderKing());
@@ -114,22 +114,22 @@ public class RunasAdventure {
             if (currentFloor == TWO) {
                 currentFight.add(new MegaSaurus());
             }
-            Statemachine.bossFight();
+            Statemachine.bossFight(); //sets the state to bossfight
             currentRoom++;
             return;
         }
         if (currentRoom == ZERO) {
             currentRoom++;
         }
-        else if (currentRoom < THREE) {
+        else if (currentRoom < THREE) { //if the current room is smaller than 3 it adds a monster to the current fight
             currentRoom++;
             currentFight.add(monsterStack.poll());
         }
-        else if (currentRoom == FOUR) {
+        else if (currentRoom == FOUR) { //if the current room is 4 sets the room to one again and increments the floor
             currentRoom = ONE;
             currentFloor++;
         }
-        currentFight.add(monsterStack.poll());
+        currentFight.add(monsterStack.poll()); //adds a monster to the current fight
         Statemachine.next();
     }
 
@@ -146,45 +146,45 @@ public class RunasAdventure {
      */
     public int usePhysicalAbility(Character attacker, Character target, PhysicalAbility attack, int dice) {
         int damage = ZERO;
-        switch (attack.getType()) {
+        boolean runasTurn = Statemachine.getCurrentState().equals(GameState.RUNATURN)
+                || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT);
+        switch (attack.getType()) { //switches between attack types (Offensive/Defensive)
             case OFFENSIVE: {
-                if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
-                        || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
-                    damage = setPhysicalDamage(currentFight.get(getOpponent(target)), attack, dice);
+                if (runasTurn) { //if its runas turn sets the damage to the
+                    damage = setPhysicalDamage(currentFight.get(getOpponent(target)), attack, dice); //monster
                     break;
                 }
-                else {
+                else { //if its the monsters turn sets the damage to the monster
                     damage = setPhysicalDamage(runa, attack, dice);
                 }
-                attacker.setLastMove(null);
+                attacker.setLastMove(null); //sets the last move to null to prevent errors
             }
             case DEFENSIVE: {
-                attacker.setLastMove(attack);
+                attacker.setLastMove(attack); //sets the last move
                 break;
             }
             default: {
                 break;
             }
         }
-        if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
-                || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
+        if (runasTurn) { //if its runas turn goes to the next state
             Statemachine.next();
         }
-        checkFocus(target, attack);
+        checkFocus(target, attack); //checks if the attack breaks focus
         return damage;
     }
 
     private int setPhysicalDamage(Character target, PhysicalAbility attack, int dice) {
-        int damage;
+        int damage; //if the last move of the target is a physical defensive ability calculates with medigation
         if (target.getLastMove() != null && target.getLastMove().getType().equals(AbilityType.DEFENSIVE)
                 && target.getLastMove().getUsageType().equals(AbilityType.PHYSICAL)) {
-            damage = target.getLastMove().calculate(attack.calculate(dice));
-            target.setHealthPoints(target.getHealthPoints() - damage);
-            target.setLastMove(null);
+            damage = target.getLastMove().calculate(attack.calculate(dice)); //calculates the damage
+            target.setHealthPoints(target.getHealthPoints() - damage); //sets the health points to the new HP
+            target.setLastMove(null); //sets the last move of the target to null
         }
         else {
-            damage = attack.calculate(dice);
-            target.setHealthPoints(target.getHealthPoints() - damage);
+            damage = attack.calculate(dice); //calculates the damage without the defensive medigation
+            target.setHealthPoints(target.getHealthPoints() - damage); //sets the health
         }
         return damage;
     }
@@ -201,7 +201,7 @@ public class RunasAdventure {
         List<Integer> dmg = new ArrayList<>();
         switch (attack.getType()) {
             case OFFENSIVE: {
-                if (!canCast(attacker, attack)) {
+                if (!canCast(attacker, attack)) { //if the attacker cant cast the spell breaks
                     attacker.setLastMove(null);
                     break;
                 }
@@ -276,7 +276,7 @@ public class RunasAdventure {
         int reti = ZERO;
         if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
                 || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
-            for (Monster monster:currentFight) {
+            for (Monster monster:currentFight) { //checks if a move is breaking focus and sets clear to false if it does
                 if (monster.getLastMove() != null && monster.getLastMove().isBreaksFocus()
                         && runa.getLastMove() != null && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
                     clear = false;
@@ -286,19 +286,16 @@ public class RunasAdventure {
             }
             if (clear && runa.getLastMove() != null && runa.getLastMove().getType().equals(AbilityType.FOCUS)) {
                 reti = ((Focus) runa.getLastMove()).calculate(user.getFocusPoints(), MagicType.NONE);
-                runa.setFocusPoints(runa.getFocusPoints() + reti);
+                runa.setFocusPoints(runa.getFocusPoints() + reti); //if none break focus sets runas FP
             }
         }
         if (Statemachine.getCurrentState().equals(GameState.MONSTERTURN)
                 || Statemachine.getCurrentState().equals(GameState.MONSTERBOSSFIGHT)) {
             if ((runa.getLastMove() == null || !runa.getLastMove().isBreaksFocus()) && user.getLastMove() != null
                     && user.getLastMove().getType().equals(AbilityType.FOCUS)) {
-                clear = true;
-            }
-            if (clear && user.getLastMove() != null && user.getLastMove().getType().equals(AbilityType.FOCUS)) {
                 reti = ((Focus) user.getLastMove()).calculate(user.getFocusPoints(), MagicType.NONE);
                 user.setFocusPoints(user.getFocusPoints() + reti);
-            }
+            } //if runas last move was not breaking focus sets the focus of the user
         }
         return reti;
     }
@@ -323,16 +320,16 @@ public class RunasAdventure {
     public Character checkDead() {
         Character died = null;
         for (Character chara: new ArrayList<Character>(currentFight)) {
-            if (chara.isDead()) {
+            if (chara.isDead()) { //checks if any monster is dead, removes and returns that monster
                 died = chara;
                 currentFight.remove(chara);
             }
         }
-        if (runa.isDead()) {
+        if (runa.isDead()) { //if runa is dead sets state to lost and returns runa
             Statemachine.lost();
             return runa;
         }
-        if (currentFight.size() == ZERO) {
+        if (currentFight.size() == ZERO) { //if no monsters are in the fight any more sets the state to fight won
             Statemachine.fightWon();
         }
         return died;
@@ -346,21 +343,21 @@ public class RunasAdventure {
      */
     public void fightReward(int choice, List<Ability> chosenCards) {
         if (Statemachine.getCurrentState().equals(GameState.FIGHTWON)) {
-            if (choice == 1) {
+            if (choice == ONE) { //if the reward was new abilities adds the abilities
                 for (Ability newAbility: chosenCards) {
                     runa.addAbility(newAbility);
                 }
             }
-            if (choice == TWO) {
+            if (choice == TWO) { //if the reward was upgraded dice upgrades runas dice
                 runa.upgradeDice();
             }
         }
-        if (Statemachine.getCurrentState().equals(GameState.BOSSWIN)) {
-            runa.upgradeAbilities();
-            if (currentFloor == TWO) {
+        if (Statemachine.getCurrentState().equals(GameState.BOSSWIN)) { //if it was the boss win
+            if (currentFloor == TWO) { //if it was the second boss sets the state to win and returns
                 Statemachine.win();
                 return;
             }
+            runa.upgradeAbilities(); //upgrades runas class abilities
             currentFloor = TWO;
             currentRoom = ZERO;
         }

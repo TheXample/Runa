@@ -220,14 +220,8 @@ public class Main {
 
     private void printUpgrade() {
         game.fightReward(ZERO, null); //executes the fight reward zero in the game
-        if (!Statemachine.getCurrentState().equals(GameState.WIN)) {
-            for (Ability newAb: game.getRuna().getAbilities()) {
-                for (Ability classAb: game.getRuna().getClassAbilities(game.getCurrentFloor())) {
-                    if (newAb.equalsAbility(classAb)) {
-                        Terminal.print("Runa gets " + Terminal.printAbility(newAb));
-                    }
-                }
-            }
+        for (Ability classAb: game.getRuna().getClassAbilities(TWO)) { //prints the upgraded class abilities
+            Terminal.print("Runa gets " + Terminal.printAbility(classAb));
         }
     }
 
@@ -235,29 +229,29 @@ public class Main {
         Terminal.print("Choose Runa's reward");
         Terminal.print("1) new ability cards");
         Terminal.print("2) next player dice");
-        int selected = Terminal.selectTarget("number", TWO, true) + ONE;
-        if (selected == 1) {
+        int selected = Terminal.selectTarget("number", TWO, true) + ONE; //forces an input
+        if (selected == ONE) {
             List<Ability> drawnCards = new ArrayList<>();
-            if (game.getCurrentRoom() == ONE) {
+            if (game.getCurrentRoom() == ONE) { //if the room is one adds two cards
                 for (int i = 0; i < TWO; i++) {
                     drawnCards.add(game.getTopAbility());
                 }
             }
-            else if (game.getCurrentRoom() > 1) {
+            else if (game.getCurrentRoom() > 1) { //if the room is not the first room
                 for (int i = 0; i < FOUR; i++) {
                     Ability toAdd = game.getTopAbility();
-                    if (toAdd != null) {
+                    if (toAdd != null) { //if there are not enough cards to choose from it doesn't add null
                         drawnCards.add(toAdd);
                     }
                 }
             }
-            List<Ability> chosen = selectReward(drawnCards);
-            game.fightReward(selected, chosen);
-            for (Ability rewardPrint: chosen) {
+            List<Ability> chosen = selectReward(drawnCards); //makes the player choose the reward cards
+            game.fightReward(selected, chosen); //puts the reward to the game
+            for (Ability rewardPrint: chosen) { //prints the chosen rewards
                 Terminal.print("Runa gets " + Terminal.printAbility(rewardPrint));
             }
         }
-        else if (selected == TWO) {
+        else if (selected == TWO) { //upgrade dice path
             game.fightReward(selected, null);
             Terminal.print("Runa upgrades her die to a d" + game.getRuna().getDice().getValue());
         }
@@ -266,7 +260,7 @@ public class Main {
     private List<Ability> selectReward(List<Ability> rewards) throws EndGameException {
         List<Ability> selected = new ArrayList<>();
         int sizeRewards = rewards.size();
-        if (sizeRewards % TWO != ZERO) {
+        if (sizeRewards % TWO != ZERO) { //makes sure that the player can always choose 2 cards
             sizeRewards++;
         }
         Terminal.print("Pick " + sizeRewards / TWO + " card(s) as loot");
@@ -274,13 +268,13 @@ public class Main {
             Terminal.print((i + ONE) + ") " + Terminal.printAbility(rewards.get(i)));
         }
         List<Integer> picked = new ArrayList<>();
-        if (sizeRewards / TWO > ONE) {
+        if (sizeRewards / TWO > ONE) { //if the player has to pick multiple cards calls select multi
             picked = Terminal.selectMultiTarget(rewards.size(), sizeRewards / 2, true, "numbers");
         }
-        else {
+        else { //if only one needs to be picked calls select single
             picked.add(Terminal.selectTarget("number", rewards.size(), true));
         }
-        for (Integer pick: picked) {
+        for (Integer pick: picked) { //adds all the picked cards to the selected list
             selected.add(rewards.get(pick));
         }
         return selected;
@@ -288,33 +282,33 @@ public class Main {
 
     private void heal() throws EndGameException {
         double damage = Runa.getMaxhealth() - game.getRuna().getHealthPoints();
-        int amount = (int) Math.ceil(damage / TEN);
-        if (amount == game.getRuna().getAbilities().size()) {
+        int amount = (int) Math.ceil(damage / TEN); //rounds up the amount of damage runa took divided by 10
+        if (amount == game.getRuna().getAbilities().size()) { //makes sure the player doesn't discard the last ability
             amount--;
         }
-        if (amount > ZERO && game.getRuna().getAbilities().size() > ONE) {
+        if (amount > ZERO && game.getRuna().getAbilities().size() > ONE) { //checks that runa has more than one ability
             Terminal.print(Terminal.printRuna(game.getRuna(), false)
                     + " can discard ability cards for healing (or none)");
-            Terminal.printAbilities(game.getRuna());
+            Terminal.printAbilities(game.getRuna()); //prints all of runas abilities
             List<Integer> selected = new ArrayList<>();
-            if (game.getRuna().getAbilities().size() > TWO) {
+            if (game.getRuna().getAbilities().size() > TWO) { //if the player can choose more than one card
                 selected = Terminal.selectMultiTarget(
                         game.getRuna().getAbilities().size(), amount, false, "numbers");
-            } else {
+            } else { //if the player can only discard one card calls select single target
                 int picked = Terminal.selectTarget("number",
                         game.getRuna().getAbilities().size(), false);
-                if (picked != -ONE) {
+                if (picked != -ONE) { //if the player selected a card it adds to the selected list
                     selected.add(picked);
                 }
             }
             List<Ability> found = new ArrayList<>();
-            for (int i = ZERO; i <= game.getRuna().getAbilities().size(); i++) {
+            for (int i = ZERO; i <= game.getRuna().getAbilities().size(); i++) { //finds all cards in the ability list
                 if (selected.contains(i)) {
                     found.add(game.getRuna().getAbilities().get(i));
                 }
             }
             if (found.size() > ZERO) {
-                game.heal(found);
+                game.heal(found); //heals runa
                 if (damage < found.size() * TEN) {
                     Terminal.print("Runa gains " + (int) damage + " health");
                 }

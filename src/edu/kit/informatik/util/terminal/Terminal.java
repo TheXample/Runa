@@ -42,20 +42,20 @@ public final class Terminal {
      * @throws EndGameException the end game exception
      */
     public static int selectTarget(String name, int max, boolean hasToSelect) throws EndGameException {
-        printSelect(name, max);
+        printSelect(name, max); //prints the select message
         int parsed;
         try {
-            parsed = Parser.getSelected(READER.readLine(), max);
+            parsed = Parser.getSelected(READER.readLine(), max); //parses the input
         } catch (IOException ex) {
             return selectTarget("number", max, hasToSelect);
         }
-        if (parsed != -ONE) {
+        if (parsed != -ONE) { //if the input was correct returns the input -1
             return parsed - ONE;
         }
-        else if (!hasToSelect) {
+        else if (!hasToSelect) { //if the input wasn't correct but the player doesn't need to select returns -1
             return -1;
         }
-        return selectTarget("number", max, hasToSelect);
+        return selectTarget("number", max, hasToSelect); //recurrs to make sure the player makes an input
     }
 
     /**
@@ -73,18 +73,18 @@ public final class Terminal {
         System.out.println("Enter " + name + " [1--" + max + "] separated by comma:");
         List<Integer> parsed = new ArrayList<>();
         try {
-            parsed = Parser.parseMulti(READER.readLine(), max);
+            parsed = Parser.parseMulti(READER.readLine(), max); //parses the input
         } catch (IOException ex) {
             selectMultiTarget(max, amount, exact, name);
         }
-        if (parsed != null && parsed.size() == amount) {
+        if (parsed != null && parsed.size() == amount) { //if the player made a correct input returns the parsed input
             return parsed;
         }
-        else if (parsed != null && parsed.size() < amount && !exact) {
+        else if (parsed != null && parsed.size() < amount && !exact) { //if the input doesn't need to be exact returns
             return parsed;
         }
         else {
-            return selectMultiTarget(max, amount, exact, name);
+            return selectMultiTarget(max, amount, exact, name); //recurrs to make sure that the player makes an input
         }
     }
 
