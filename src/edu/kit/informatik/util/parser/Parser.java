@@ -48,6 +48,9 @@ public final class Parser {
      * @throws EndGameException the io exception
      */
     public static List<Integer> parseMulti(String input, int max) throws EndGameException {
+        if (input.equals("")) {
+            return List.of(-1);
+        }
         if (input.matches("([1-9][0-9]*[,])*[1-9][0-9]*")) {
             List<Integer> reti = new ArrayList<>(); //the return list
             String[] split = input.split("[,]");
