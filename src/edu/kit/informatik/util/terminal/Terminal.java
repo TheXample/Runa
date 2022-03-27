@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * The type Terminal.
+ *
  * @author Hannes Schniz
  * @version 0.1
  */
@@ -67,7 +68,8 @@ public final class Terminal {
      * @return the list
      * @throws EndGameException the end game exception
      */
-    public static List<Integer> selectMultiTarget(int max, int amount, boolean exact, String name) throws EndGameException {
+    public static List<Integer> selectMultiTarget(int max, int amount, boolean exact, String name)
+            throws EndGameException {
         System.out.println("Enter " + name + " [1--" + max + "] separated by comma:");
         List<Integer> parsed = new ArrayList<>();
         try {
@@ -244,6 +246,11 @@ public final class Terminal {
         }
     }
 
+    /**
+     * Print.
+     *
+     * @param toPrint the to print
+     */
     public static void print(String toPrint) {
         if (toPrint == null || toPrint.equals("")) {
             return;
