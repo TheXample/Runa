@@ -26,7 +26,7 @@ import java.util.Random;
 /**
  * The type Runas adventure.
  *
- * @author Hanne
+ * @author Hannes
  * @version 0.1
  */
 public class RunasAdventure {
