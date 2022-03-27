@@ -244,4 +244,11 @@ public final class Terminal {
         }
     }
 
+    public static void print(String toPrint) {
+        if (toPrint == null || toPrint.equals("")) {
+            return;
+        }
+        System.out.println(toPrint);
+    }
+
 }
