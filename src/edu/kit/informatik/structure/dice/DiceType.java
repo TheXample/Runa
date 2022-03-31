@@ -28,7 +28,17 @@ public enum DiceType {
     /**
      * D twelve dice type.
      */
-    D_Twelve(12);
+    D_Twelve(12),
+
+    D_FOURTEEN(14),
+
+    D_SIXTEEN(16),
+
+    D_EIGHTTENN(18),
+
+    D_TWENTY(20),
+
+    D_TWENTYTWO(22);
 
 
     private final int value;

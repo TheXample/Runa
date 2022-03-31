@@ -19,45 +19,12 @@ public final class Statemachine {
      */
     public static void next() {
         switch (currentState) {
-            case INIT: {
-                currentState = GameState.SHUFFLE;
-                break;
-            }
-            case HEALING: {
-                currentState = GameState.RUNATURN;
-                break;
-            }
-            case RUNATURN: {
-                currentState = GameState.MONSTERTURN;
-                break;
-            }
-            case MONSTERTURN: {
-                currentState = GameState.RUNATURN;
-                break;
-            }
-            case FIGHTWON: {
-                currentState = GameState.HEALING;
-                break;
-            }
-            case SHUFFLE: {
-                currentState = GameState.RUNATURN;
-                break;
-            }
-            case BOSSWIN: {
-                currentState = GameState.SHUFFLE;
-                break;
-            }
-            case RUNABOSSFIGHT: {
-                currentState = GameState.MONSTERBOSSFIGHT;
-                break;
-            }
-            case MONSTERBOSSFIGHT: {
-                currentState = GameState.RUNABOSSFIGHT;
-                break;
-            }
-            default: {
-                break;
-            }
+            case INIT, BOSSWIN -> currentState = GameState.SHUFFLE;
+            case HEALING, MONSTERTURN, SHUFFLE -> currentState = GameState.RUNATURN;
+            case RUNATURN -> currentState = GameState.MONSTERTURN;
+            case FIGHTWON -> currentState = GameState.HEALING;
+            case RUNABOSSFIGHT -> currentState = GameState.MONSTERBOSSFIGHT;
+            case MONSTERBOSSFIGHT -> currentState = GameState.RUNABOSSFIGHT;
         }
     }
 
@@ -66,17 +33,8 @@ public final class Statemachine {
      */
     public static void fightWon() {
         switch (currentState) {
-            case MONSTERBOSSFIGHT: {
-                currentState = GameState.BOSSWIN;
-                break;
-            }
-            case RUNABOSSFIGHT: {
-                currentState = GameState.BOSSWIN;
-                break;
-            }
-            default: {
-                currentState = GameState.FIGHTWON;
-            }
+            case MONSTERBOSSFIGHT, RUNABOSSFIGHT -> currentState = GameState.BOSSWIN;
+            default -> currentState = GameState.FIGHTWON;
         }
     }
 

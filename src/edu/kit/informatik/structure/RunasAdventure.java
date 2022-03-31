@@ -205,7 +205,7 @@ public class RunasAdventure {
     public List<Integer> useMagicalAbility(Character attacker, Character target, MagicAbility attack) {
         List<Integer> dmg = new ArrayList<>();
         switch (attack.getType()) {
-            case OFFENSIVE: {
+            case OFFENSIVE -> {
                 if (!canCast(attacker, attack)) { //if the attacker cant cast the spell breaks
                     attacker.setLastMove(null);
                     break;
@@ -213,25 +213,13 @@ public class RunasAdventure {
                 if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
                         || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {
                     dmg = setMagicalDamage(runa, currentFight.get(getOpponent(target)), attack);
-                }
-                else {
+                } else {
                     dmg = setMagicalDamage(attacker, runa, attack);
                 }
                 attacker.setFocusPoints(attacker.getFocusPoints() - attack.getCost()); //reduces the focus points
                 attacker.setLastMove(null); //sets the last move of the attacker to null
-                break;
             }
-            case DEFENSIVE: {
-                attacker.setLastMove(attack);
-                break;
-            }
-            case FOCUS: {
-                attacker.setLastMove(attack);
-                break;
-            }
-            default: {
-                break;
-            }
+            case DEFENSIVE, FOCUS -> attacker.setLastMove(attack);
         }
         if (Statemachine.getCurrentState().equals(GameState.RUNATURN)
                 || Statemachine.getCurrentState().equals(GameState.RUNABOSSFIGHT)) {

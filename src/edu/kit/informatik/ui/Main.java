@@ -54,49 +54,28 @@ public class Main {
         try {
             while (main.notEnd()) {
                 switch (RunasAdventure.getState()) {
-                    case INIT: { //initializes the game
-                        main.init();
-                        break;
-                    }
-                    case SHUFFLE: { //shuffles the cards and enters the first room of the dungeon
+                    case INIT -> main.init();
+                    case SHUFFLE -> { //shuffles the cards and enters the first room of the dungeon
                         main.shuffle();
                         main.enterRoom();
-                        break;
                     }
-                    case RUNATURN: { //executes runas turn
+                    case RUNATURN, RUNABOSSFIGHT -> { //executes runas turn
                         main.nextStage();
                         main.runaAttack();
-                        break;
                     }
-                    case MONSTERTURN: { //executes the monsters turn
+                    case MONSTERTURN -> { //executes the monsters turn
                         main.monsterAttack();
-                        break;
                     }
-                    case FIGHTWON: { //executes the reward stage
-                        main.reward();
-                        break;
-                    }
-                    case HEALING: { //executes the healing stage
+                    case FIGHTWON -> main.reward();
+                    case HEALING -> { //executes the healing stage
                         main.heal();
                         main.enterRoom();
-                        break;
                     }
-                    case RUNABOSSFIGHT: { //runs runas turn in a boss fight
-                        main.nextStage();
-                        main.runaAttack();
-                        break;
-                    }
-                    case MONSTERBOSSFIGHT: { //runs the boss monsters turn
-                        main.monsterAttack();
-                        break;
-                    }
-                    case BOSSWIN: { //executes the rewards after the boss win
+                    //runs runas turn in a boss fight
+                    case MONSTERBOSSFIGHT -> main.monsterAttack();
+                    case BOSSWIN -> { //executes the rewards after the boss win
                         main.printUpgrade();
                         main.heal();
-                        break;
-                    }
-                    default: {
-                        break;
                     }
                 }
             }
@@ -116,19 +95,10 @@ public class Main {
         Terminal.print("enter two seeds, the first for runas dice and the second for the monsters dice");
         List<Integer> selectedSeed = Terminal.selectMultiTarget(MAXSEED, 2, true, "seeds");
         switch (selectedClass) { //selects the class according to the
-            case ZERO: { //input of the user
-                game = new RunasAdventure(RunaType.WARRIOR, selectedSeed);
-                return;
-            }
-            case ONE: {
-                game = new RunasAdventure(RunaType.MAGE, selectedSeed);
-                return;
-            }
-            case TWO: {
-                game = new RunasAdventure(RunaType.PALADIN, selectedSeed);
-                return;
-            }
-            default: {
+            case ZERO -> game = new RunasAdventure(RunaType.WARRIOR, selectedSeed);
+            case ONE -> game = new RunasAdventure(RunaType.MAGE, selectedSeed);
+            case TWO -> game = new RunasAdventure(RunaType.PALADIN, selectedSeed);
+            default -> {
             }
         }
     }
@@ -162,7 +132,7 @@ public class Main {
         }
         Terminal.printUse(game.getRuna(), use); //prints the use Ability message
         switch (use.getUsageType()) { //switches between the type of the attack (Physical/Magic)
-            case PHYSICAL: {
+            case PHYSICAL -> {
                 int dice = ZERO;
                 if (use.getType().equals(AbilityType.OFFENSIVE)) { //if needed gets a dice roll of the player
                     dice = game.getRuna().getDice().roll();
@@ -171,15 +141,12 @@ public class Main {
                 Terminal.printDamage(game.getCurrentFight().get(target), game.usePhysicalAbility(game.getRuna(),
                         game.getCurrentFight().get(target),
                         (PhysicalAbility) use, dice), use); //calculates and prints the damage of the attack
-                break;
             }
-            case MAGIC: { //calculates and prints the damage of the magic attack
+            case MAGIC -> { //calculates and prints the damage of the magic attack
                 Terminal.printDamage(game.getCurrentFight().get(target), game.useMagicalAbility(game.getRuna(),
                         game.getCurrentFight().get(target), (MagicAbility) use).get(ZERO), use);
-                break;
             }
-            default: {
-                break;
+            default -> {
             }
         }
         Terminal.printDeath(game.checkDead()); //prints a death message if one occurred
@@ -194,23 +161,20 @@ public class Main {
         for (Monster monster: iterate) { //iterates over the monster list
             Terminal.printUse(monster, monster.getNextMove());
             switch (monster.getNextMove().getUsageType()) { //switches between the type of the attack (Physical/Magical)
-                case PHYSICAL: { //calculates and prints the physical damage of runa
+                case PHYSICAL -> { //calculates and prints the physical damage of runa
                     int dmg = game.usePhysicalAbility(monster, game.getRuna(),
                             (PhysicalAbility) monster.getNextMove(), ZERO);
                     Terminal.printDamage(game.getRuna(), dmg, monster.getNextMove());
-                    break;
                 }
-                case MAGIC: { //calculates and prints the magical damage
+                case MAGIC -> { //calculates and prints the magical damage
                     List<Integer> dmg = game.useMagicalAbility(monster, game.getRuna(),
                             (MagicAbility) monster.getNextMove()); //gets the damage list of the magical damage
                     Terminal.printDamage(game.getRuna(), dmg.get(ZERO), monster.getNextMove()); //prints the damage
                     if (dmg.size() > 1) { //if the damage list has a second entry the attacker took reflect damage
                         Terminal.printDamage(monster, dmg.get(ONE), new Reflect(1));
                     }
-                    break;
                 }
-                default: {
-                    break;
+                default -> {
                 }
             }
             Terminal.printDeath(game.checkDead()); //checks and prints the dead monsters
