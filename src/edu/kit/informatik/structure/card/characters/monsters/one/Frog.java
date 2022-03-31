@@ -36,7 +36,8 @@ public class Frog extends Monster {
 
     /**
      * Instantiates a new Frog.
-     * @param seed
+     *
+     * @param seed the seed
      */
     public Frog(int seed) {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS, new Dice(DICETYPE, seed),

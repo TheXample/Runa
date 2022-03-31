@@ -36,7 +36,8 @@ public class Ghost extends Monster {
 
     /**
      * Instantiates a new Ghost.
-     * @param seed
+     *
+     * @param seed the seed
      */
     public Ghost(int seed) {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,

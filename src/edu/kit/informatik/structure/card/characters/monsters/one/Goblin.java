@@ -36,7 +36,8 @@ public class Goblin extends Monster {
 
     /**
      * Instantiates a new Goblin.
-     * @param seed
+     *
+     * @param seed the seed
      */
     public Goblin(int seed) {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,

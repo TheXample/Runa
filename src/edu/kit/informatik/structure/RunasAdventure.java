@@ -63,6 +63,7 @@ public class RunasAdventure {
      * Instantiates a new Runas adventure.
      *
      * @param runaClass the runa class
+     * @param seeds     the seeds
      */
     public RunasAdventure(RunaType runaClass, List<Integer> seeds) {
         currentFloor = ONE;

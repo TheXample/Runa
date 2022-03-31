@@ -37,7 +37,8 @@ public class Tarantula extends Monster {
 
     /**
      * Instantiates a new Frog.
-     * @param seed
+     *
+     * @param seed the seed
      */
     public Tarantula(int seed) {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,

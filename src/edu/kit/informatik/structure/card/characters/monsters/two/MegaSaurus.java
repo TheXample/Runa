@@ -40,6 +40,8 @@ public class MegaSaurus extends Monster {
 
     /**
      * Instantiates a new Spider king.
+     *
+     * @param seed the seed
      */
     public MegaSaurus(int seed) {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,

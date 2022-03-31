@@ -38,6 +38,6 @@ public class Deflect extends MagicAbility {
         if (damage > ELEVEN * this.getAbilityLevel() + TWO) {
             return damage - TEN * this.getAbilityLevel();
         }
-        return COST;
+        return damage;
     }
 }

@@ -37,7 +37,8 @@ public class Snake extends Monster {
 
     /**
      * Instantiates a new Frog.
-     * @param seed
+     *
+     * @param seed the seed
      */
     public Snake(int seed) {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,

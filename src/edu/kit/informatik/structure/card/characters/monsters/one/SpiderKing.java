@@ -38,6 +38,8 @@ public class SpiderKing extends Monster {
 
     /**
      * Instantiates a new Spider king.
+     *
+     * @param seed the seed
      */
     public SpiderKing(int seed) {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,

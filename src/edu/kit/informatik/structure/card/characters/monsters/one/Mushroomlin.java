@@ -36,7 +36,8 @@ public class Mushroomlin extends Monster {
 
     /**
      * Instantiates a new Mushroomlin.
-     * @param seed
+     *
+     * @param seed the seed
      */
     public Mushroomlin(int seed) {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,

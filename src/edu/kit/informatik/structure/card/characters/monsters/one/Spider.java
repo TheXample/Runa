@@ -36,7 +36,8 @@ public class Spider extends Monster {
 
     /**
      * Instantiates a new Spider.
-     * @param seed
+     *
+     * @param seed the seed
      */
     public Spider(int seed) {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,

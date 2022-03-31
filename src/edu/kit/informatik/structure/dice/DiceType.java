@@ -30,14 +30,29 @@ public enum DiceType {
      */
     D_Twelve(12),
 
+    /**
+     * D fourteen dice type.
+     */
     D_FOURTEEN(14),
 
+    /**
+     * D sixteen dice type.
+     */
     D_SIXTEEN(16),
 
+    /**
+     * D eighttenn dice type.
+     */
     D_EIGHTTENN(18),
 
+    /**
+     * D twenty dice type.
+     */
     D_TWENTY(20),
 
+    /**
+     * D twentytwo dice type.
+     */
     D_TWENTYTWO(22);
 
 

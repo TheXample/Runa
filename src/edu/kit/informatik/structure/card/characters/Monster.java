@@ -28,6 +28,9 @@ public class Monster extends Character {
      * @param abilities    the abilities
      * @param primaryType  the primary type
      * @param isBoss       the is boss
+     * @param dice         the dice
+     * @param MaxFocus     the max focus
+     * @param Maxhealth    the maxhealth
      */
     public Monster(String name, int healthPoints, int focusPoints, Queue<Ability> abilities,
                    MagicType primaryType, boolean isBoss, Dice dice, int MaxFocus,  int Maxhealth) {

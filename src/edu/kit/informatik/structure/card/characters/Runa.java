@@ -40,7 +40,7 @@ public class Runa extends Character {
      * Instantiates a new Runa.
      *
      * @param runaClass the runa class
-     * @param seed the random seed
+     * @param seed      the random seed
      */
     public Runa(RunaType runaClass, int seed) {
         super(NAME, MAXHEALTH , MINFOCUS, PRIMARYTYPE, new Dice(DiceType.D_FOUR, seed),

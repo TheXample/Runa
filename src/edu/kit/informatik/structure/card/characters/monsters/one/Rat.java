@@ -36,7 +36,8 @@ public class Rat extends Monster {
 
     /**
      * Instantiates a new Rat.
-     * @param seed
+     *
+     * @param seed the seed
      */
     public Rat(int seed) {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,

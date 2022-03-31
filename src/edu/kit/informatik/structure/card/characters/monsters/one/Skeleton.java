@@ -36,7 +36,8 @@ public class Skeleton extends Monster {
 
     /**
      * Instantiates a new Skeleton.
-     * @param seed
+     *
+     * @param seed the seed
      */
     public Skeleton(int seed) {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,

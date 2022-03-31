@@ -12,8 +12,7 @@ import edu.kit.informatik.structure.card.abilities.MagicAbility;
  */
 public class Reflect extends MagicAbility {
 
-    private static final String DESCRIPTION = "Reflektiere bis zu 10n magischen Schaden. Der restliche "
-            + "Schaden trifft Runa.";
+    private static final String DESCRIPTION = "Reflects up to 10n magical damage throws the rest back to the attacker";
 
     private static final String NAME = "Reflect";
 

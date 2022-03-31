@@ -41,6 +41,9 @@ public class Character extends Card {
      * @param healthPoints the health points
      * @param focusPoints  the focus points
      * @param primaryType  the primary type
+     * @param dice         the dice
+     * @param maxFocus     the max focus
+     * @param maxHealth    the max health
      */
     public Character(String name, int healthPoints, int focusPoints, MagicType primaryType, Dice dice,
                      int maxFocus, int maxHealth) {
@@ -139,6 +142,11 @@ public class Character extends Card {
         return primaryType;
     }
 
+    /**
+     * Gets dice.
+     *
+     * @return the dice
+     */
     public Dice getDice() {
         return dice;
     }
@@ -151,10 +159,20 @@ public class Character extends Card {
         this.maxFocus = dice.getType().getValue();
     }
 
+    /**
+     * Gets max focus.
+     *
+     * @return the max focus
+     */
     public int getMaxFocus() {
         return maxFocus;
     }
 
+    /**
+     * Gets max health.
+     *
+     * @return the max health
+     */
     public int getMaxHealth() {
         return maxHealth;
     }

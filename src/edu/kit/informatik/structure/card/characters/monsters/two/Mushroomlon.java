@@ -37,7 +37,8 @@ public class Mushroomlon extends Monster {
 
     /**
      * Instantiates a new Frog.
-     * @param seed
+     *
+     * @param seed the seed
      */
     public Mushroomlon(int seed) {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,

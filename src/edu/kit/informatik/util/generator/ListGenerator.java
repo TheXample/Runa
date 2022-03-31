@@ -49,6 +49,7 @@ public final class ListGenerator {
      * Generate floor list.
      *
      * @param level the level
+     * @param seed  the seed
      * @return the list
      */
     public static List<Monster> generateFloor(int level, int seed) {

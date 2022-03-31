@@ -8,9 +8,8 @@ import edu.kit.informatik.structure.card.characters.Monster;
 import edu.kit.informatik.structure.card.characters.Runa;
 import edu.kit.informatik.util.parser.EndGameException;
 import edu.kit.informatik.util.parser.Parser;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,7 +115,7 @@ public final class Terminal {
     /**
      * Print ability string.
      *
-     * @param input the input
+     * @param input       the input
      * @param description if the description should be displayed
      * @return the string
      */
@@ -131,14 +130,17 @@ public final class Terminal {
      * Print line.
      */
     public static void printLine() {
-        System.out.println("-----------------------------------------------------------------------------------"
-                + "-----------------------------------------------------------------------------");
+        for (int i = 0; i < 120; i++) {
+            System.out.print('-');
+        }
+        System.out.print("\n");
     }
 
     /**
      * Print runa string.
      *
      * @param character the character
+     * @param shortOut  the short out
      * @return the string
      */
     public static String printCharacter(Character character, boolean shortOut) {

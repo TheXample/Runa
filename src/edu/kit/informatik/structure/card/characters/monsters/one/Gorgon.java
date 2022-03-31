@@ -36,7 +36,8 @@ public class Gorgon extends Monster {
 
     /**
      * Instantiates a new Gorgon.
-     * @param seed
+     *
+     * @param seed the seed
      */
     public Gorgon(int seed) {
         super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,
