@@ -51,15 +51,15 @@ public final class ListGenerator {
      * @param level the level
      * @return the list
      */
-    public static List<Monster> generateFloor(int level) {
+    public static List<Monster> generateFloor(int level, int seed) {
         ArrayList<Monster> monsterList = new ArrayList<>();
         if (level == 1) {
-            monsterList = new ArrayList<>(List.of(new Frog(), new Ghost(), new Gorgon(), new Skeleton(),
-                    new Spider(), new Goblin(), new Rat(), new Mushroomlin()));
+            monsterList = new ArrayList<>(List.of(new Frog(seed), new Ghost(seed), new Gorgon(seed), new Skeleton(seed),
+                    new Spider(seed), new Goblin(seed), new Rat(seed), new Mushroomlin(seed)));
         }
         if (level == 2) {
-            monsterList = new ArrayList<>(List.of(new Snake(), new DarkElf(), new ShadowBlade(), new Hornet(),
-                    new Tarantula(), new Bear(), new Mushroomlon(), new WildBoar()));
+            monsterList = new ArrayList<>(List.of(new Snake(seed), new DarkElf(seed), new ShadowBlade(seed),
+                    new Hornet(seed), new Tarantula(seed), new Bear(seed), new Mushroomlon(seed), new WildBoar(seed)));
         }
         return monsterList;
     }

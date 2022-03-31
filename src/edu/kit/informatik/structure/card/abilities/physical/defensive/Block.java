@@ -11,7 +11,7 @@ import edu.kit.informatik.structure.card.abilities.PhysicalAbility;
  */
 public class Block extends PhysicalAbility {
 
-    private static final String DESCRIPTION = "Reduziere den physischen Schaden des nächsten Angriffs um 7n";
+    private static final String DESCRIPTION = "Reduces the incoming physical damage by 7n.";
 
     private static final String NAME = "Block";
 

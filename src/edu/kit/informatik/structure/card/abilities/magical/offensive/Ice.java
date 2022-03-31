@@ -12,8 +12,8 @@ import edu.kit.informatik.structure.card.abilities.MagicAbility;
  */
 public class Ice extends MagicAbility {
 
-    private static final String DESCRIPTION = "(2n + 4) ∗ f + 2 magischer Schaden "
-            + "+ 2n magischer Schaden, falls Ziel ein Wasser-Monster";
+    private static final String DESCRIPTION = "Deals (2n + 4) * FP + 2 magic "
+            + "damage from type ICE. + 2n magic damage, if the target is from type WATER.";
 
     private static final String NAME = "Ice";
 

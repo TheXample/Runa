@@ -11,7 +11,7 @@ import edu.kit.informatik.structure.card.abilities.PhysicalAbility;
  */
 public class Bite extends PhysicalAbility {
 
-    private static final String DESCRIPTION = "10n physischer Schaden";
+    private static final String DESCRIPTION = "Deals 10n physical damage.";
 
     private static final String NAME = "Bite";
 

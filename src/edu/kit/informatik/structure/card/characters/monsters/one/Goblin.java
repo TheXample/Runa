@@ -5,6 +5,8 @@ import edu.kit.informatik.structure.card.abilities.MagicType;
 import edu.kit.informatik.structure.card.abilities.magical.defensive.Deflect;
 import edu.kit.informatik.structure.card.abilities.physical.offensive.Smash;
 import edu.kit.informatik.structure.card.characters.Monster;
+import edu.kit.informatik.structure.dice.Dice;
+import edu.kit.informatik.structure.dice.DiceType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -29,11 +31,15 @@ public class Goblin extends Monster {
 
     private static final int HEALTHPOINTS = 12;
 
+    private static final DiceType DICETYPE = DiceType.D_FOUR;
+
 
     /**
      * Instantiates a new Goblin.
+     * @param seed
      */
-    public Goblin() {
-        super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
+    public Goblin(int seed) {
+        super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,
+                new Dice(DICETYPE, seed), DICETYPE.getValue(), HEALTHPOINTS);
     }
 }

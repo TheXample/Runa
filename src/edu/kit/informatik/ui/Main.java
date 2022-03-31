@@ -112,17 +112,20 @@ public class Main {
 
     private void init() throws EndGameException {
         Terminal.printHello(); //prints the hello message
-        switch (Terminal.selectTarget("number", THREE, true)) { //selects the class according to the
+        int selectedClass = Terminal.selectTarget("number", THREE, true);
+        Terminal.print("enter two seeds, the first for runas dice and the second for the monsters dice");
+        List<Integer> selectedSeed = Terminal.selectMultiTarget(MAXSEED, 2, true, "seeds");
+        switch (selectedClass) { //selects the class according to the
             case ZERO: { //input of the user
-                game = new RunasAdventure(RunaType.WARRIOR);
+                game = new RunasAdventure(RunaType.WARRIOR, selectedSeed);
                 return;
             }
             case ONE: {
-                game = new RunasAdventure(RunaType.MAGE);
+                game = new RunasAdventure(RunaType.MAGE, selectedSeed);
                 return;
             }
             case TWO: {
-                game = new RunasAdventure(RunaType.PALADIN);
+                game = new RunasAdventure(RunaType.PALADIN, selectedSeed);
                 return;
             }
             default: {
@@ -162,8 +165,8 @@ public class Main {
             case PHYSICAL: {
                 int dice = ZERO;
                 if (use.getType().equals(AbilityType.OFFENSIVE)) { //if needed gets a dice roll of the player
-                    dice = Terminal.selectTarget("dice roll", game.getRuna().getDice().getValue(), true)
-                            + ONE;
+                    dice = game.getRuna().getDice().roll();
+                    Terminal.print("Runa rolled a " + dice);
                 }
                 Terminal.printDamage(game.getCurrentFight().get(target), game.usePhysicalAbility(game.getRuna(),
                         game.getCurrentFight().get(target),
@@ -183,6 +186,7 @@ public class Main {
     }
 
     private void monsterAttack() throws EndGameException {
+        Terminal.printLine();
         for (Monster monster: game.getCurrentFight()) { //calculates and prints the focus points for the monsters
             Terminal.printFocus(monster.getName(), game.checkChangeFocus(monster));
         }
@@ -221,11 +225,12 @@ public class Main {
     private void printUpgrade() {
         game.fightReward(ZERO, null); //executes the fight reward zero in the game
         for (Ability classAb: game.getRuna().getClassAbilities(TWO)) { //prints the upgraded class abilities
-            Terminal.print("Runa gets " + Terminal.printAbility(classAb));
+            Terminal.print("Runa gets " + Terminal.printAbility(classAb, false));
         }
     }
 
     private void reward() throws EndGameException {
+        Terminal.printLine();
         Terminal.print("Choose Runa's reward");
         Terminal.print("1) new ability cards");
         Terminal.print("2) next player dice");
@@ -248,12 +253,12 @@ public class Main {
             List<Ability> chosen = selectReward(drawnCards); //makes the player choose the reward cards
             game.fightReward(selected, chosen); //puts the reward to the game
             for (Ability rewardPrint: chosen) { //prints the chosen rewards
-                Terminal.print("Runa gets " + Terminal.printAbility(rewardPrint));
+                Terminal.print("Runa gets " + Terminal.printAbility(rewardPrint, false));
             }
         }
         else if (selected == TWO) { //upgrade dice path
             game.fightReward(selected, null);
-            Terminal.print("Runa upgrades her die to a d" + game.getRuna().getDice().getValue());
+            Terminal.print("Runa upgrades her die to a d" + game.getRuna().getDice().getType().getValue());
         }
     }
 
@@ -265,7 +270,7 @@ public class Main {
         }
         Terminal.print("Pick " + sizeRewards / TWO + " card(s) as loot");
         for (int i = 0; i < rewards.size(); i++) {
-            Terminal.print((i + ONE) + ") " + Terminal.printAbility(rewards.get(i)));
+            Terminal.print((i + ONE) + ") " + Terminal.printAbility(rewards.get(i), true));
         }
         List<Integer> picked = new ArrayList<>();
         if (sizeRewards / TWO > ONE) { //if the player has to pick multiple cards calls select multi
@@ -281,13 +286,14 @@ public class Main {
     }
 
     private void heal() throws EndGameException {
+        Terminal.printLine();
         double damage = Runa.getMaxhealth() - game.getRuna().getHealthPoints();
         int amount = (int) Math.ceil(damage / TEN); //rounds up the amount of damage runa took divided by 10
         if (amount == game.getRuna().getAbilities().size()) { //makes sure the player doesn't discard the last ability
             amount--;
         }
         if (amount > ZERO && game.getRuna().getAbilities().size() > ONE) { //checks that runa has more than one ability
-            Terminal.print(Terminal.printRuna(game.getRuna(), false)
+            Terminal.print(Terminal.printCharacter(game.getRuna(), true)
                     + " can discard ability cards for healing (or none)");
             Terminal.printAbilities(game.getRuna()); //prints all of runas abilities
             List<Integer> selected = new ArrayList<>();

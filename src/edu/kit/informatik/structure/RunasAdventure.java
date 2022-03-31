@@ -43,6 +43,8 @@ public class RunasAdventure {
 
     private static final int TEN = 10;
 
+    private static final int FLOORS = 2;
+
     private final Runa runa;
 
     private Queue<Monster> monsterStack;
@@ -55,15 +57,18 @@ public class RunasAdventure {
 
     private List<Monster> currentFight;
 
+    private final int monsterSeed;
+
     /**
      * Instantiates a new Runas adventure.
      *
      * @param runaClass the runa class
      */
-    public RunasAdventure(RunaType runaClass) {
+    public RunasAdventure(RunaType runaClass, List<Integer> seeds) {
         currentFloor = ONE;
         currentRoom = ZERO;
-        runa = new Runa(runaClass);
+        this.monsterSeed = seeds.get(ONE);
+        runa = new Runa(runaClass, seeds.get(ZERO));
         currentFight = new ArrayList<>();
         this.monsterStack = new LinkedList<>();
         this.abilities = new LinkedList<>();
@@ -84,7 +89,7 @@ public class RunasAdventure {
     }
 
     private void initMonster(long seed) {
-        List<Monster> monsterList = ListGenerator.generateFloor(currentFloor); //generates the current monster list
+        List<Monster> monsterList = ListGenerator.generateFloor(currentFloor, this.monsterSeed); //generates the current monster list
         Collections.shuffle(monsterList, new Random(seed)); //shuffles the current monster list
         monsterStack = new LinkedList<>(monsterList); //inits the monsterStack with the shuffled cards
     }
@@ -109,10 +114,10 @@ public class RunasAdventure {
         if (currentRoom == THREE) { //if current room is 3 adds the Boss to the current fight
             currentFight = new ArrayList<>();
             if (currentFloor == ONE) {
-                currentFight.add(new SpiderKing());
+                currentFight.add(new SpiderKing(monsterSeed));
             }
             if (currentFloor == TWO) {
-                currentFight.add(new MegaSaurus());
+                currentFight.add(new MegaSaurus(monsterSeed));
             }
             Statemachine.bossFight(); //sets the state to bossfight
             currentRoom++;
@@ -353,12 +358,12 @@ public class RunasAdventure {
             }
         }
         if (Statemachine.getCurrentState().equals(GameState.BOSSWIN)) { //if it was the boss win
-            if (currentFloor == TWO) { //if it was the second boss sets the state to win and returns
+            if (currentFloor == FLOORS) { //if it was the second boss sets the state to win and returns
                 Statemachine.win();
                 return;
             }
             runa.upgradeAbilities(); //upgrades runas class abilities
-            currentFloor = TWO;
+            currentFloor++;
             currentRoom = ZERO;
         }
         Statemachine.next();

@@ -11,7 +11,7 @@ import edu.kit.informatik.structure.card.abilities.PhysicalAbility;
  */
 public class Claw extends PhysicalAbility {
 
-    private static final String DESCRIPTION = "6n physischer Schaden, Bricht Runas Focus";
+    private static final String DESCRIPTION = "Deals 6n physical damage and breaks focus of the target.";
 
     private static final String NAME = "Claw";
 

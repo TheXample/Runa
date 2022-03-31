@@ -12,8 +12,8 @@ import edu.kit.informatik.structure.card.abilities.MagicAbility;
  */
 public class Lightning extends MagicAbility {
 
-    private static final String DESCRIPTION = "(2n + 5) ∗ f + 2 magischer Schaden "
-            + "+ 2n magischer Schaden, falls Ziel ein Feuer-Monster";
+    private static final String DESCRIPTION = "Deals (2n + 5) * FP + 2 magic"
+            + " damage from type Lightning. + 2n magic damage, if the target is from type FIRE.";
 
     private static final String NAME = "Lightning";
 

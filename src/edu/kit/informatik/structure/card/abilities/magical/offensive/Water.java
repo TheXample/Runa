@@ -12,8 +12,8 @@ import edu.kit.informatik.structure.card.abilities.MagicAbility;
  */
 public class Water extends MagicAbility {
 
-    private static final String DESCRIPTION = "(2n + 4) ∗ f magischer Schaden "
-            + "+ 2n magischer Schaden, falls Ziel ein Blitz-Monster";
+    private static final String DESCRIPTION = "Deals (2n + 4) * FP + 2 magic damage"
+            + " from type Lightning. + 2n magic damage, if the target is from type LIGHTNING.";
 
     private static final String NAME = "Water";
 

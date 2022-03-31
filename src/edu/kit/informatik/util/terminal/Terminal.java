@@ -28,6 +28,20 @@ public final class Terminal {
 
     private static final int ONE = 1;
 
+    private static final String ANSI_RESET = "\u001B[0m";
+
+    private static final String ANSI_GREEN = "\u001B[32m";
+
+    private static final String ANSI_RED = "\u001B[31m";
+
+    private static final String ANSI_YELLOW = "\u001B[33m";
+
+    private static final String ANSI_PURPLE = "\u001B[35m";
+
+    private static final String ANSI_CYAN = "\u001B[36m";
+
+    private static final String ANSI_BLACK = "\u001B[30m";
+
     private Terminal() {
 
     }
@@ -55,7 +69,7 @@ public final class Terminal {
         else if (!hasToSelect) { //if the input wasn't correct but the player doesn't need to select returns -1
             return -1;
         }
-        return selectTarget("number", max, hasToSelect); //recurrs to make sure the player makes an input
+        return selectTarget(name, max, hasToSelect); //recurrs to make sure the player makes an input
     }
 
     /**
@@ -94,41 +108,55 @@ public final class Terminal {
     public static void printHello() {
         System.out.println("Welcome to Runa's Strive");
         System.out.println("Select Runa's character class");
-        System.out.println("1) Warrior");
-        System.out.println("2) Mage");
-        System.out.println("3) Paladin");
+        System.out.println(ANSI_BLACK + "1) Warrior");
+        System.out.println(ANSI_PURPLE + "2) Mage");
+        System.out.println(ANSI_CYAN + "3) Paladin" + ANSI_RESET);
     }
 
     /**
      * Print ability string.
      *
      * @param input the input
+     * @param description if the description should be displayed
      * @return the string
      */
-    public static String printAbility(Ability input) {
-        return  input.getName() + "(" + input.getAbilityLevel() + ")";
+    public static String printAbility(Ability input, boolean description) {
+        if (description) {
+            return  ANSI_CYAN + input.getName() + "(" + input.getAbilityLevel() + ")" + ANSI_RESET + ": " + input.getDescription();
+        }
+        return  ANSI_CYAN + input.getName() + "(" + input.getAbilityLevel() + ")" + ANSI_RESET;
     }
 
     /**
      * Print line.
      */
     public static void printLine() {
-        System.out.println("----------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------------"
+                + "-----------------------------------------------------------------------------");
     }
 
     /**
      * Print runa string.
      *
-     * @param runa the runa
-     * @param full the full
+     * @param character the character
      * @return the string
      */
-    public static String printRuna(Runa runa, boolean full) {
-        if (full) {
-            return ("Runa (" + runa.getHealthPoints() + "/" + Runa.getMaxhealth() + " HP, " + runa.getFocusPoints()
-                    + "/" + runa.getDice().getValue() + " FP)");
+    public static String printCharacter(Character character, boolean shortOut) {
+        String color = ANSI_GREEN;
+        if (character.getHealthPoints() <= character.getMaxHealth() / 2) {
+            color = ANSI_YELLOW;
         }
-        return ("Runa (" + runa.getHealthPoints() + "/50 HP)");
+        if (character.getHealthPoints() <= character.getMaxHealth() / 4) {
+            color = ANSI_RED;
+        }
+        if (shortOut) {
+
+            return character.getName() + " (" + color + character.getHealthPoints() + "/"
+                    + character.getMaxHealth() + ANSI_RESET  + ")";
+        }
+        return (character.getName() + " (" + color + character.getHealthPoints() + "/" + character.getMaxHealth()
+                + " HP"  + ANSI_RESET + ", " + ANSI_PURPLE + character.getFocusPoints() + "/"
+                + character.getDice().getType().getValue() + " FP" + ANSI_RESET + ")");
     }
 
     /**
@@ -147,8 +175,8 @@ public final class Terminal {
      * @param monster the monster
      */
     public static void printMonster(Monster monster) {
-        System.out.println(monster.getName() + " (" + monster.getHealthPoints() + " HP, " + monster.getFocusPoints()
-                + " FP): attempts " + printAbility(monster.getNextMove()) + " next");
+        System.out.println(printCharacter(monster, false) + ": attempts "
+                + printAbility(monster.getNextMove(), true));
     }
 
     /**
@@ -159,7 +187,7 @@ public final class Terminal {
      */
     public static void printLevel(Runa runa, List<Monster> monsterList) {
         printLine();
-        System.out.println(printRuna(runa, true));
+        System.out.println(printCharacter(runa, false));
         System.out.println("vs.");
         for (Monster monster: monsterList) {
             printMonster(monster);
@@ -174,7 +202,7 @@ public final class Terminal {
      * @param ability the ability
      */
     public static void printUse(Character user, Ability ability) {
-        System.out.println(user.getName() + " uses " + printAbility(ability));
+        System.out.println(user.getName() + " uses " + printAbility(ability, false));
     }
 
     /**
@@ -205,8 +233,8 @@ public final class Terminal {
             return;
         }
         if (ability.getType().equals(AbilityType.OFFENSIVE) || ability.getClass().equals(Reflect.class)) {
-            System.out.println(target.getName() + " takes " + damage + " "
-                    + ability.getUsageType().getValue() + ". damage");
+            System.out.println(ANSI_RED + target.getName() + " takes " + damage + " "
+                    + ability.getUsageType().getValue() + ". damage" + ANSI_RESET);
 
         }
     }
@@ -218,7 +246,7 @@ public final class Terminal {
      */
     public static void printDeath(Character input) {
         if (input != null) {
-            System.out.println(input.getName() + " dies");
+            System.out.println(ANSI_RED + input.getName() + " dies" + ANSI_RESET);
         }
     }
 
@@ -241,8 +269,7 @@ public final class Terminal {
     public static void printAbilities(Runa input) {
         List<Ability> runasAbilities = input.getAbilities();
         for (int i = 0; i < runasAbilities.size(); i++) {
-            System.out.println((i + ONE) + ") " + printAbility(runasAbilities.get(i)));
-
+            System.out.println((i + ONE) + ") " + printAbility(runasAbilities.get(i), true));
         }
     }
 

@@ -11,7 +11,7 @@ import edu.kit.informatik.structure.card.abilities.PhysicalAbility;
  */
 public class Smash extends PhysicalAbility {
 
-    private static final String DESCRIPTION = "8n physischer Schaden";
+    private static final String DESCRIPTION = "Deals 8n physical damage to the target.";
 
     private static final String NAME = "Smash";
 

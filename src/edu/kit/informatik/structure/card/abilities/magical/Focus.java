@@ -12,8 +12,7 @@ import edu.kit.informatik.structure.card.abilities.MagicAbility;
  */
 public class Focus extends MagicAbility {
 
-    private static final String DESCRIPTION = "Erhöhe Runas Fokus-Punkte vor ihrem nächsten Zug um"
-            + ", außer durch nächsten Zug der Monster gebrochen";
+    private static final String DESCRIPTION = "Increases the Focus of the user by n at the next turn.";
 
     private static final String NAME = "Focus";
 

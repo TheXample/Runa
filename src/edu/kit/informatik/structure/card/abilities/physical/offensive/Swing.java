@@ -11,8 +11,7 @@ import edu.kit.informatik.structure.card.abilities.PhysicalAbility;
  */
 public class Swing extends PhysicalAbility {
 
-    private static final String DESCRIPTION = "5n + w physischer Schaden"
-            + " Bricht den Focus des Ziels (n ist Fähigkeitslevel und w ist Würfelwurf)";
+    private static final String DESCRIPTION = "Deals 5n + dice physical damage and breaks the targets focus.";
 
     private static final String NAME = "Swing";
 

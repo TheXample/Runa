@@ -5,6 +5,8 @@ import edu.kit.informatik.structure.card.abilities.MagicType;
 import edu.kit.informatik.structure.card.abilities.physical.defensive.Block;
 import edu.kit.informatik.structure.card.abilities.physical.offensive.Bite;
 import edu.kit.informatik.structure.card.characters.Monster;
+import edu.kit.informatik.structure.dice.Dice;
+import edu.kit.informatik.structure.dice.DiceType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -29,11 +31,15 @@ public class Spider extends Monster {
 
     private static final int HEALTHPOINTS = 15;
 
+    private static final DiceType DICETYPE = DiceType.D_FOUR;
+
 
     /**
      * Instantiates a new Spider.
+     * @param seed
      */
-    public Spider() {
-        super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
+    public Spider(int seed) {
+        super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,
+                new Dice(DICETYPE, seed), DICETYPE.getValue(), HEALTHPOINTS);
     }
 }

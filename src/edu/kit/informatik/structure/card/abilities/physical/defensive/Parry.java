@@ -11,13 +11,13 @@ import edu.kit.informatik.structure.card.abilities.PhysicalAbility;
  */
 public class Parry extends PhysicalAbility {
 
-    private static final String DESCRIPTION = "Reduziere den physischen Schaden des nächsten Angriffs um 7";
+    private static final String DESCRIPTION = "Reduces the incoming physical damage by 10n.";
 
     private static final String NAME = "Parry";
 
     private static final int ZERO = 0;
 
-    private static final int SEVEN = 7;
+    private static final int TEN = 10;
 
     /**
      * Instantiates a new Parry.
@@ -30,8 +30,8 @@ public class Parry extends PhysicalAbility {
 
     @Override
     public int calculate(int damage) {
-        if (damage >= SEVEN * getAbilityLevel()) {
-            return damage - SEVEN * getAbilityLevel();
+        if (damage >= TEN * getAbilityLevel()) {
+            return damage - TEN * getAbilityLevel();
         }
         return ZERO;
     }

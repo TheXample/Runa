@@ -12,8 +12,8 @@ import edu.kit.informatik.structure.card.abilities.MagicAbility;
  */
 public class Fire extends MagicAbility {
 
-    private static final String DESCRIPTION = "(2n + 5) ∗ f magischer Schaden "
-            + "+ 2n magischer Schaden, falls Ziel ein Eis-Monster";
+    private static final String DESCRIPTION = "Deals (2n + 5) * FP magic damage from type FIRE. + 2n magic damage, "
+            + "if the target is from type ICE.";
 
     private static final String NAME = "Fire";
 

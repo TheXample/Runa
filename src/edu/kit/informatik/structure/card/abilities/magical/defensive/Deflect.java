@@ -12,7 +12,7 @@ import edu.kit.informatik.structure.card.abilities.MagicAbility;
  */
 public class Deflect extends MagicAbility {
 
-    private static final String DESCRIPTION = "Reduziere nächsten Angriff um 11n+2 magischen Schaden";
+    private static final String DESCRIPTION = "Reduces next attacks damage by 11n + 2 magic damage";
 
     private static final String NAME = "Deflect";
 

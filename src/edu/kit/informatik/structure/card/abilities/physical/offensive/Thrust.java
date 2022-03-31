@@ -11,8 +11,7 @@ import edu.kit.informatik.structure.card.abilities.PhysicalAbility;
  */
 public class Thrust extends PhysicalAbility {
 
-    private static final String DESCRIPTION = "6n + physischer Schaden"
-            + "+ 4n physischer Schaden, falls w ≥ 6 (n ist Fähigkeitslevel und w ist Würfelwurf)";
+    private static final String DESCRIPTION = "Deals 6n + dice physical damage. + 4n physical damage, if dice > 5.";
 
     private static final String NAME = "Thrust";
 

@@ -3,6 +3,8 @@ package edu.kit.informatik.structure.card.characters;
 import edu.kit.informatik.structure.card.abilities.Ability;
 import edu.kit.informatik.structure.card.Card;
 import edu.kit.informatik.structure.card.abilities.MagicType;
+import edu.kit.informatik.structure.dice.Dice;
+import edu.kit.informatik.structure.dice.DiceType;
 
 /**
  * The type Character.
@@ -22,9 +24,15 @@ public class Character extends Card {
      */
     protected int healthPoints;
 
+    private final int maxHealth;
+
+    private int maxFocus;
+
     private Ability lastMove;
 
     private final MagicType primaryType;
+
+    private Dice dice;
 
     /**
      * Instantiates a new Character.
@@ -34,11 +42,15 @@ public class Character extends Card {
      * @param focusPoints  the focus points
      * @param primaryType  the primary type
      */
-    public Character(String name, int healthPoints, int focusPoints, MagicType primaryType) {
+    public Character(String name, int healthPoints, int focusPoints, MagicType primaryType, Dice dice,
+                     int maxFocus, int maxHealth) {
         super(name);
         this.healthPoints = healthPoints;
         this.focusPoints = focusPoints;
         this.primaryType = primaryType;
+        this.dice = dice;
+        this.maxFocus = maxFocus;
+        this.maxHealth = maxHealth;
         lastMove = null;
     }
 
@@ -125,5 +137,25 @@ public class Character extends Card {
      */
     public MagicType getPrimaryType() {
         return primaryType;
+    }
+
+    public Dice getDice() {
+        return dice;
+    }
+
+    /**
+     * Upgrade dice boolean.
+     */
+    public void upgradeDice() {
+        dice.upgrade();
+        this.maxFocus = dice.getType().getValue();
+    }
+
+    public int getMaxFocus() {
+        return maxFocus;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 }

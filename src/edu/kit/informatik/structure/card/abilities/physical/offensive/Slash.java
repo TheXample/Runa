@@ -11,8 +11,7 @@ import edu.kit.informatik.structure.card.abilities.PhysicalAbility;
  */
 public class Slash extends PhysicalAbility {
 
-    private static final String DESCRIPTION = "4n + w"
-            + " bricht den Fokus des Ziels (n ist Fähigkeitslevel und w ist Würfelwurf)";
+    private static final String DESCRIPTION = "Deals 4n + dice physical damage and breaks the targets focus.";
 
     private static final String NAME = "Slash";
 

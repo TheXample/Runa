@@ -3,8 +3,10 @@ package edu.kit.informatik.structure.card.characters.monsters.one;
 import edu.kit.informatik.structure.card.abilities.Ability;
 import edu.kit.informatik.structure.card.abilities.MagicType;
 import edu.kit.informatik.structure.card.abilities.magical.Focus;
-import edu.kit.informatik.structure.card.abilities.magical.offensive.IceMonster;
+import edu.kit.informatik.structure.card.abilities.magical.offensive.Ice;
 import edu.kit.informatik.structure.card.characters.Monster;
+import edu.kit.informatik.structure.dice.Dice;
+import edu.kit.informatik.structure.dice.DiceType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.Queue;
 public class Ghost extends Monster {
 
     private static final Queue<Ability> ABILITYSTACK = new LinkedList<>(List.of(new Focus(1),
-            new IceMonster(1, 1)));
+            new Ice(1)));
 
     private static final boolean ISBOSS = false;
 
@@ -29,11 +31,15 @@ public class Ghost extends Monster {
 
     private static final int HEALTHPOINTS = 15;
 
+    private static final DiceType DICETYPE = DiceType.D_FOUR;
+
 
     /**
      * Instantiates a new Ghost.
+     * @param seed
      */
-    public Ghost() {
-        super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
+    public Ghost(int seed) {
+        super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,
+                new Dice(DICETYPE, seed), DICETYPE.getValue(), HEALTHPOINTS);
     }
 }

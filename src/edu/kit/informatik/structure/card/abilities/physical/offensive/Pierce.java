@@ -11,8 +11,7 @@ import edu.kit.informatik.structure.card.abilities.PhysicalAbility;
  */
 public class Pierce extends PhysicalAbility {
 
-    private static final String DESCRIPTION = "7n +  w physischer Schaden"
-            + "+ 5n physischer Schaden, falls w ≥ 6 (n ist Fähigkeitslevel und w ist Würfelwurf)";
+    private static final String DESCRIPTION = "Deals 7n + dice physical damage. + 5n physical damage, if dice > 5.";
 
     private static final String NAME = "Pierce";
 

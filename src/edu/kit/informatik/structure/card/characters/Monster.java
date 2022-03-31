@@ -2,6 +2,8 @@ package edu.kit.informatik.structure.card.characters;
 
 import edu.kit.informatik.structure.card.abilities.Ability;
 import edu.kit.informatik.structure.card.abilities.MagicType;
+import edu.kit.informatik.structure.dice.Dice;
+import edu.kit.informatik.structure.dice.DiceType;
 
 import java.util.Queue;
 
@@ -28,8 +30,8 @@ public class Monster extends Character {
      * @param isBoss       the is boss
      */
     public Monster(String name, int healthPoints, int focusPoints, Queue<Ability> abilities,
-                   MagicType primaryType, boolean isBoss) {
-        super(name, healthPoints, focusPoints, primaryType);
+                   MagicType primaryType, boolean isBoss, Dice dice, int MaxFocus,  int Maxhealth) {
+        super(name, healthPoints, focusPoints, primaryType, dice,  MaxFocus, Maxhealth);
         this.abilities = abilities;
         this.isBoss = isBoss;
     }
@@ -41,7 +43,8 @@ public class Monster extends Character {
      * @param healthPoints the health points
      */
     public Monster(Monster toCopy, int healthPoints) {
-        super(toCopy.getName(), healthPoints, toCopy.getFocusPoints(), toCopy.getPrimaryType());
+        super(toCopy.getName(), healthPoints, toCopy.getFocusPoints(), toCopy.getPrimaryType(), toCopy.getDice(),
+                toCopy.getMaxFocus(), toCopy.getMaxHealth());
         this.abilities = toCopy.getAbilities();
         this.isBoss = toCopy.isBoss();
     }

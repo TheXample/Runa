@@ -5,6 +5,9 @@ import edu.kit.informatik.structure.card.abilities.MagicType;
 import edu.kit.informatik.structure.card.abilities.physical.defensive.Block;
 import edu.kit.informatik.structure.card.abilities.physical.offensive.Claw;
 import edu.kit.informatik.structure.card.characters.Monster;
+import edu.kit.informatik.structure.dice.Dice;
+import edu.kit.informatik.structure.dice.DiceType;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -28,11 +31,15 @@ public class Rat extends Monster {
 
     private static final int HEALTHPOINTS = 14;
 
+    private static final DiceType DICETYPE = DiceType.D_FOUR;
+
 
     /**
      * Instantiates a new Rat.
+     * @param seed
      */
-    public Rat() {
-        super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS);
+    public Rat(int seed) {
+        super(NAME, HEALTHPOINTS, 0, ABILITYSTACK, PRIMARYTYPE, ISBOSS,
+                new Dice(DICETYPE, seed), DICETYPE.getValue(), HEALTHPOINTS);
     }
 }

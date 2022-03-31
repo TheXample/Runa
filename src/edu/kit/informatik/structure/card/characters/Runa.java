@@ -8,6 +8,7 @@ import edu.kit.informatik.structure.card.abilities.magical.offensive.Water;
 import edu.kit.informatik.structure.card.abilities.physical.defensive.Parry;
 import edu.kit.informatik.structure.card.abilities.physical.offensive.Slash;
 import edu.kit.informatik.structure.card.abilities.physical.offensive.Thrust;
+import edu.kit.informatik.structure.dice.Dice;
 import edu.kit.informatik.structure.dice.DiceType;
 
 import java.util.ArrayList;
@@ -29,10 +30,6 @@ public class Runa extends Character {
 
     private static final MagicType PRIMARYTYPE = MagicType.NONE;
 
-    private int maxFocus;
-
-    private DiceType dice;
-
     private List<Ability> abilities;
 
     private final RunaType runaClass;
@@ -43,11 +40,11 @@ public class Runa extends Character {
      * Instantiates a new Runa.
      *
      * @param runaClass the runa class
+     * @param seed the random seed
      */
-    public Runa(RunaType runaClass) {
-        super(NAME, MAXHEALTH , MINFOCUS, PRIMARYTYPE);
-        this.dice = DiceType.D_FOUR;
-        this.maxFocus = dice.getValue();
+    public Runa(RunaType runaClass, int seed) {
+        super(NAME, MAXHEALTH , MINFOCUS, PRIMARYTYPE, new Dice(DiceType.D_FOUR, seed),
+                DiceType.D_FOUR.getValue(), MAXHEALTH);
         this.runaClass = runaClass;
         this.level = 1;
         abilities = new ArrayList<>();
@@ -108,37 +105,6 @@ public class Runa extends Character {
     }
 
     /**
-     * Upgrade dice boolean.
-     */
-    public void upgradeDice() {
-        switch (dice) {
-            case D_FOUR: {
-                dice = DiceType.D_SIX;
-                maxFocus = dice.getValue();
-                return;
-            }
-            case D_SIX: {
-                dice = DiceType.D_EIGHT;
-                maxFocus = dice.getValue();
-                return;
-            }
-            case D_EIGHT: {
-                dice = DiceType.D_TEN;
-                maxFocus = dice.getValue();
-                return;
-            }
-            case D_TEN: {
-                dice = DiceType.D_Twelve;
-                maxFocus = dice.getValue();
-                return;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    /**
      * Upgrade abilities.
      */
     public void upgradeAbilities() {
@@ -156,15 +122,6 @@ public class Runa extends Character {
     }
 
     /**
-     * Gets dice.
-     *
-     * @return the dice
-     */
-    public DiceType getDice() {
-        return dice;
-    }
-
-    /**
      * Remove card.
      *
      * @param card the card
@@ -179,7 +136,7 @@ public class Runa extends Character {
 
     @Override
     public void setFocusPoints(int focusPoints) {
-        if (focusPoints < 1 || focusPoints > maxFocus) {
+        if (focusPoints < 1 || focusPoints > getMaxFocus()) {
             return;
         }
         this.focusPoints = focusPoints;
